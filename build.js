@@ -5,6 +5,7 @@ const { marked } = require('marked');
 marked.setOptions({ gfm: true, breaks: true });
 
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8'));
+const responsiveCss = fs.readFileSync(path.join(__dirname, 'responsive.css'), 'utf8');
 const outDir = path.join(__dirname, 'docs');
 if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
@@ -80,7 +81,6 @@ function generatePage(item, content) {
   <title>${item.title} – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="responsive.css">
   <style>
     /* ═══════════════════════════════════════════
        TIBA DESIGN SYSTEM TOKENS
@@ -521,6 +521,9 @@ function generatePage(item, content) {
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; }
     }
+
+    /* INJECTED RESPONSIVE CSS */
+${responsiveCss}
   </style>
 </head>
 <body>
