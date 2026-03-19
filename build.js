@@ -461,11 +461,19 @@ function generatePage(item, content) {
         box-shadow: 4px 0 24px rgba(0,0,0,0.15);
       }
       .overlay.open { display: block; }
-      .main-area { margin-left: 0; }
+      .main-area { margin-left: 0; overflow-x: hidden; }
       .hamburger { display: flex; }
-      .topbar { padding: 0 12px; gap: 8px; }
+      .topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 80;
+        padding: 0 12px;
+        gap: 8px;
+      }
       .topbar-title { font-size: 0.95rem; }
-      .content-wrap { padding: 20px 14px 48px; }
+      .content-wrap { padding: 20px 14px 48px; margin-top: var(--header-h); }
       .prev-next { flex-direction: column; gap: 10px; }
       .prev-next-btn { min-height: 56px; padding: 12px 16px; }
       .prose h1 { font-size: 1.6rem; }
