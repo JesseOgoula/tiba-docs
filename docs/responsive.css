@@ -49,31 +49,37 @@
 /* ───────────── Phone (< 480px) ───────────── */
 @media (max-width: 480px) {
 
-  /* ─── GLOBAL: Force all inline CSS grids to stack ─── */
+  /* ─── GLOBAL: Force word wrap and stacking ─── */
+  .prose * {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    box-sizing: border-box !important;
+  }
+
   .prose div {
     grid-template-columns: 1fr !important;
     flex-direction: column !important;
   }
 
-  /* ─── TYPOGRAPHY: Scale down everything ─── */
-  .prose h1, .brand-page h1, .db-page h1 {
-    font-size: 1.3rem !important;
-  }
-  .prose h2, .brand-page h2, .db-page h2 {
-    font-size: 1.05rem !important;
-  }
-  .prose h3, .brand-page h3, .db-page h3 {
-    font-size: 0.92rem !important;
-  }
-
+  /* ─── TYPOGRAPHY: Aggressive inline override ─── */
+  .prose h1, .brand-page h1, .db-page h1 { font-size: 1.3rem !important; }
+  .prose h2, .brand-page h2, .db-page h2 { font-size: 1.1rem !important; }
+  .prose h3, .brand-page h3, .db-page h3 { font-size: 0.95rem !important; }
+  .prose h4, .brand-page h4, .db-page h4 { font-size: 0.88rem !important; }
+  
   .prose p, .brand-page p, .db-page p,
   .prose li, .brand-page li, .db-page li {
-    font-size: 0.85rem !important;
-    line-height: 1.6 !important;
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
   }
 
-  .prose strong, .brand-page strong, .db-page strong {
-    font-size: inherit !important;
+  /* Target ANY inline font-size that starts with 1., 2., 3., 4. and squash it */
+  .prose [style*="font-size:1."], .prose [style*="font-size: 1."],
+  .prose [style*="font-size:2."], .prose [style*="font-size: 2."],
+  .prose [style*="font-size:3."], .prose [style*="font-size: 3."],
+  .prose [style*="font-size:4."], .prose [style*="font-size: 4."] {
+    font-size: clamp(0.9rem, 5vw, 1.25rem) !important;
+    line-height: 1.3 !important;
   }
 
   /* ─── GRIDS & CARDS: Stack and compact ─── */
@@ -93,16 +99,21 @@
     gap: 10px !important;
   }
 
-  /* ─── CARDS: Reduce padding ─── */
-  .prose div[style*="padding"],
-  .brand-page div[style*="padding"],
-  .db-page div[style*="padding"] {
-    padding: 12px !important;
+  /* ─── CARDS: Reduce ALL massive paddings ─── */
+  .prose [style*="padding:4"], .prose [style*="padding: 4"],
+  .prose [style*="padding:3"], .prose [style*="padding: 3"],
+  .prose [style*="padding:2"], .prose [style*="padding: 2"] {
+    padding: 12px 10px !important;
   }
 
   /* Keep the top-level wrapper full padding */
-  .brand-page, .db-page {
-    padding: 0 !important;
+  .brand-page, .db-page { padding: 0 !important; }
+
+  /* ─── MAX-WIDTH LIMITER ─── */
+  .prose [style*="max-width:5"], .prose [style*="max-width: 5"],
+  .prose [style*="max-width:4"], .prose [style*="max-width: 4"],
+  .prose [style*="max-width:3"], .prose [style*="max-width: 3"] {
+    max-width: 100% !important;
   }
 
   /* ─── IMAGES: Scale for phone ─── */
@@ -111,33 +122,15 @@
     height: auto !important;
   }
 
-  /* Logo in hero section */
-  .brand-page > div:first-child img {
-    max-width: 200px !important;
+  .brand-page img[alt*="Logo"], .brand-page img[alt*="logo"],
+  .brand-page img[alt*="Icône"], .brand-page img[alt*="texte"] {
+    max-width: 120px !important;
   }
 
-  /* Logo variant cards */
-  .brand-page img[alt*="Logo"],
-  .brand-page img[alt*="logo"],
-  .brand-page img[alt*="Icône"],
-  .brand-page img[alt*="texte"] {
-    max-width: 140px !important;
-  }
-
-  /* ─── COLOR SWATCHES: Smaller height ─── */
+  /* ─── COLOR SWATCHES ─── */
   .brand-page div[style*="height:100px"],
   .brand-page div[style*="height: 100px"] {
-    height: 56px !important;
-  }
-
-  /* ─── TYPOGRAPHY SPECIMENS: Scale down ─── */
-  .brand-page div[style*="font-size:2.5rem"],
-  .brand-page div[style*="font-size: 2.5rem"] {
-    font-size: 1.5rem !important;
-  }
-  .brand-page div[style*="font-size:1.3rem"],
-  .brand-page div[style*="font-size: 1.3rem"] {
-    font-size: 0.95rem !important;
+    height: 48px !important;
   }
 
   /* ─── SVG DIAGRAM: Horizontal scroll ─── */
@@ -165,12 +158,14 @@
   }
 
   /* ─── CODE BLOCKS ─── */
-  .prose pre, .db-page pre {
-    max-width: calc(100vw - 24px) !important;
-    font-size: 0.68rem !important;
+  .prose pre, .db-page pre, .prose code {
+    max-width: calc(100vw - 32px) !important;
+    font-size: 11px !important;
     padding: 10px !important;
     border-radius: 8px !important;
-    line-height: 1.5 !important;
+    line-height: 1.4 !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
   }
 
   /* ─── BLOCKQUOTES ─── */
