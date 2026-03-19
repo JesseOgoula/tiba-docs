@@ -5,7 +5,7 @@ const { marked } = require('marked');
 marked.setOptions({ gfm: true, breaks: true });
 
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8'));
-const outDir = path.join(__dirname, 'html-output');
+const outDir = path.join(__dirname, 'docs');
 if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
 // Flatten all items for prev/next navigation
@@ -647,7 +647,7 @@ config.sections.forEach(section => {
 fs.writeFileSync(path.join(outDir, 'index.html'),
   `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=${firstPageId}.html"><title>Tiba Docs</title></head><body></body></html>`);
 
-console.log(`\n${allItems.length} pages generees dans html-output/`);
+console.log(`\n${allItems.length} pages generees dans docs/`);
 
 // Copy responsive.css to output
 fs.copyFileSync(
