@@ -1,89 +1,47 @@
 /* ═══════════════════════════════════════════════════════
    TIBA DOCS — Mobile Responsive Overrides
-   This file overrides inline styles on content pages
-   that cannot be controlled from the main stylesheet.
+   Targets .prose content elements directly.
    ═══════════════════════════════════════════════════════ */
 
 /* ───────────── Tablet (< 900px) ───────────── */
 @media (max-width: 900px) {
 
-  /* Force all inline CSS grids to 2 columns max */
-  [style*="grid-template-columns"] {
-    grid-template-columns: repeat(2, 1fr) !important;
+  /* All divs with inline grid inside .prose → 2 columns */
+  .prose div[style] {
+    max-width: 100% !important;
   }
 
-  /* Scale down inline-padded containers */
-  [style*="padding:28px 32px"],
-  [style*="padding: 28px 32px"] {
-    padding: 18px 20px !important;
-  }
-  [style*="padding:24px"],
-  [style*="padding: 24px"] {
-    padding: 16px !important;
-  }
-  [style*="padding:32px"],
-  [style*="padding: 32px"] {
-    padding: 20px !important;
+  /* SVG diagrams */
+  .prose svg {
+    max-width: 100% !important;
+    height: auto !important;
   }
 
-  /* Scale inline font sizes */
-  [style*="font-size:2.5rem"],
-  [style*="font-size: 2.5rem"] {
-    font-size: 1.8rem !important;
-  }
-  [style*="font-size:2.2rem"],
-  [style*="font-size: 2.2rem"] {
-    font-size: 1.6rem !important;
-  }
-  [style*="font-size:1.3rem"],
-  [style*="font-size: 1.3rem"] {
-    font-size: 1.05rem !important;
-  }
-  [style*="font-size:1.1rem"],
-  [style*="font-size: 1.1rem"] {
-    font-size: 0.95rem !important;
-  }
-  [style*="font-size:1.05rem"],
-  [style*="font-size: 1.05rem"] {
-    font-size: 0.92rem !important;
+  /* All images */
+  .prose img {
+    max-width: 100% !important;
+    height: auto !important;
   }
 
-  /* SVG diagrams: horizontal scroll */
-  svg[viewBox] {
-    max-width: 100%;
-    height: auto;
-  }
-  [style*="overflow-x:auto"],
-  [style*="overflow-x: auto"] {
+  /* Pre blocks: horizontal scroll */
+  .prose pre {
+    max-width: calc(100vw - 28px) !important;
+    overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
+    font-size: 0.75rem !important;
+    padding: 14px !important;
   }
 
-  /* Scale inline images */
-  img[style*="max-width:340px"],
-  img[style*="max-width: 340px"] {
-    max-width: 220px !important;
+  /* Tables: horizontal scroll wrapper */
+  .prose table {
+    display: block !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    font-size: 0.78rem !important;
   }
-  img[style*="max-width:240px"],
-  img[style*="max-width: 240px"] {
-    max-width: 180px !important;
-  }
-  img[style*="max-width:200px"],
-  img[style*="max-width: 200px"] {
-    max-width: 150px !important;
-  }
-
-  /* Tables with inline styles */
-  table[style] {
-    font-size: 0.8rem !important;
-  }
-  table[style] td,
-  table[style] th {
-    padding: 6px 8px !important;
-  }
-
-  /* YAML / SQL code blocks need horizontal scroll */
-  pre {
-    max-width: calc(100vw - 28px);
+  .prose th, .prose td {
+    padding: 8px 10px !important;
   }
 }
 
@@ -91,166 +49,190 @@
 /* ───────────── Phone (< 480px) ───────────── */
 @media (max-width: 480px) {
 
-  /* Force ALL inline grids to single column */
-  [style*="grid-template-columns"] {
+  /* ─── GLOBAL: Force all inline CSS grids to stack ─── */
+  .prose div {
+    grid-template-columns: 1fr !important;
+    flex-direction: column !important;
+  }
+
+  /* ─── TYPOGRAPHY: Scale down everything ─── */
+  .prose h1, .brand-page h1, .db-page h1 {
+    font-size: 1.3rem !important;
+  }
+  .prose h2, .brand-page h2, .db-page h2 {
+    font-size: 1.05rem !important;
+  }
+  .prose h3, .brand-page h3, .db-page h3 {
+    font-size: 0.92rem !important;
+  }
+
+  .prose p, .brand-page p, .db-page p,
+  .prose li, .brand-page li, .db-page li {
+    font-size: 0.85rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .prose strong, .brand-page strong, .db-page strong {
+    font-size: inherit !important;
+  }
+
+  /* ─── GRIDS & CARDS: Stack and compact ─── */
+  .prose div[style*="grid"],
+  .brand-page div[style*="grid"],
+  .db-page div[style*="grid"] {
+    display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 10px !important;
   }
 
-  /* Force minimum gap on grids */
-  [style*="gap:16px"],
-  [style*="gap: 16px"],
-  [style*="gap:20px"],
-  [style*="gap: 20px"] {
+  .prose div[style*="display:flex"],
+  .prose div[style*="display: flex"],
+  .brand-page div[style*="display:flex"],
+  .brand-page div[style*="display: flex"] {
+    flex-direction: column !important;
     gap: 10px !important;
   }
 
-  /* Scale all inline padding down */
-  [style*="padding:28px 32px"],
-  [style*="padding: 28px 32px"] {
-    padding: 14px 16px !important;
-  }
-  [style*="padding:24px"],
-  [style*="padding: 24px"] {
+  /* ─── CARDS: Reduce padding ─── */
+  .prose div[style*="padding"],
+  .brand-page div[style*="padding"],
+  .db-page div[style*="padding"] {
     padding: 12px !important;
   }
-  [style*="padding:32px"],
-  [style*="padding: 32px"] {
-    padding: 14px !important;
-  }
-  [style*="padding:20px"],
-  [style*="padding: 20px"] {
-    padding: 12px !important;
-  }
-  [style*="padding:16px"],
-  [style*="padding: 16px"] {
-    padding: 10px !important;
+
+  /* Keep the top-level wrapper full padding */
+  .brand-page, .db-page {
+    padding: 0 !important;
   }
 
-  /* Scale inline font sizes for phone */
-  [style*="font-size:2.5rem"],
-  [style*="font-size: 2.5rem"] {
-    font-size: 1.5rem !important;
-  }
-  [style*="font-size:2.2rem"],
-  [style*="font-size: 2.2rem"] {
-    font-size: 1.3rem !important;
-  }
-  [style*="font-size:2rem"],
-  [style*="font-size: 2rem"] {
-    font-size: 1.2rem !important;
-  }
-  [style*="font-size:1.5rem"],
-  [style*="font-size: 1.5rem"] {
-    font-size: 1.1rem !important;
-  }
-  [style*="font-size:1.3rem"],
-  [style*="font-size: 1.3rem"] {
-    font-size: 0.95rem !important;
-  }
-  [style*="font-size:1.2rem"],
-  [style*="font-size: 1.2rem"] {
-    font-size: 0.9rem !important;
-  }
-  [style*="font-size:1.1rem"],
-  [style*="font-size: 1.1rem"] {
-    font-size: 0.88rem !important;
-  }
-  [style*="font-size:1.05rem"],
-  [style*="font-size: 1.05rem"] {
-    font-size: 0.85rem !important;
-  }
-  [style*="font-size:1rem"],
-  [style*="font-size: 1rem"] {
-    font-size: 0.85rem !important;
+  /* ─── IMAGES: Scale for phone ─── */
+  .prose img, .brand-page img, .db-page img {
+    max-width: 100% !important;
+    height: auto !important;
   }
 
-  /* Hero images */
-  img[style*="max-width:340px"],
-  img[style*="max-width: 340px"] {
-    max-width: 180px !important;
+  /* Logo in hero section */
+  .brand-page > div:first-child img {
+    max-width: 200px !important;
   }
-  img[style*="max-width:240px"],
-  img[style*="max-width: 240px"] {
+
+  /* Logo variant cards */
+  .brand-page img[alt*="Logo"],
+  .brand-page img[alt*="logo"],
+  .brand-page img[alt*="Icône"],
+  .brand-page img[alt*="texte"] {
     max-width: 140px !important;
   }
-  img[style*="max-width:200px"],
-  img[style*="max-width: 200px"] {
-    max-width: 120px !important;
-  }
-  img[style*="max-width:80px"],
-  img[style*="max-width: 80px"] {
-    max-width: 56px !important;
+
+  /* ─── COLOR SWATCHES: Smaller height ─── */
+  .brand-page div[style*="height:100px"],
+  .brand-page div[style*="height: 100px"] {
+    height: 56px !important;
   }
 
-  /* Color swatch cards */
-  [style*="height:100px"] {
-    height: 64px !important;
+  /* ─── TYPOGRAPHY SPECIMENS: Scale down ─── */
+  .brand-page div[style*="font-size:2.5rem"],
+  .brand-page div[style*="font-size: 2.5rem"] {
+    font-size: 1.5rem !important;
+  }
+  .brand-page div[style*="font-size:1.3rem"],
+  .brand-page div[style*="font-size: 1.3rem"] {
+    font-size: 0.95rem !important;
   }
 
-  /* Labels and codes inside cards */
-  [style*="font-size:0.85rem"],
-  [style*="font-size: 0.85rem"] {
-    font-size: 0.78rem !important;
+  /* ─── SVG DIAGRAM: Horizontal scroll ─── */
+  .db-page svg {
+    min-width: 600px;
   }
-  [style*="font-size:0.8rem"],
-  [style*="font-size: 0.8rem"] {
+  .db-page div[style*="overflow-x"] {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ─── TABLES ─── */
+  .prose table, .db-page table, .brand-page table {
+    display: block !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
     font-size: 0.72rem !important;
   }
-  [style*="font-size:0.9rem"],
-  [style*="font-size: 0.9rem"] {
-    font-size: 0.8rem !important;
-  }
-  [style*="font-size:0.88rem"],
-  [style*="font-size: 0.88rem"] {
-    font-size: 0.78rem !important;
+  .prose th, .prose td,
+  .db-page th, .db-page td,
+  .brand-page th, .brand-page td {
+    padding: 6px 8px !important;
+    font-size: 0.72rem !important;
   }
 
-  /* Role badges in DB page */
-  [style*="width:32px"][style*="height:32px"] {
+  /* ─── CODE BLOCKS ─── */
+  .prose pre, .db-page pre {
+    max-width: calc(100vw - 24px) !important;
+    font-size: 0.68rem !important;
+    padding: 10px !important;
+    border-radius: 8px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* ─── BLOCKQUOTES ─── */
+  .prose blockquote {
+    padding: 10px 12px !important;
+    font-size: 0.83rem !important;
+    margin: 10px 0 !important;
+  }
+
+  /* ─── ROLE BADGES (DB page) ─── */
+  .db-page div[style*="width:32px"] {
     width: 28px !important;
     height: 28px !important;
     font-size: 0.6rem !important;
   }
 
-  /* Inline tables (color specs etc) */
-  table[style*="font-size:0.8rem"] td,
-  table[style*="font-size: 0.8rem"] td {
-    padding: 2px 0 !important;
+  /* ─── LISTS ─── */
+  .prose ul, .prose ol,
+  .db-page ul, .brand-page ul {
+    padding-left: 16px !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* ─── MARGINS ─── */
+  .prose hr {
+    margin: 20px 0 !important;
+  }
+
+  /* ─── INLINE FONT-SIZE OVERRIDES ─── */
+  .brand-page div[style*="font-size:0.8rem"],
+  .brand-page div[style*="font-size: 0.8rem"],
+  .db-page div[style*="font-size:0.8rem"],
+  .db-page div[style*="font-size: 0.8rem"],
+  .brand-page code, .db-page code {
     font-size: 0.7rem !important;
   }
 
-  /* Pre/code blocks */
-  pre {
-    max-width: calc(100vw - 24px);
-    font-size: 0.7rem !important;
-    padding: 10px !important;
-    border-radius: 8px !important;
+  /* ─── SMALL TEXT ─── */
+  .brand-page p[style*="font-size"],
+  .db-page p[style*="font-size"] {
+    font-size: 0.8rem !important;
   }
 
-  /* Hero section spacing */
-  [style*="padding: 40px 0"],
-  [style*="padding:40px 0"] {
-    padding: 20px 0 10px !important;
-  }
-
-  /* Border radius on small screens */
-  [style*="border-radius:16px"],
-  [style*="border-radius: 16px"] {
+  /* ─── BORDER RADIUS ─── */
+  .prose div[style*="border-radius:16px"],
+  .prose div[style*="border-radius: 16px"],
+  .brand-page div[style*="border-radius:16px"],
+  .brand-page div[style*="border-radius: 16px"] {
     border-radius: 10px !important;
   }
-  [style*="border-radius:12px"],
-  [style*="border-radius: 12px"] {
-    border-radius: 8px !important;
-  }
 
-  /* Margin top adjustments */
-  [style*="margin:16px 0 32px"],
-  [style*="margin: 16px 0 32px"] {
-    margin: 10px 0 20px !important;
+  /* ─── EXTENSION CARDS (DB page): border-left accent ─── */
+  .db-page div[style*="border-left:4px"],
+  .db-page div[style*="border-left: 4px"] {
+    padding: 10px 12px !important;
   }
-  [style*="margin-bottom:32px"],
-  [style*="margin-bottom: 32px"] {
-    margin-bottom: 18px !important;
+  .db-page div[style*="border-left:4px"] strong,
+  .db-page div[style*="border-left: 4px"] strong {
+    font-size: 0.85rem !important;
+  }
+  .db-page div[style*="border-left:4px"] p,
+  .db-page div[style*="border-left: 4px"] p {
+    font-size: 0.78rem !important;
   }
 }
