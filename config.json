@@ -1,0 +1,41 @@
+{
+  "sections": [
+    {
+      "title": "Identite et Vision",
+      "icon": "compass",
+      "items": [
+        { "id": "brand", "title": "Charte Graphique", "path": "content/brand-guidelines.html" },
+        { "id": "ideation", "title": "Session d'Ideation", "path": "content/brainstorming/brainstorming-session-2026-03-15-1513.md" },
+        { "id": "market", "title": "Analyse Marche Afrique", "path": "content/brainstorming/analyse-marche-8-secteurs-afrique.md" }
+      ]
+    },
+    {
+      "title": "Produit et Specifications",
+      "icon": "clipboard",
+      "items": [
+        { "id": "brief", "title": "Product Brief", "path": "content/Pharma_AI_Product_Brief.md" },
+        { "id": "mvp", "title": "Planification MVP", "path": "content/Pharma_AI_Planification_MVP.md" },
+        { "id": "prd", "title": "Product Requirements (PRD)", "path": "content/planning-artifacts/prd.md" },
+        { "id": "ux", "title": "Design System et UX", "path": "content/planning-artifacts/ux-design-specification.md" }
+      ]
+    },
+    {
+      "title": "Ingenierie et Architecture",
+      "icon": "layers",
+      "items": [
+        { "id": "architecture", "title": "Architecture Technique", "path": "content/planning-artifacts/architecture.md" },
+        { "id": "database", "title": "Base de Donnees", "path": "content/database-visual.html" },
+        { "id": "database-sql", "title": "Code SQL Complet", "path": "content/planning-artifacts/database-schema.sql" }
+      ]
+    },
+    {
+      "title": "Execution et Sprints",
+      "icon": "play",
+      "items": [
+        { "id": "epics", "title": "Epics et Stories", "path": "content/planning-artifacts/epics.md" },
+        { "id": "story-1-1", "title": "Story 1.1: Design System", "path": "content/implementation-artifacts/1-1-project-initialization-and-design-system.md" },
+        { "id": "sprint-status", "title": "Status du Sprint", "path": "content/implementation-artifacts/sprint-status.yaml" }
+      ]
+    }
+  ]
+}

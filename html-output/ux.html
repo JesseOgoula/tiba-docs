@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System et UX – Tiba Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="responsive.css">
+  <style>
+    /* ═══════════════════════════════════════════
+       TIBA DESIGN SYSTEM TOKENS
+       ═══════════════════════════════════════════ */
+    :root {
+      --tiba-green: #0B8E71;
+      --tiba-green-light: #0FAF8C;
+      --tiba-green-bg: #E8F5F1;
+      --tiba-sand: #F5F0E6;
+      --tiba-sand-dark: #EDE6D6;
+      --tiba-coral: #E85D75;
+      --tiba-dark: #1A1A1A;
+      --tiba-dark-soft: #2D2D2D;
+      --sidebar-w: 280px;
+      --header-h: 64px;
+      --radius: 12px;
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--tiba-sand); }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--tiba-sand);
+      color: var(--tiba-dark);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT
+       ═══════════════════════════════════════════ */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ─── Sidebar ─── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #fff;
+      border-right: 1px solid #e0ddd5;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-header {
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px;
+      border-bottom: 1px solid #e0ddd5;
+      flex-shrink: 0;
+    }
+    .sidebar-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+    .sidebar-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--tiba-dark);
+      letter-spacing: -0.5px;
+    }
+    .sidebar-header h1 span { color: var(--tiba-green); }
+    .sidebar-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 12px;
+    }
+
+    /* ─── Navigation Sections ─── */
+    .nav-section { margin-bottom: 8px; }
+    .nav-section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--tiba-green);
+      padding: 10px 12px 6px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid #eee;
+    }
+    .nav-section:first-child .nav-section-title {
+      border-top: none;
+    }
+    .nav-section-icon {
+      display: flex;
+      align-items: center;
+      color: var(--tiba-green);
+      opacity: 0.7;
+    }
+    .nav-list { list-style: none; }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px 7px 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #666;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.15s ease;
+      margin-bottom: 1px;
+    }
+    .nav-dot {
+      display: flex;
+      align-items: center;
+      color: #ccc;
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+    .nav-link:hover {
+      background: var(--tiba-green-bg);
+      color: var(--tiba-green);
+    }
+    .nav-link:hover .nav-dot { color: var(--tiba-green); }
+    .nav-link.active {
+      background: var(--tiba-green-bg);
+      color: var(--tiba-green);
+      font-weight: 600;
+    }
+    .nav-link.active .nav-dot { color: var(--tiba-green); }
+
+    /* ─── Main ─── */
+    .main-area {
+      flex: 1;
+      margin-left: var(--sidebar-w);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── Top Bar ─── */
+    .topbar {
+      height: var(--header-h);
+      background: rgba(245, 240, 230, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e0ddd5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--tiba-dark);
+    }
+    .topbar-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--tiba-green-bg);
+      color: var(--tiba-green);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    /* ─── Content Area ─── */
+    .content-wrap {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 32px 80px;
+      width: 100%;
+    }
+
+    /* ─── Mobile hamburger ─── */
+    .hamburger {
+      display: none;
+      background: var(--tiba-green);
+      color: #fff;
+      border: none;
+      font-size: 1.5rem;
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 90;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROSE — Markdown content styling
+       ═══════════════════════════════════════════ */
+    .prose h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--tiba-dark);
+      margin: 0 0 16px;
+      line-height: 1.2;
+      border-bottom: 3px solid var(--tiba-green);
+      padding-bottom: 12px;
+    }
+    .prose h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--tiba-green);
+      margin: 40px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e0ddd5;
+    }
+    .prose h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--tiba-dark);
+      margin: 28px 0 8px;
+    }
+    .prose h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #555;
+      margin: 20px 0 6px;
+    }
+    .prose p { margin: 12px 0; }
+    .prose a {
+      color: var(--tiba-green);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .prose a:hover { color: var(--tiba-green-light); }
+    .prose strong { color: var(--tiba-dark); }
+    .prose ul, .prose ol {
+      padding-left: 24px;
+      margin: 12px 0;
+    }
+    .prose li { margin: 6px 0; }
+    .prose li::marker { color: var(--tiba-green); }
+    .prose blockquote {
+      border-left: 4px solid var(--tiba-green);
+      background: var(--tiba-green-bg);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: #3a3a3a;
+    }
+    .prose code {
+      background: #f0ece3;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: var(--tiba-coral);
+    }
+    .prose pre {
+      background: var(--tiba-dark);
+      color: #e0e0e0;
+      padding: 20px;
+      border-radius: var(--radius);
+      overflow-x: auto;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .prose pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+    .prose table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.9rem;
+    }
+    .prose th {
+      background: var(--tiba-green);
+      color: #fff;
+      font-weight: 600;
+      text-align: left;
+      padding: 10px 14px;
+    }
+    .prose th:first-child { border-radius: 8px 0 0 0; }
+    .prose th:last-child { border-radius: 0 8px 0 0; }
+    .prose td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e0ddd5;
+    }
+    .prose tr:nth-child(even) td { background: #faf8f3; }
+    .prose tr:hover td { background: var(--tiba-green-bg); }
+    .prose hr {
+      border: none;
+      border-top: 2px solid #e0ddd5;
+      margin: 32px 0;
+    }
+    .prose img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      margin: 16px 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       PREV / NEXT NAVIGATION
+       ═══════════════════════════════════════════ */
+    .prev-next {
+      display: flex;
+      gap: 16px;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 2px solid #e0ddd5;
+    }
+    .prev-next-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 20px;
+      background: #fff;
+      border: 1px solid #e0ddd5;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      min-height: 72px;
+    }
+    .prev-next-btn:hover {
+      border-color: var(--tiba-green);
+      box-shadow: 0 4px 16px rgba(11,142,113,0.12);
+      transform: translateY(-2px);
+    }
+    .prev-next-btn.next { text-align: right; }
+    .prev-next-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--tiba-green);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .prev-next-btn.next .prev-next-label { justify-content: flex-end; }
+    .prev-next-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--tiba-dark);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — Tablet
+       ═══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+      }
+      .overlay.open { display: block; }
+      .main-area { margin-left: 0; }
+      .hamburger { display: flex; }
+      .topbar { padding: 0 12px; gap: 8px; }
+      .topbar-title { font-size: 0.95rem; }
+      .content-wrap { padding: 20px 14px 48px; }
+      .prev-next { flex-direction: column; gap: 10px; }
+      .prev-next-btn { min-height: 56px; padding: 12px 16px; }
+      .prose h1 { font-size: 1.6rem; }
+      .prose h2 { font-size: 1.25rem; margin-top: 28px; }
+      .prose h3 { font-size: 1.05rem; }
+      .prose pre { padding: 14px; font-size: 0.78rem; }
+      .prose table { font-size: 0.8rem; display: block; overflow-x: auto; white-space: nowrap; }
+      .prose th, .prose td { padding: 8px 10px; }
+      .prose blockquote { padding: 12px 14px; margin: 14px 0; }
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — Phone
+       ═══════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      :root {
+        --header-h: 52px;
+      }
+      body { font-size: 0.9rem; line-height: 1.65; }
+      .topbar-title { font-size: 0.85rem; }
+      .topbar-badge { display: none; }
+      .hamburger { width: 40px; height: 40px; border-radius: 8px; }
+      .content-wrap { padding: 16px 12px 40px; }
+      .prose h1 { font-size: 1.3rem; padding-bottom: 8px; }
+      .prose h2 { font-size: 1.1rem; margin-top: 24px; padding-bottom: 6px; }
+      .prose h3 { font-size: 0.95rem; margin-top: 18px; }
+      .prose h4 { font-size: 0.88rem; }
+      .prose p { margin: 8px 0; }
+      .prose ul, .prose ol { padding-left: 18px; margin: 8px 0; }
+      .prose li { margin: 4px 0; }
+      .prose pre { padding: 10px; font-size: 0.72rem; border-radius: 8px; }
+      .prose code { font-size: 0.8em; padding: 1px 4px; }
+      .prose blockquote { padding: 10px 12px; font-size: 0.88rem; }
+      .prose table { font-size: 0.75rem; }
+      .prose th, .prose td { padding: 6px 8px; }
+      .prose img { border-radius: 8px; margin: 10px 0; }
+      .prev-next-btn { min-height: 48px; padding: 10px 12px; }
+      .prev-next-label { font-size: 0.68rem; }
+      .prev-next-title { font-size: 0.85rem; }
+      /* Force inline grids to stack */
+      [style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       ACCESSIBILITY
+       ═══════════════════════════════════════════ */
+    :focus-visible {
+      outline: 3px solid var(--tiba-green);
+      outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Overlay for mobile sidebar -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()" aria-hidden="true"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Menu de navigation des documents">
+      <div class="sidebar-header">
+        <img src="Img/Logogreen.png" alt="Tiba" class="sidebar-logo">
+        <h1><span>Tiba</span> Docs</h1>
+      </div>
+      <div class="sidebar-body">
+        
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
+          Identite et Vision
+        </div>
+        <ul class="nav-list">
+          <li><a href="brand.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Charte Graphique</a></li>
+          <li><a href="ideation.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Session d'Ideation</a></li>
+          <li><a href="market.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Analyse Marche Afrique</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></span>
+          Produit et Specifications
+        </div>
+        <ul class="nav-list">
+          <li><a href="brief.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Product Brief</a></li>
+          <li><a href="mvp.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Planification MVP</a></li>
+          <li><a href="prd.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Product Requirements (PRD)</a></li>
+          <li><a href="ux.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Design System et UX</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+          Ingenierie et Architecture
+        </div>
+        <ul class="nav-list">
+          <li><a href="architecture.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Technique</a></li>
+          <li><a href="database.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Base de Donnees</a></li>
+          <li><a href="database-sql.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Code SQL Complet</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span>
+          Execution et Sprints
+        </div>
+        <ul class="nav-list">
+          <li><a href="epics.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Epics et Stories</a></li>
+          <li><a href="story-1-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.1: Design System</a></li>
+          <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
+        </ul>
+      </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main-area">
+      <div class="topbar" role="banner">
+        <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-title">Design System et UX</div>
+        <div class="topbar-badge">7 / 13</div>
+      </div>
+
+      <article class="content-wrap" role="main" aria-label="Contenu du document">
+        <div class="prose">
+          <h1>UX Design Specification Tiba</h1>
+<p><strong>Author:</strong> jesse<br><strong>Date:</strong> 2026-03-18</p>
+<hr>
+<!-- UX design content will be appended sequentially through collaborative workflow steps -->
+
+<h2>Executive Summary</h2>
+<h3>Project Vision</h3>
+<p>Tiba est un assistant de santé digital grand public (Focus B2C). Son objectif est de démocratiser l&#39;accès à l&#39;information médicale fiable en Afrique francophone en rendant les notices de médicaments interactives via l&#39;I.A. (RAG) et en connectant les familles aux pharmacies de garde, avec une résilience totale &quot;Offline-First&quot;.</p>
+<h3>Target Users</h3>
+<p><strong>1. L&#39;Utilisateur Final (Ex: Maman Aminata) :</strong> 35-45 ans, gère la santé de la famille. Elle n&#39;a pas le temps de naviguer dans des menus complexes. Elle veut une réponse immédiate, rassurante et fiable à une situation de stress (ex: &quot;Mon fils a de la fièvre, comment doser ce Doliprane ?&quot;).<br><strong>2. L&#39;Opérateur Tiba (Backoffice) :</strong> Gère la saisie massive de données et la mise à jour des stocks des pharmacies partenaires de manière asynchrone pour garder la base à jour.</p>
+<h3>Key Design Challenges</h3>
+<ul>
+<li><strong>Friction Zéro sur l&#39;Input :</strong> Le scan OCR de la boîte de médicament et la saisie vocale doivent être les éléments centraux de l&#39;écran d&#39;accueil, accessibles en un seul tap, sans clavier.</li>
+<li><strong>Confiance &amp; Autorité Visuelle (Safety First) :</strong> L&#39;interface de chat avec l&#39;IA ne doit pas ressembler à &quot;ChatGPT&quot; (qui peut haluciner), mais à un retour médical formel, sourcé, et qui incite toujours à consulter un médecin.</li>
+<li><strong>Dégradation Gracieuse Hors-Ligne :</strong> Créer une interface qui rassure l&#39;utilisateur quand il perd sa connexion 3G, en basculant fluidement vers l&#39;annuaire local hors-ligne (Drift DB).</li>
+</ul>
+<h3>Design Opportunities</h3>
+<ul>
+<li><strong>Interface &quot;Voice-First&quot; :</strong> S&#39;inspirer des usages locaux (très forte utilisation des vocaux WhatsApp) pour interagir avec l&#39;IA de Tiba.</li>
+<li><strong>Scan &quot;Magique&quot; :</strong> Une expérience de réalité augmentée très fluide lors du scan de la boîte de médicament pour rassurer l&#39;utilisateur sur la reconnaissance du bon produit.</li>
+<li><strong>Clarté Absolue :</strong> Un design aéré, avec des typographies très lisibles, contrastant avec les applications médicales traditionnelles souvent surchargées d&#39;informations.</li>
+</ul>
+<h2>Core User Experience</h2>
+<h3>Defining Experience</h3>
+<p>L&#39;action vitale et centrale de Tiba est l&#39;interaction de &quot;Recherche Médicale Augmentée&quot;. L&#39;utilisateur doit pouvoir, en situation d&#39;urgence ou de doute, scanner une notice ou poser une question vocale (&quot;Comment prendre ce sirop ?&quot;) et obtenir une réponse immédiate, synthétique et 100% fiable tirée des bases de données de santé officielles.</p>
+<h3>Platform Strategy</h3>
+<ul>
+<li><strong>Le B2C (Patients) :</strong> Application Mobile Native (Flutter) optimisée pour Android (système ultra-dominant en Afrique). Interface orientée &quot;Touch&quot;, Caméra et Microphone. La contrainte matérielle exige une app légère (&lt; 30Mo) et très réactive même sur les téléphones bas de gamme.</li>
+<li><strong>Le B2B (Opérateurs Tiba) :</strong> Application Web (Next.js) sur Desktop/Tablette. Orientée clavier/souris pour de la saisie intensive de données médicales et la gestion rapide des statuts des pharmacies partenaires.</li>
+</ul>
+<h3>Effortless Interactions</h3>
+<ul>
+<li><strong>Le Bouton Scan/Voix :</strong> Doit être énorme, placé au centre de l&#39;écran d&#39;accueil. Aucune navigation complexe ne doit séparer l&#39;ouverture de l&#39;application du premier scan.</li>
+<li><strong>Le Mode Vocal WhatsApp-like :</strong> Utiliser le paradigme &quot;Maintenir pour parler&quot; que 100% du public cible maîtrise déjà via WhatsApp.</li>
+<li><strong>Lecture Accessible :</strong> Option de &quot;Text-to-Speech&quot; (lecture audio de la réponse de l&#39;IA) intégrée d&#39;office pour palier aux problèmes d&#39;alphabétisation ou de fatigue visuelle.</li>
+</ul>
+<h3>Critical Success Moments</h3>
+<ul>
+<li><strong>Le &quot;Moment Magique&quot; du Premier Scan :</strong> Si la reconnaissance de la boîte de médicament (OCR) est rapide et que l&#39;IA répond correctement en moins de 3.5 secondes, la confiance est gagnée à vie.</li>
+<li><strong>Le Sauvetage Hors-Ligne :</strong> Quand l&#39;utilisateur perd sa connexion 3G (très fréquent), une bannière élégante &quot;Mode Essentiel Hors-Ligne&quot; apparaît de manière fluide. Il peut toujours trouver la pharmacie de garde la plus proche grâce à la base de données locale (Drift), sans message d&#39;erreur frustrant.</li>
+</ul>
+<h3>Experience Principles</h3>
+<ol>
+<li><strong>La Sécurité avant tout :</strong> L&#39;interface ne doit jamais &quot;supposer&quot;. Si l&#39;IA n&#39;a pas la réponse exacte dans sa base certifiée, le design doit élégamment diriger l&#39;utilisateur vers une consultation médicale physique.</li>
+<li><strong>Standardisation &quot;WhatsApp&quot; :</strong> Ne pas réinventer la roue des interactions. Utiliser les codes des applications de messagerie que la cible utilise 4 heures par jour.</li>
+<li><strong>Patience Architecturée :</strong> Si le traitement IA côté serveur prend 3 secondes, l&#39;interface doit fournir un feedback visuel rassurant (&quot;<em>Analyse de la notice par l&#39;IA médicale...</em>&quot;) pour éliminer l&#39;anxiété de l&#39;attente.</li>
+</ol>
+<h2>Desired Emotional Response</h2>
+<h3>Primary Emotional Goals</h3>
+<ul>
+<li><strong>Le Soulagement et la Réassurance :</strong> L&#39;émotion principale recherchée est la baisse immédiate de l&#39;anxiété. Lorsqu&#39;un parent cherche une information sur un médicament pour son enfant, l&#39;interface doit respirer le calme, le professionnalisme et la certitude.</li>
+<li><strong>L&#39;Empowerment (Prise de Pouvoir) :</strong> L&#39;utilisateur doit se sentir intelligent et capable de prendre des décisions éclairées grâce aux réponses structurées de l&#39;IA de Tiba.</li>
+</ul>
+<h3>Emotional Journey Mapping</h3>
+<ul>
+<li><strong>Découverte (Lancement de l&#39;app) :</strong> <em>Espoir et urgence.</em> L&#39;interface doit répondre immédiatement sans temps de chargement frustrants.</li>
+<li><strong>Action Principale (Scan ou Voix) :</strong> <em>Émerveillement.</em> Le scan OCR ou la reconnaissance vocale doivent paraître &quot;magique&quot; par leur vitesse et leur fluidité.</li>
+<li><strong>Consommation de l&#39;information (Réponse de l&#39;IA) :</strong> <em>Confiance et Clarté.</em> L&#39;utilisateur obtient la réponse. L&#39;agencement du texte (bullet points lisibles) fait baisser sa pression artérielle.</li>
+<li><strong>Si l&#39;IA ne sait pas (Edge Case) :</strong> <em>Soutien et Encadrement.</em> Plutôt que la frustration d&#39;une erreur technique, l&#39;utilisateur ressent qu&#39;il est redirigé en toute sécurité vers l&#39;action de &quot;Consulter un médecin ou aller en Pharmacie&quot;.</li>
+</ul>
+<h3>Micro-Emotions</h3>
+<ul>
+<li><strong>Confiance vs Scepticisme :</strong> La confiance est gagnée par le &quot;Sourcing&quot; (montrer d&#39;où l&#39;IA tire l&#39;info : &quot;Source: Notice officielle du Doliprane&quot;).</li>
+<li><strong>Calme vs Anxiété :</strong> Le calme est apporté par l&#39;absence d&#39;éléments clignotants ou de couleurs agressives.</li>
+<li><strong>Connexion vs Isolement :</strong> Le langage naturel (voix) donne le sentiment de parler à un professionnel (le &quot;Pharmacien Digital&quot;).</li>
+</ul>
+<h3>Design Implications</h3>
+<ul>
+<li><strong>Couleurs et Visuels :</strong> Utiliser des couleurs cliniques mais chaleureuses (ex: Bleu &quot;Santé&quot;, Vert profond) et éviter le Rouge sauf pour des alertes médicales graves (ex: &quot;Contre-indication majeure&quot;).</li>
+<li><strong>Animations &quot;Don&#39;t Panic&quot; :</strong> Éviter les &quot;spinners&quot; de chargement anxieux. Préférer des &quot;Skeleton screens&quot; (squelettes de chargement) ou des animations de frappe douces (Typing effect) pour montrer que l&#39;IA réfléchit sereinement.</li>
+<li><strong>Typographie :</strong> Polices extrêmement lisibles, sans empattement (ex: Inter ou Roboto), avec un interligne généreux pour les yeux fatigués.</li>
+</ul>
+<h3>Emotional Design Principles</h3>
+<ol>
+<li><strong>L&#39;empathie structurée :</strong> L&#39;IA est polie, directe et empathique, sans jamais être familière.</li>
+<li><strong>Le filet de sécurité visuel :</strong> À tout moment, l&#39;utilisateur doit voir un bouton clair et omniprésent pour &quot;Trouver la pharmacie de garde la plus proche&quot;, lui assurant qu&#39;une solution de secours physique existe.</li>
+</ol>
+<h2>UX Pattern Analysis &amp; Inspiration</h2>
+<h3>Inspiring Products Analysis</h3>
+<ol>
+<li><strong>WhatsApp (La référence d&#39;usage en Afrique) :</strong> C&#39;est l&#39;application reine. Son succès repose sur une interface épurée, un code couleur constant (vert/blanc) et surtout, une mécanique vocale (Voice Notes) devenue une seconde nature pour des millions de personnes.</li>
+<li><strong>Yuka (La référence du Scan) :</strong> Excellente dans la satisfaction immédiate. L&#39;utilisateur scanne un code-barres et obtient en une fraction de seconde une fiche produit ultra-lisible (code couleur vert/orange/rouge, évaluation sur 100) sans aucun jargon inutile.</li>
+<li><strong>Apple Health / Google Fit (La référence Clinique) :</strong> Ces applications utilisent beaucoup d&#39;espaces blancs (whitespace), des angles très arrondis et une hiérarchie typographique forte pour rendre la donnée de santé &quot;douce&quot; et non anxiogène.</li>
+</ol>
+<h3>Transferable UX Patterns</h3>
+<ul>
+<li><strong>L&#39;Input Vocal de WhatsApp :</strong> Le composant &quot;Maintenir pour parler&quot; (Hold-to-Talk) pour poser une question médicale à l&#39;IA, avec une animation d&#39;onde sonore pour confirmer l&#39;écoute.</li>
+<li><strong>La Fiche Résumé de Yuka :</strong> Après le scan OCR d&#39;une notice, afficher une fiche de résultats &quot;Bottom Sheet&quot; (tiroir qui monte du bas) qui liste les points vitaux : Posologie, Âge minimum, Risques en un coup d&#39;œil.</li>
+<li><strong>La Hiérarchie d&#39;Apple Health :</strong> Des polices très grandes pour les informations cruciales, et des bordures douces/arrondies pour les cartes d&#39;information.</li>
+</ul>
+<h3>Anti-Patterns to Avoid</h3>
+<ul>
+<li><strong>Le &quot;Dashboard of Doom&quot; :</strong> Afficher des dizaines de statistiques ou de boutons sur l&#39;écran d&#39;accueil. Tiba doit avoir un écran d&#39;accueil mono-tâche (Le centre de la caméra ou un gros bouton microphone).</li>
+<li><strong>Le Mur d&#39;Onboarding :</strong> Obliger l&#39;utilisateur à créer un compte complexe et remplir des formulaires avant de pouvoir faire son premier scan. Tiba doit permettre une utilisation immédiate et proposer la création de compte plus tard (Lazy Registration).</li>
+<li><strong>Le Jargon Médical Brut :</strong> Afficher le texte de la notice telle quelle sans le résumer ou le simplifier (&quot;L&#39;IA doit agir comme un traducteur, pas une photocopieuse&quot;).</li>
+</ul>
+<h3>Design Inspiration Strategy</h3>
+<ul>
+<li><strong>On Adopte :</strong> La gratification instantanée du scan (Yuka) et le bouton vocal central (WhatsApp).</li>
+<li><strong>On Adapte :</strong> L&#39;UI clinique d&#39;Apple Health, mais en la réchauffant avec des choix de couleurs plus locaux et rassurants (ex: teintes d&#39;aube ou de nature).</li>
+<li><strong>On Évite absolument :</strong> Les menus hamburger profonds, les textes minuscules et l&#39;obligation de créer un compte dès la seconde 1.</li>
+</ul>
+<h2>Design System Foundation</h2>
+<h3>1.1 Design System Choice</h3>
+<p><strong>Approche Hybride &quot;Thématisée&quot; :</strong></p>
+<ul>
+<li><strong>Pour l&#39;Application Mobile (Flutter / B2C) :</strong> <em>Material Design 3 (Thème Hautement Personnalisé)</em>. Nous utiliserons le moteur Material 3 natif de Flutter, mais en écrasant massivement ses variables visuelles (Design Tokens) pour ne Surtout Pas ressembler à une &quot;application Google générique&quot;.</li>
+<li><strong>Pour le Dashboard Admin (Next.js / B2B) :</strong> <em>shadcn/ui (avec TailwindCSS)</em>. Une bibliothèque de composants extrêmement propre, accessible par défaut, et qui donne un rendu très professionnel et clinique immédiatement.</li>
+</ul>
+<h3>Rationale for Selection</h3>
+<ul>
+<li><strong>Vitesse vs Unicité :</strong> Créer des boutons graphiques de zéro prend un temps fou. En utilisant Material 3 et shadcn/ui, on hérite de 10 ans de recherche en accessibilité (gestion des clics, lecteurs d&#39;écrans, contrastes). On gagne des mois de développement.</li>
+<li><strong>Le besoin côté Patient (B2C) :</strong> Maman Aminata s&#39;en fiche que le bouton soit fait &quot;spécialement&quot; pour Tiba. Elle a besoin que le bouton soit reconnaissable et prévisible. Un thème Material 3 personnalisé avec des angles très arrondis et nos propres couleurs offre ce confort.</li>
+<li><strong>Le besoin côté Opérateur (B2B) :</strong> Les Dashboard métiers doivent être denses en données mais lisibles. <code>shadcn/ui</code> excelle pour générer des tableaux et formulaires complexes hyper qualitatifs (ex: pour scanner 500 notices à la chaîne).</li>
+</ul>
+<h3>Implementation Approach</h3>
+<ol>
+<li><strong>Mise en place des &quot;Design Tokens&quot; centraux :</strong> Nous allons isoler 3 couleurs principales, 2 polices de caractères (ex: Inter pour la lecture, Outfit pour les titres), et une règle d&#39;arrondi des bords (Border Radius).</li>
+<li><strong>Synchronisation :</strong> Ces Tokens seront codés &quot;en dur&quot; dans le fichier <code>theme.dart</code> de Flutter et dans le fichier <code>tailwind.config.js</code> de Next.js pour garantir que la marque Tiba est identique partout.</li>
+</ol>
+<h3>Customization Strategy</h3>
+<ul>
+<li><strong>Composants Standards :</strong> Les boutons normaux, champs de texte, et menus déroulants utiliseront le comportement par défaut (personnalisé via notre thème).</li>
+<li><strong>Composants &quot;Hero&quot; (Sur mesure) :</strong> Nous coderons de zéro les éléments au centre de l&#39;expérience (ex: le scanner de notices, l&#39;interface de commande vocale WhatsApp-like, et la bulle de chat de l&#39;IA) car aucun Design System standard ne couvre ces besoins d&#39;interaction &quot;magique&quot;.</li>
+</ul>
+<h2>Defining Experience Mechanics (Deep Dive)</h2>
+<h3>L&#39;Action Signature : Le &quot;Scan &amp; Know&quot;</h3>
+<p>Le super-pouvoir de l&#39;application est de transformer instantanément un bout de papier illisible (la notice médicale physique) en un tableau d&#39;information clair, vocal et rassurant. L&#39;interaction centrale consiste à pointer la caméra sur la boîte ou la notice et obtenir une réponse certifiée.</p>
+<h3>User Mental Model</h3>
+<ul>
+<li><strong>La Douleur Actuelle :</strong> Pour lire une notice, il faut déplier un papier immense écrit en police minuscule, rempli de jargon (&quot;Posologie&quot;, &quot;Excipients à effet notoire&quot;). C&#39;est anxiogène et difficile d&#39;accès.</li>
+<li><strong>L&#39;Attente de l&#39;Utilisateur :</strong> Le geste doit être aussi naturel que scanner un QR code ou envoyer une note vocale sur WhatsApp. L&#39;utilisateur s&#39;attend à ce que l&#39;application fasse le tri et la synthèse à sa place, sans effort cognitif de sa part.</li>
+</ul>
+<h3>Success Criteria</h3>
+<p>L&#39;expérience centrale est valide UNIQUEMENT si :</p>
+<ol>
+<li><strong>Time-to-Value :</strong> Moins de 5 secondes entre l&#39;ouverture de l&#39;application et l&#39;affichage du résumé du médicament.</li>
+<li><strong>&quot;Zero-Click Capture&quot; :</strong> L&#39;appareil photo (OCR) détecte et capture automatiquement la boîte quand elle est cadrée, sans avoir à chercher le bouton.</li>
+<li><strong>Hiérarchie Vitale :</strong> Le résultat affiche immédiatement et en évidence la <em>Posologie</em>, les <em>Contre-indications</em> et l&#39;<em>Âge limite</em>.</li>
+</ol>
+<h3>Novel UX Patterns</h3>
+<p>Nous ne réinventons pas un paradigme de zéro, mais nous combinons deux modèles familiers dans un domaine critique :</p>
+<ul>
+<li>Le scan instantané type &quot;Yuka&quot; ou &quot;Google Lens&quot;.</li>
+<li>La réponse générative (type ChatGPT), mais &quot;bridée&quot; dans une interface extrêmement structurée (non conversationnelle libre) pour imposer l&#39;autorité et le sérieux médical (RAG Strict).</li>
+</ul>
+<h3>Experience Mechanics</h3>
+<p><strong>La Boucle &quot;Scan &amp; Know&quot; pas-à-pas :</strong></p>
+<ol>
+<li><strong>Initiation :</strong> À l&#39;ouverture de l&#39;app, l&#39;écran principal est dominé par l&#39;objectif de la caméra (ou un très gros bouton central). L&#39;utilisateur pointe son téléphone.</li>
+<li><strong>Interaction :</strong> Une zone de focus animée (Type &quot;Scanner AR&quot;) guide l&#39;utilisateur pour cadrer le nom du médicament. L&#39;application gère l&#39;autofocus et la capture s&#39;il est net. Un bouton microphone (Hold-to-talk) reste accessible en permanence.</li>
+<li><strong>Feedback :</strong> Une petite vibration haptique confirme la capture. L&#39;écran affiche un &quot;Skeleton Loading&quot; (squelette gris) avec une phrase rassurante : <em>&quot;Recherche dans la base de données médicale officielle...&quot;</em></li>
+<li><strong>Completion :</strong> Un &quot;Bottom Sheet&quot; glisse vers le haut avec le nom du médicament reconnu, validé par une icône bouclier vert, et 3 puces claires : À quoi ça sert / Comment le prendre / Dangers. Un bouton &quot;Écouter&quot; (Text-to-speech) s&#39;anime doucement.</li>
+</ol>
+<h2>Visual Design Foundation</h2>
+<h3>Color System</h3>
+<p>L&#39;objectif est d&#39;éviter le &quot;Blanc Hôpital&quot; stérile et anxiogène, tout en gardant une autorité clinique.</p>
+<ul>
+<li><strong>Primary (Brand &amp; Action) : Vert Santé (#0B8E71).</strong> Un vert profond qui inspire la croissance, la validation (Check) et rappelle la croix des pharmacies.</li>
+<li><strong>Background (Surface B2C) : Sable Chaud (#F5F0E6).</strong> Un fond légèrement teinté, beaucoup plus doux pour les yeux que le blanc pur, donnant un aspect &quot;organique&quot; et local.</li>
+<li><strong>Alert (Danger) : Rouge Corail (#E85D75).</strong> Utilisé pour les contre-indications majeures. Moins agressif qu&#39;un rouge pur, mais suffisamment contrasté pour alerter.</li>
+<li><strong>Text (Lecture) : Charbon Profond (#1A1A1A).</strong> Plus lisible et moins fatigant que le noir absolu (#000000).</li>
+</ul>
+<h3>Typography System</h3>
+<p>La hiérarchie doit séparer la donnée médicale complexe du reste de l&#39;interface.</p>
+<ul>
+<li><strong>Titres &amp; Chiffres Clés (Hero) : <em>Outfit</em>.</strong> Une police sans-serif géométrique, moderne et chaleureuse. Parfaite pour afficher un &quot;3 Gouttes&quot; géant.</li>
+<li><strong>Corps de texte &amp; Notices : <em>Inter</em>.</strong> La reine de la lisibilité sur écran. Optimisée pour être lue même sur les très petits écrans des smartphones d&#39;entrée de gamme.</li>
+</ul>
+<h3>Spacing &amp; Layout Foundation</h3>
+<ul>
+<li><strong>Espace Vital (Whitespace) :</strong> Nous utilisons un système de grille de 8px avec des marges <em>massives</em> (ex: 24px ou 32px entre chaque bloc de données). Le vide visuel aide à combattre la surcharge cognitive face au jargon médical.</li>
+<li><strong>La Règle du &quot;Soft Edge&quot; :</strong> Aucun angle droit dans l&#39;application B2C. Toutes les cartes, boutons et images ont un &quot;Border Radius&quot; généreux (16px à 24px). Les formes rondes (pill-shaped) sont perçues psychologiquement comme inoffensives et sûres.</li>
+</ul>
+<h3>Accessibility Considerations</h3>
+<ul>
+<li><strong>Fatigue Visuelle &amp; Contraste :</strong> Respect strict de la norme WCAG AA (Ratio 4.5:1 minimum) pour être lisible en plein soleil dans la rue (quand on cherche une pharmacie de garde).</li>
+<li><strong>&quot;Fat Finger&quot; Targets :</strong> Toutes les zones interactives (bouton vocal, scan) ont une taille minimale absolue de 48x48px pour éviter les erreurs de clic en situation de stress.</li>
+</ul>
+<h2>Design Direction Decision</h2>
+<h3>Design Directions Explored</h3>
+<p>Nous avons exploré 6 approches visuelles distinctes pour l&#39;interface patient (B2C) :</p>
+<ol>
+<li>&quot;Organic Warmth&quot; (Chaleureux, rassurant, vert santé et fond sable).</li>
+<li>&quot;Clinical Clean&quot; (Blanc clinique, bleu électrique, de type Apple Health).</li>
+<li>&quot;Native Familiarity&quot; (Esthétique WhatsApp hyper-familière).</li>
+<li>&quot;High Contrast / Dark&quot; (Mode sombre par défaut pour lecture de nuit).</li>
+<li>&quot;Authority &amp; Trust&quot; (Bleu marine, institutionnel).</li>
+<li>&quot;Playful Gamified&quot; (Ludique, dédramatisé, formes 3D).</li>
+</ol>
+<h3>Chosen Direction</h3>
+<p><strong>Direction 1 : &quot;Organic Warmth&quot;</strong> a été validée.</p>
+<h3>Design Rationale</h3>
+<p>Cette direction offre le parfait équilibre entre le sérieux médical indispensable (le Vert Santé #0B8E71 comme validateur certifié) et la douceur nécessaire en situation de stress (le fond Sable #F5F0E6 qui repose les yeux, les formes rebondies &quot;pill-shaped&quot;). Elle évite le côté anxiogène d&#39;un hôpital stérile (blanc pur) tout en évitant le côté gadget d&#39;une application ludique. C&#39;est un design thérapeutique adapté au public cible africain.</p>
+<h3>Implementation Approach</h3>
+<ul>
+<li><strong>Tokens Flutter :</strong> Implémentation via <code>Material 3</code> avec génération d&#39;un <code>ColorScheme</code> personnalisé basé sur les couleurs &quot;Organic Warmth&quot;.</li>
+<li><strong>Composants :</strong> Tous les <code>Card</code>, <code>FloatingActionButton</code>, et <code>Dialog</code> auront un <code>borderRadius</code> forcé à 24px (Soft Edges).</li>
+<li><strong>Micro-animations :</strong> Les retours haptiques et animations d&#39;expansion (Bottom Sheets) devront paraître fluides et souples (courbes de bézier personnalisées).</li>
+</ul>
+<h2>User Journey Flows</h2>
+<h3>1. Journey : Le &quot;Scan &amp; Know&quot; (Urgence B2C)</h3>
+<p>Ce parcours est celui de Maman Aminata. Le but est d&#39;obtenir une posologie claire en moins de 5 secondes avec le moins d&#39;interactions possibles sur l&#39;écran.</p>
+<pre><code class="language-mermaid">graph TD
+    A[Ouverture App] --&gt; B{Connexion OK ?}
+    B -- Oui --&gt; C[Écran Accueil Camera/Voix]
+    C --&gt; D[Scan OCR de la boîte]
+    D --&gt; E{Reconnaissance nette ?}
+    E -- Non --&gt; F[Feedback: &#39;Rapprochez-vous&#39;] --&gt; D
+    E -- Oui --&gt; G[Animation &#39;Recherche IA...&#39;]
+    G --&gt; H[Bottom Sheet Résumé: Posologie/Dangers]
+    H --&gt; I{Doute persistant ?}
+    I -- Oui --&gt; J[Bouton &#39;Trouver Pharmacie de garde&#39;]
+</code></pre>
+<h3>2. Journey : Le Mode Dégradé Hors-Ligne (Résilience)</h3>
+<p>Parcours destiné aux zones blanches ou aux professionnels (Dr. Diallo) qui n&#39;ont plus de réseau cellulaire.</p>
+<pre><code class="language-mermaid">graph TD
+    A[Ouverture App] --&gt; B{Connexion OK ?}
+    B -- Non --&gt; C[Bannière &#39;Mode Essentiel Hors-Ligne&#39;]
+    C --&gt; D[Recherche Texte/Clavier Base Locale]
+    D --&gt; E{Médicament dans la base locale ?}
+    E -- Oui --&gt; F[Affichage Résumé Essentiel]
+    F --&gt; G[Warning &#39;Infos datant de X jours&#39;]
+    E -- Non --&gt; H[Proposition : &#39;Chercher au retour réseau&#39;]
+</code></pre>
+<h3>3. Journey : Mise à jour des Gardes (Opérateur B2B)</h3>
+<p>Parcours pour l&#39;opérateur Tiba sur son ordinateur (Next.js) qui doit rapidement mettre à jour le statut des pharmacies.</p>
+<pre><code class="language-mermaid">graph TD
+    A[Login Dashboard] --&gt; B[Vue Carte / Liste Pharmacies]
+    B --&gt; C[Filtre &#39;Zone Géographique&#39;]
+    C --&gt; D[Sélection Pharmacie X]
+    D --&gt; E[Toggle &#39;En Garde Actuellement&#39;]
+    E --&gt; F[Validation]
+    F --&gt; G[Synchro Background avec App Mobile]
+</code></pre>
+<h3>Journey Patterns</h3>
+<ul>
+<li><strong>Le Fallback &quot;Pharmacie&quot; :</strong> Chaque résultat de médicament (Online ou Offline) possède un CTA (Call-to-Action) universel à la fin : &quot;Trouver ce produit / Contacter une pharmacie&quot;.</li>
+<li><strong>Le Skeleton Loading Rassurant :</strong> À chaque appel réseau (RAG IA), on affiche l&#39;architecture de la réponse vide animée en gris, plutôt qu&#39;une roue qui tourne à l&#39;infini.</li>
+</ul>
+<h3>Flow Optimization Principles</h3>
+<ul>
+<li><strong>0 Clics avant action :</strong> L&#39;appareil photo est le fond de l&#39;écran d&#39;accueil. On évite le parcours &quot;Ouvrir l&#39;app -&gt; Menu -&gt; Scanner un produit -&gt; Autoriser caméra&quot;.</li>
+<li><strong>Dégradation Gracieuse de l&#39;Input :</strong> Si le Scan OCR échoue 2 fois de suite, l&#39;application propose automatiquement massivement le &quot;Mode Vocal&quot; au lieu de faire planter le flux.</li>
+</ul>
+<h2>Component Strategy</h2>
+<h3>Design System Components (Fondations)</h3>
+<ul>
+<li><strong>App Patient (Flutter / B2C) :</strong> Utilisation native des composants Material 3 (<code>Card</code>, <code>BottomSheet</code>, <code>TextField</code>) mais <strong>surchargés</strong> avec nos Design Tokens (Border-radius à 24px, fond Sable, Vert Santé).</li>
+<li><strong>Dashboard Opérateur (Next.js / B2B) :</strong> Utilisation stricte de <em>shadcn/ui</em> (<code>DataTable</code>, <code>Form</code>, <code>Toggle</code>) pour un développement rapide et extrêmement robuste.</li>
+</ul>
+<h3>Custom Components (À développer sur mesure)</h3>
+<p><strong>1. The &quot;Hero Scan&quot; Viewfinder (Composant AR Caméra)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Guider l&#39;utilisateur pour cadrer la boîte de médicament. </li>
+<li><strong>States:</strong> <code>Searching</code> (Coins blancs clignotants), <code>Focused</code> (Coins verts avec retour haptique), <code>Processing</code> (Squelette de chargement gris).</li>
+<li><strong>Rationale:</strong> Aucun design system standard n&#39;a de composant de réalité augmentée prêt à l&#39;emploi. C&#39;est le cœur de notre application.</li>
+</ul>
+<p><strong>2. The &quot;Voice Assistant&quot; Orb (Le Bouton Vocal WhatsApp-like)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Permettre la question vocale (&quot;Comment donner ce sirop ?&quot;) en un geste.</li>
+<li><strong>Interaction:</strong> &quot;Hold-to-Talk&quot; (Maintenir pour parler).</li>
+<li><strong>States:</strong> <code>Idle</code> (Gros bouton rond), <code>Recording</code> (Onde sonore dynamique rouge/verte selon la voix), <code>Transcribing</code> (Animation de chargement douce).</li>
+</ul>
+<p><strong>3. The &quot;Medical Result Pill&quot; (Fiche Résumé Sécurisée)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Afficher le résultat de l&#39;IA de manière non-anxiogène.</li>
+<li><strong>Anatomy:</strong> <ul>
+<li>Header: Nom du produit + &quot;Bouclier Vert&quot; de vérification.</li>
+<li>Body: 3 sections fixes (Posologie, Dangers, Âge).</li>
+<li>Footer: Bouton &quot;Play&quot; (Texte-to-speech) et &quot;Aller en Pharmacie&quot;.</li>
+</ul>
+</li>
+<li><strong>Rationale:</strong> Une simple &quot;Card&quot; Material n&#39;est pas assez structurée pour la donnée médicale. Ce composant doit inspirer une confiance absolue.</li>
+</ul>
+<h3>Component Implementation Strategy</h3>
+<ul>
+<li><strong>Isolation :</strong> Tous les composants personnalisés (ex: <code>HeroScanViewfinder.dart</code>) seront placés dans un dossier <code>presentation/widgets/custom</code> et ne dépendront que du thème central.</li>
+<li><strong>Accessibilité forcée :</strong> Le composant <code>Voice Assistant Orb</code> sera toujours au moins à 64x64px (très gros &quot;Fat Finger target&quot;). Le <code>Result Pill</code> lira son contenu via lecteur d&#39;écran (Screen Reader) nativement.</li>
+</ul>
+<h3>Implementation Roadmap</h3>
+<p><strong>Phase 1 (Le Cœur MVP) :</strong> Développer le <code>Hero Scan Viewfinder</code> et le <code>Result Pill</code> (indispensables pour lire une notice).<br><strong>Phase 2 (L&#39;Accessibilité B2C) :</strong> Ajouter le <code>Voice Assistant Orb</code> pour les requêtes vocales (très important pour le public cible).<br><strong>Phase 3 (Le B2B) :</strong> Déployer les DataTable shadcn pour que les opérateurs mettent à jour les pharmacies.</p>
+<h2>UX Consistency Patterns</h2>
+<h3>Button Hierarchy</h3>
+<p>La règle de l&#39;action unique : l&#39;utilisateur de l&#39;application mobile (B2C) ne doit jamais avoir plus d&#39;un bouton principal par écran.</p>
+<ul>
+<li><strong>Primary Actions (Hero) :</strong> Toujours de couleur &quot;Vert Santé&quot; (#0B8E71), complètement opaques, massifs (min. hauteur 56px), avec un texte en majuscules ou une icône grasse.</li>
+<li><strong>Secondary Actions :</strong> Boutons contour (Outlined) ou Boutons Fantômes (Ghost - juste du texte clickable de couleur sombre). Utilisés pour les actions comme &quot;Annuler&quot; ou &quot;Histoire&quot;.</li>
+<li><strong>Destructive Actions :</strong> Text rouge corail (#E85D75), avec toujours une confirmation de type &quot;BottomSheet&quot; pour prévenir les erreurs.</li>
+</ul>
+<h3>Feedback Patterns</h3>
+<p>Dans un contexte de santé infantile, le feedback doit être immédiat et rassurant.</p>
+<ul>
+<li><strong>Success :</strong> Retour &quot;Haptic&quot; (vibration douce du téléphone) systématique lors d&#39;un scan réussi + apparition du &quot;Bouclier Vert&quot;.</li>
+<li><strong>Loading (Patience Architecturée) :</strong> Bannissement total des &quot;Spinnners&quot; (Roue qui tourne) qui génèrent de l&#39;anxiété. Remplacement systématique par un <strong>Skeleton Loader</strong> (un bloc gris clair qui s&#39;anime comme une vague) indiquant la structure de la réponse IA imminente.</li>
+<li><strong>Error (Non bloquante) :</strong> Jamais de &quot;Pop-up&quot; agressive au milieu de l&#39;écran qui bloque l&#39;action (&quot;Erreur 404&quot;). Utilisation de <strong>Toasts</strong> (petites notifications éphémères en bas de l&#39;écran) qui disparaissent seules après 3 sec (Ex: <em>&quot;Impossible de lire la boîte, rapprochez-vous&quot;</em>).</li>
+</ul>
+<h3>Modal &amp; Overlay Patterns</h3>
+<ul>
+<li><strong>Le paradigme du &quot;Tiroir interactif&quot; (Bottom Sheets) :</strong> 90% des réponses médicales ou formulaires complexes n&#39;ouvrent pas une nouvelle page complète. Ils glissent depuis le bas de l&#39;écran (Bottom Sheet).</li>
+<li><strong>Pourquoi ?</strong> Cela permet de garder le contexte visuel (l&#39;utilisateur voit toujours l&#39;appareil photo ou la carte en arrière-plan) et de fermer la fenêtre en faisant simplement glisser son doigt vers le bas (Swipe-to-dismiss), un geste devenu naturel.</li>
+</ul>
+<h3>Navigation Patterns</h3>
+<ul>
+<li><strong>Bottom Navigation Bar :</strong> La navigation se fait par le bas, à portée de pouce (Reachability). Uniquement 3 onglets (L&#39;essentiel) :<ol>
+<li>Scanner / Voix (L&#39;accueil par défaut)</li>
+<li>Historique (Pour retrouver une posologie consultée hier)</li>
+<li>Secours / Pharmacies (L&#39;annuaire d&#39;urgence)</li>
+</ol>
+</li>
+<li><strong>Pas de Menu Hamburger :</strong> Les utilisateurs non-experts &quot;oublient&quot; ce qui est caché derrière les 3 petites lignes en haut à gauche. L&#39;information critique doit être visible.</li>
+</ul>
+<h2>Responsive Design &amp; Accessibility</h2>
+<h3>Responsive Strategy</h3>
+<p>Tiba a deux plateformes distinctes, donc deux stratégies :</p>
+<ul>
+<li><strong>App B2C (Flutter) :</strong> <em>Mobile-Strict (Portrait Only)</em>. Pour l&#39;expérience patient, nous bloquons l&#39;application en mode Portrait. Devoir tourner son téléphone pour scanner une notice ou lire un résultat crée de la friction. L&#39;interface s&#39;étire fluidement pour couvrir les très petits écrans (ex: Itel, Tecno) jusqu&#39;aux grands smartphones (iPhone Max).</li>
+<li><strong>Dashboard B2B (Next.js) :</strong> <em>Desktop-First</em>. Les opérateurs saisissent de la donnée sur ordinateur ou tablette. L&#39;interface utilise toute la largeur de l&#39;écran pour afficher des tableaux de données (DataTables) complexes.</li>
+</ul>
+<h3>Breakpoint Strategy</h3>
+<ul>
+<li><strong>Mobile (B2C) :</strong> Le design doit être parfait dès <strong>320px</strong> de large (les très vieux smartphones encore en circulation).</li>
+<li><strong>Desktop (B2B) :</strong> Breakpoints classiques Tailwind (<code>md: 768px</code> pour tablette, <code>lg: 1024px</code> pour les ordinateurs portables, <code>xl: 1280px</code> pour les grands écrans).</li>
+</ul>
+<h3>Accessibility Strategy</h3>
+<p>Nous visons le standard <strong>WCAG 2.1 niveau AA</strong> avec des adaptations spécifiques au marché cible :</p>
+<ul>
+<li><strong>Text-To-Speech (Lecture Audio) natif :</strong> L&#39;illettrisme ou la fatigue visuelle ne doivent pas empêcher la compréhension. Chaque posologie générée par l&#39;IA possède un bouton &quot;Écouter&quot; très visible.</li>
+<li><strong>Micro-Contrastes :</strong> Aucun texte gris clair sur fond blanc. Le texte médical critique est toujours &quot;Charbon&quot; (#1A1A1A) sur fond clair (Ratio supérieur à 4.5:1).</li>
+<li><strong>Fat-Finger Targets :</strong> La surface de frappe minimale pour <em>n&#39;importe quel</em> bouton est de <strong>48x48px</strong>. Un parent stressé tremblant légèrement doit pouvoir appuyer sur le bon bouton.</li>
+<li><strong>Réglages Système :</strong> L&#39;application doit obligatoirement respecter l&#39;agrandissement de police (Dynamic Type) réglé par l&#39;utilisateur dans les paramètres de son téléphone Android.</li>
+</ul>
+<h3>Testing Strategy</h3>
+<ul>
+<li><strong>QA Matériel :</strong> Tests obligatoires sur des appareils d&#39;entrée de gamme Android (RAM &lt; 2Go, écrans basse résolution) très représentatifs du marché africain.</li>
+<li><strong>Simulation de Stress Humain :</strong> Vérifier que les boutons d&#39;urgence restent utilisables d&#39;une seule main, avec le pouce, dans la partie inférieure de l&#39;écran (Thumb Zone).</li>
+</ul>
+<h3>Implementation Guidelines</h3>
+<ul>
+<li><strong>Flutter (B2C) :</strong> Envelopper chaque composant Custom (ex: Le Result Pill) avec le widget <code>Semantics</code> pour que <code>TalkBack</code> (Android) puisse lire l&#39;écran aux malvoyants. Ne pas &quot;hardcoder&quot; les tailles de police, mais utiliser <code>Theme.of(context).textTheme</code> en mode responsive.</li>
+<li><strong>Next.js (B2B) :</strong> S&#39;assurer que tous les formulaires <code>shadcn/ui</code> peuvent être navigués uniquement au clavier (Touche &quot;Tab&quot;) pour accélérer la saisie des opérateurs.</li>
+</ul>
+
+        </div>
+        <div class="prev-next"><a href="prd.html" class="prev-next-btn prev" aria-label="Page precedente: Product Requirements (PRD)"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Product Requirements (PRD)</span></a><a href="architecture.html" class="prev-next-btn next" aria-label="Page suivante: Architecture Technique"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Architecture Technique</span></a></div>
+      </article>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const btn = document.getElementById('hamburger-btn');
+      const isOpen = sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen);
+      if (isOpen) sidebar.querySelector('.nav-link').focus();
+    }
+    // Close sidebar on nav click (mobile only)
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 900) toggleSidebar();
+      });
+    });
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar.classList.contains('open')) toggleSidebar();
+      }
+    });
+  </script>
+</body>
+</html>

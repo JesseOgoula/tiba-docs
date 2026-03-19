@@ -1,0 +1,216 @@
+<div class="db-page">
+
+<h1>Architecture de la Base de Données</h1>
+<p style="font-size:1.05rem; color:#555; margin-bottom:32px;">PostgreSQL (Supabase) — 14 tables, 5 extensions, RLS activé sur toutes les tables.</p>
+
+<!-- ═══ DIAGRAMME RELATIONNEL VISUEL ═══ -->
+<h2>Diagramme Relationnel (ER)</h2>
+
+<div style="background:#fff; border:1px solid #e0ddd5; border-radius:16px; padding:32px; overflow-x:auto; margin:16px 0 32px;">
+<svg viewBox="0 0 900 620" style="width:100%; max-width:900px; margin:0 auto; display:block;" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+  <!-- Connections -->
+  <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0B8E71" opacity="0.6"/></marker></defs>
+
+  <!-- User → Scan/Payment/Report -->
+  <line x1="120" y1="100" x2="120" y2="230" stroke="#0B8E71" stroke-width="2" opacity="0.4" marker-end="url(#arrow)"/>
+  <line x1="120" y1="100" x2="300" y2="230" stroke="#0B8E71" stroke-width="2" opacity="0.4" marker-end="url(#arrow)"/>
+  <line x1="120" y1="100" x2="480" y2="230" stroke="#E85D75" stroke-width="2" opacity="0.4" marker-end="url(#arrow)"/>
+
+  <!-- Medication → Photo/Chunk/Stock -->
+  <line x1="480" y1="80" x2="480" y2="230" stroke="#0B8E71" stroke-width="2" opacity="0.4" marker-end="url(#arrow)"/>
+  <line x1="480" y1="80" x2="660" y2="230" stroke="#0B8E71" stroke-width="2" opacity="0.4" marker-end="url(#arrow)"/>
+  <line x1="480" y1="80" x2="300" y2="230" stroke="#0B8E71" stroke-width="2" opacity="0.4" marker-end="url(#arrow)"/>
+
+  <!-- Pharmacy → Schedule/Stock -->
+  <line x1="770" y1="80" x2="770" y2="230" stroke="#0B8E71" stroke-width="2" opacity="0.4" marker-end="url(#arrow)"/>
+  <line x1="770" y1="80" x2="660" y2="230" stroke="#0B8E71" stroke-width="2" opacity="0.4" marker-end="url(#arrow)"/>
+
+  <!-- Admin → Medication/Report -->
+  <line x1="300" y1="420" x2="480" y2="80" stroke="#666" stroke-width="1.5" opacity="0.3" stroke-dasharray="6,4"/>
+  <line x1="300" y1="420" x2="480" y2="310" stroke="#666" stroke-width="1.5" opacity="0.3" stroke-dasharray="6,4"/>
+
+  <!-- Bottom row connections -->
+  <line x1="120" y1="310" x2="120" y2="420" stroke="#E85D75" stroke-width="2" opacity="0.4" marker-end="url(#arrow)"/>
+  <line x1="480" y1="310" x2="480" y2="420" stroke="#666" stroke-width="1.5" opacity="0.3" stroke-dasharray="6,4"/>
+
+  <!-- ═══ TABLE NODES ═══ -->
+
+  <!-- Row 1: Core Entities -->
+  <g transform="translate(40,40)">
+    <rect width="160" height="60" rx="10" fill="#0B8E71" stroke="#088a6d" stroke-width="1.5"/>
+    <text x="80" y="25" text-anchor="middle" fill="#fff" font-weight="700" font-size="13">user_profile</text>
+    <text x="80" y="42" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10">Auth B2C · 12 cols</text>
+  </g>
+  <g transform="translate(400,40)">
+    <rect width="160" height="60" rx="10" fill="#0B8E71" stroke="#088a6d" stroke-width="1.5"/>
+    <text x="80" y="25" text-anchor="middle" fill="#fff" font-weight="700" font-size="13">medication</text>
+    <text x="80" y="42" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10">Notices · 11 cols</text>
+  </g>
+  <g transform="translate(690,40)">
+    <rect width="160" height="60" rx="10" fill="#0B8E71" stroke="#088a6d" stroke-width="1.5"/>
+    <text x="80" y="25" text-anchor="middle" fill="#fff" font-weight="700" font-size="13">pharmacy</text>
+    <text x="80" y="42" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10">PostGIS · 10 cols</text>
+  </g>
+
+  <!-- Row 2: Child Entities -->
+  <g transform="translate(40,230)">
+    <rect width="160" height="55" rx="10" fill="#fff" stroke="#0B8E71" stroke-width="2"/>
+    <text x="80" y="24" text-anchor="middle" fill="#1A1A1A" font-weight="600" font-size="12">scan_history</text>
+    <text x="80" y="40" text-anchor="middle" fill="#888" font-size="10">→ user · medication</text>
+  </g>
+  <g transform="translate(220,230)">
+    <rect width="160" height="55" rx="10" fill="#fff" stroke="#0B8E71" stroke-width="2"/>
+    <text x="80" y="24" text-anchor="middle" fill="#1A1A1A" font-weight="600" font-size="12">notice_chunk</text>
+    <text x="80" y="40" text-anchor="middle" fill="#888" font-size="10">pgvector · 1536 dims</text>
+  </g>
+  <g transform="translate(400,230)">
+    <rect width="160" height="55" rx="10" fill="#fff" stroke="#E85D75" stroke-width="2"/>
+    <text x="80" y="24" text-anchor="middle" fill="#1A1A1A" font-weight="600" font-size="12">ai_audit_log</text>
+    <text x="80" y="40" text-anchor="middle" fill="#E85D75" font-size="10">INSERT ONLY · Immuable</text>
+  </g>
+  <g transform="translate(580,230)">
+    <rect width="160" height="55" rx="10" fill="#fff" stroke="#0B8E71" stroke-width="2"/>
+    <text x="80" y="24" text-anchor="middle" fill="#1A1A1A" font-weight="600" font-size="12">pharmacy_stock</text>
+    <text x="80" y="40" text-anchor="middle" fill="#888" font-size="10">→ pharmacy · medication</text>
+  </g>
+  <g transform="translate(690,230)">
+    <rect width="160" height="55" rx="10" fill="#fff" stroke="#0B8E71" stroke-width="2"/>
+    <text x="80" y="24" text-anchor="middle" fill="#1A1A1A" font-weight="600" font-size="12">pharmacy_schedule</text>
+    <text x="80" y="40" text-anchor="middle" fill="#888" font-size="10">Gardes · Dates</text>
+  </g>
+
+  <!-- Row 3: Supporting tables -->
+  <g transform="translate(40,400)">
+    <rect width="160" height="55" rx="10" fill="#fff" stroke="#E85D75" stroke-width="2"/>
+    <text x="80" y="24" text-anchor="middle" fill="#1A1A1A" font-weight="600" font-size="12">payment</text>
+    <text x="80" y="40" text-anchor="middle" fill="#E85D75" font-size="10">Mobile Money · XAF</text>
+  </g>
+  <g transform="translate(220,400)">
+    <rect width="160" height="55" rx="10" fill="#fff" stroke="#666" stroke-width="1.5"/>
+    <text x="80" y="24" text-anchor="middle" fill="#1A1A1A" font-weight="600" font-size="12">admin_user</text>
+    <text x="80" y="40" text-anchor="middle" fill="#888" font-size="10">Dashboard B2B</text>
+  </g>
+  <g transform="translate(400,400)">
+    <rect width="160" height="55" rx="10" fill="#fff" stroke="#666" stroke-width="1.5"/>
+    <text x="80" y="24" text-anchor="middle" fill="#1A1A1A" font-weight="600" font-size="12">user_report</text>
+    <text x="80" y="40" text-anchor="middle" fill="#888" font-size="10">Signalements</text>
+  </g>
+  <g transform="translate(580,400)">
+    <rect width="160" height="55" rx="10" fill="#fff" stroke="#666" stroke-width="1.5"/>
+    <text x="80" y="24" text-anchor="middle" fill="#1A1A1A" font-weight="600" font-size="12">medication_photo</text>
+    <text x="80" y="40" text-anchor="middle" fill="#888" font-size="10">Storage · Thumbnails</text>
+  </g>
+
+  <!-- Row 4: Analytics -->
+  <g transform="translate(40,540)">
+    <rect width="200" height="55" rx="10" fill="#1A1A1A" stroke="#333" stroke-width="1.5"/>
+    <text x="100" y="24" text-anchor="middle" fill="#fff" font-weight="600" font-size="12">anonymous_scan_event</text>
+    <text x="100" y="40" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10">B2B · Anonymisé</text>
+  </g>
+  <g transform="translate(280,540)">
+    <rect width="210" height="55" rx="10" fill="#1A1A1A" stroke="#333" stroke-width="1.5"/>
+    <text x="105" y="24" text-anchor="middle" fill="#fff" font-weight="600" font-size="12">aggregated_scan_metric</text>
+    <text x="105" y="40" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10">Zone · Période · Compteurs</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(600,530)">
+    <text x="0" y="14" fill="#888" font-size="11" font-weight="600">Légende</text>
+    <rect x="0" y="24" width="14" height="14" rx="3" fill="#0B8E71"/><text x="20" y="36" fill="#555" font-size="10">Table principale</text>
+    <rect x="0" y="44" width="14" height="14" rx="3" fill="#fff" stroke="#E85D75" stroke-width="2"/><text x="20" y="56" fill="#555" font-size="10">Table sensible</text>
+    <rect x="0" y="64" width="14" height="14" rx="3" fill="#1A1A1A"/><text x="20" y="76" fill="#555" font-size="10">Analytics B2B</text>
+    <line x1="140" y1="31" x2="180" y2="31" stroke="#0B8E71" stroke-width="2" marker-end="url(#arrow)"/><text x="186" y="36" fill="#555" font-size="10">Relation FK</text>
+    <line x1="140" y1="51" x2="180" y2="51" stroke="#666" stroke-width="1.5" stroke-dasharray="6,4"/><text x="186" y="56" fill="#555" font-size="10">Relation Admin</text>
+  </g>
+</svg>
+</div>
+
+<!-- ═══ EXTENSIONS PostgreSQL ═══ -->
+<h2>Extensions PostgreSQL</h2>
+
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px; margin:16px 0 32px;">
+  <div style="background:#E8F5F1; border-left:4px solid #0B8E71; border-radius:0 10px 10px 0; padding:16px;">
+    <strong>pgvector</strong>
+    <p style="font-size:0.85rem; color:#555; margin:4px 0 0;">Embeddings vectoriels 1536 dims pour le RAG Strict (notice_chunk)</p>
+  </div>
+  <div style="background:#E8F5F1; border-left:4px solid #0B8E71; border-radius:0 10px 10px 0; padding:16px;">
+    <strong>PostGIS</strong>
+    <p style="font-size:0.85rem; color:#555; margin:4px 0 0;">Géolocalisation des pharmacies (POINT, SRID 4326)</p>
+  </div>
+  <div style="background:#E8F5F1; border-left:4px solid #0B8E71; border-radius:0 10px 10px 0; padding:16px;">
+    <strong>uuid-ossp</strong>
+    <p style="font-size:0.85rem; color:#555; margin:4px 0 0;">Génération automatique de UUID v4 comme clé primaire</p>
+  </div>
+  <div style="background:#E8F5F1; border-left:4px solid #0B8E71; border-radius:0 10px 10px 0; padding:16px;">
+    <strong>pgcrypto</strong>
+    <p style="font-size:0.85rem; color:#555; margin:4px 0 0;">Hash SHA-256 pour l'anonymisation irréversible des données B2B</p>
+  </div>
+  <div style="background:#E8F5F1; border-left:4px solid #0B8E71; border-radius:0 10px 10px 0; padding:16px;">
+    <strong>pg_trgm</strong>
+    <p style="font-size:0.85rem; color:#555; margin:4px 0 0;">Recherche floue trigram sur les noms de médicaments</p>
+  </div>
+</div>
+
+<!-- ═══ DÉTAIL DES TABLES ═══ -->
+<h2>Detail des 14 tables</h2>
+
+<table>
+  <thead><tr><th>#</th><th>Table</th><th>Epic</th><th>Colonnes</th><th>Rôle</th><th>Particularité</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><strong>user_profile</strong></td><td>E1</td><td>12</td><td>Profil utilisateur B2C</td><td>Quota scan/mois, plan freemium/premium</td></tr>
+    <tr><td>2</td><td><strong>admin_user</strong></td><td>E4</td><td>7</td><td>Opérateur dashboard</td><td>Rôles: operator, analytics, super_admin</td></tr>
+    <tr><td>3</td><td><strong>medication</strong></td><td>E1</td><td>11</td><td>Fiche médicament</td><td>Index trigram sur le nom, versioning</td></tr>
+    <tr><td>4</td><td><strong>medication_photo</strong></td><td>E4</td><td>6</td><td>Photos boîtes</td><td>Lié à Supabase Storage</td></tr>
+    <tr><td>5</td><td><strong>notice_chunk</strong></td><td>E2</td><td>6</td><td>Chunks RAG vectorisés</td><td>pgvector(1536), temp 0.0</td></tr>
+    <tr><td>6</td><td><strong>pharmacy</strong></td><td>E3</td><td>10</td><td>Pharmacie partenaire</td><td>PostGIS geography(POINT, 4326)</td></tr>
+    <tr><td>7</td><td><strong>pharmacy_schedule</strong></td><td>E3</td><td>6</td><td>Calendrier de garde</td><td>Contrainte unique (pharmacy, date)</td></tr>
+    <tr><td>8</td><td><strong>pharmacy_stock</strong></td><td>E3</td><td>5</td><td>Disponibilité stock</td><td>Contrainte unique (pharmacy, medication)</td></tr>
+    <tr><td>9</td><td><strong>ai_audit_log</strong></td><td>E2</td><td>10</td><td>Journal IA immuable</td><td>INSERT ONLY — Rétention 24 mois</td></tr>
+    <tr><td>10</td><td><strong>user_report</strong></td><td>E2</td><td>8</td><td>Signalements IA</td><td>Status: pending → reviewed → resolved</td></tr>
+    <tr><td>11</td><td><strong>payment</strong></td><td>E5</td><td>12</td><td>Paiements Mobile Money</td><td>Opérateurs: Orange, Airtel, Moov (XAF)</td></tr>
+    <tr><td>12</td><td><strong>scan_history</strong></td><td>E1</td><td>5</td><td>Historique scans</td><td>Types: barcode, ocr</td></tr>
+    <tr><td>13</td><td><strong>anonymous_scan_event</strong></td><td>E6</td><td>7</td><td>Données anonymisées B2B</td><td>Hash irréversible, zone_id</td></tr>
+    <tr><td>14</td><td><strong>aggregated_scan_metric</strong></td><td>E6</td><td>8</td><td>Métriques agrégées</td><td>Périodes: day, week, month</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══ SÉCURITÉ RLS ═══ -->
+<h2>Politiques de Securite (RLS)</h2>
+
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin:16px 0 32px;">
+  <div style="background:#fff; border:1px solid #e0ddd5; border-radius:12px; padding:20px;">
+    <div style="width:32px; height:32px; background:#0B8E71; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:8px; color:#fff; font-weight:700; font-size:0.85rem;">B2C</div>
+    <strong>Utilisateur B2C</strong>
+    <ul style="font-size:0.85rem; color:#555; margin:8px 0 0; padding-left:18px;">
+      <li>Lit/modifie uniquement son profil</li>
+      <li>Accède à ses propres scans et paiements</li>
+      <li>Peut signaler une réponse IA</li>
+      <li>Lecture publique: médicaments, pharmacies</li>
+    </ul>
+  </div>
+  <div style="background:#fff; border:1px solid #e0ddd5; border-radius:12px; padding:20px;">
+    <div style="width:32px; height:32px; background:#1A1A1A; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:8px; color:#fff; font-weight:700; font-size:0.7rem;">ADM</div>
+    <strong>Administrateur</strong>
+    <ul style="font-size:0.85rem; color:#555; margin:8px 0 0; padding-left:18px;">
+      <li>CRUD complet sur les médicaments et pharmacies</li>
+      <li>Lecture des logs d'audit IA</li>
+      <li>Gestion des signalements utilisateur</li>
+      <li>Gestion des gardes et stocks</li>
+    </ul>
+  </div>
+  <div style="background:#fff; border:1px solid #e0ddd5; border-radius:12px; padding:20px;">
+    <div style="width:32px; height:32px; background:#E85D75; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:8px; color:#fff; font-weight:700; font-size:0.7rem;">B2B</div>
+    <strong>Analyste B2B</strong>
+    <ul style="font-size:0.85rem; color:#555; margin:8px 0 0; padding-left:18px;">
+      <li>Lecture des métriques agrégées uniquement</li>
+      <li>Aucun accès aux données personnelles</li>
+      <li>Rôle: analytics ou super_admin</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══ CODE SQL COMPLET ═══ -->
+<h2>Code SQL de creation</h2>
+<p style="font-size:0.9rem; color:#666; margin-bottom:16px;">Le script SQL complet utilisé pour créer les 14 tables, extensions, indexes, triggers et politiques RLS :</p>
+
+</div>

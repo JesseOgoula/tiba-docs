@@ -1,0 +1,14 @@
+# ═══════════════════════════════════════════
+# TIBA DOCS — Documentation site .gitignore
+# ═══════════════════════════════════════════
+
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/

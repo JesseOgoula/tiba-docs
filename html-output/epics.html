@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Epics et Stories – Tiba Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="responsive.css">
+  <style>
+    /* ═══════════════════════════════════════════
+       TIBA DESIGN SYSTEM TOKENS
+       ═══════════════════════════════════════════ */
+    :root {
+      --tiba-green: #0B8E71;
+      --tiba-green-light: #0FAF8C;
+      --tiba-green-bg: #E8F5F1;
+      --tiba-sand: #F5F0E6;
+      --tiba-sand-dark: #EDE6D6;
+      --tiba-coral: #E85D75;
+      --tiba-dark: #1A1A1A;
+      --tiba-dark-soft: #2D2D2D;
+      --sidebar-w: 280px;
+      --header-h: 64px;
+      --radius: 12px;
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--tiba-sand); }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--tiba-sand);
+      color: var(--tiba-dark);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT
+       ═══════════════════════════════════════════ */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ─── Sidebar ─── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #fff;
+      border-right: 1px solid #e0ddd5;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-header {
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px;
+      border-bottom: 1px solid #e0ddd5;
+      flex-shrink: 0;
+    }
+    .sidebar-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+    .sidebar-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--tiba-dark);
+      letter-spacing: -0.5px;
+    }
+    .sidebar-header h1 span { color: var(--tiba-green); }
+    .sidebar-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 12px;
+    }
+
+    /* ─── Navigation Sections ─── */
+    .nav-section { margin-bottom: 8px; }
+    .nav-section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--tiba-green);
+      padding: 10px 12px 6px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid #eee;
+    }
+    .nav-section:first-child .nav-section-title {
+      border-top: none;
+    }
+    .nav-section-icon {
+      display: flex;
+      align-items: center;
+      color: var(--tiba-green);
+      opacity: 0.7;
+    }
+    .nav-list { list-style: none; }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px 7px 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #666;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.15s ease;
+      margin-bottom: 1px;
+    }
+    .nav-dot {
+      display: flex;
+      align-items: center;
+      color: #ccc;
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+    .nav-link:hover {
+      background: var(--tiba-green-bg);
+      color: var(--tiba-green);
+    }
+    .nav-link:hover .nav-dot { color: var(--tiba-green); }
+    .nav-link.active {
+      background: var(--tiba-green-bg);
+      color: var(--tiba-green);
+      font-weight: 600;
+    }
+    .nav-link.active .nav-dot { color: var(--tiba-green); }
+
+    /* ─── Main ─── */
+    .main-area {
+      flex: 1;
+      margin-left: var(--sidebar-w);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── Top Bar ─── */
+    .topbar {
+      height: var(--header-h);
+      background: rgba(245, 240, 230, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e0ddd5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--tiba-dark);
+    }
+    .topbar-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--tiba-green-bg);
+      color: var(--tiba-green);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    /* ─── Content Area ─── */
+    .content-wrap {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 32px 80px;
+      width: 100%;
+    }
+
+    /* ─── Mobile hamburger ─── */
+    .hamburger {
+      display: none;
+      background: var(--tiba-green);
+      color: #fff;
+      border: none;
+      font-size: 1.5rem;
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 90;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROSE — Markdown content styling
+       ═══════════════════════════════════════════ */
+    .prose h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--tiba-dark);
+      margin: 0 0 16px;
+      line-height: 1.2;
+      border-bottom: 3px solid var(--tiba-green);
+      padding-bottom: 12px;
+    }
+    .prose h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--tiba-green);
+      margin: 40px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e0ddd5;
+    }
+    .prose h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--tiba-dark);
+      margin: 28px 0 8px;
+    }
+    .prose h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #555;
+      margin: 20px 0 6px;
+    }
+    .prose p { margin: 12px 0; }
+    .prose a {
+      color: var(--tiba-green);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .prose a:hover { color: var(--tiba-green-light); }
+    .prose strong { color: var(--tiba-dark); }
+    .prose ul, .prose ol {
+      padding-left: 24px;
+      margin: 12px 0;
+    }
+    .prose li { margin: 6px 0; }
+    .prose li::marker { color: var(--tiba-green); }
+    .prose blockquote {
+      border-left: 4px solid var(--tiba-green);
+      background: var(--tiba-green-bg);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: #3a3a3a;
+    }
+    .prose code {
+      background: #f0ece3;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: var(--tiba-coral);
+    }
+    .prose pre {
+      background: var(--tiba-dark);
+      color: #e0e0e0;
+      padding: 20px;
+      border-radius: var(--radius);
+      overflow-x: auto;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .prose pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+    .prose table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.9rem;
+    }
+    .prose th {
+      background: var(--tiba-green);
+      color: #fff;
+      font-weight: 600;
+      text-align: left;
+      padding: 10px 14px;
+    }
+    .prose th:first-child { border-radius: 8px 0 0 0; }
+    .prose th:last-child { border-radius: 0 8px 0 0; }
+    .prose td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e0ddd5;
+    }
+    .prose tr:nth-child(even) td { background: #faf8f3; }
+    .prose tr:hover td { background: var(--tiba-green-bg); }
+    .prose hr {
+      border: none;
+      border-top: 2px solid #e0ddd5;
+      margin: 32px 0;
+    }
+    .prose img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      margin: 16px 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       PREV / NEXT NAVIGATION
+       ═══════════════════════════════════════════ */
+    .prev-next {
+      display: flex;
+      gap: 16px;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 2px solid #e0ddd5;
+    }
+    .prev-next-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 20px;
+      background: #fff;
+      border: 1px solid #e0ddd5;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      min-height: 72px;
+    }
+    .prev-next-btn:hover {
+      border-color: var(--tiba-green);
+      box-shadow: 0 4px 16px rgba(11,142,113,0.12);
+      transform: translateY(-2px);
+    }
+    .prev-next-btn.next { text-align: right; }
+    .prev-next-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--tiba-green);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .prev-next-btn.next .prev-next-label { justify-content: flex-end; }
+    .prev-next-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--tiba-dark);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — Tablet
+       ═══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+      }
+      .overlay.open { display: block; }
+      .main-area { margin-left: 0; }
+      .hamburger { display: flex; }
+      .topbar { padding: 0 12px; gap: 8px; }
+      .topbar-title { font-size: 0.95rem; }
+      .content-wrap { padding: 20px 14px 48px; }
+      .prev-next { flex-direction: column; gap: 10px; }
+      .prev-next-btn { min-height: 56px; padding: 12px 16px; }
+      .prose h1 { font-size: 1.6rem; }
+      .prose h2 { font-size: 1.25rem; margin-top: 28px; }
+      .prose h3 { font-size: 1.05rem; }
+      .prose pre { padding: 14px; font-size: 0.78rem; }
+      .prose table { font-size: 0.8rem; display: block; overflow-x: auto; white-space: nowrap; }
+      .prose th, .prose td { padding: 8px 10px; }
+      .prose blockquote { padding: 12px 14px; margin: 14px 0; }
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — Phone
+       ═══════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      :root {
+        --header-h: 52px;
+      }
+      body { font-size: 0.9rem; line-height: 1.65; }
+      .topbar-title { font-size: 0.85rem; }
+      .topbar-badge { display: none; }
+      .hamburger { width: 40px; height: 40px; border-radius: 8px; }
+      .content-wrap { padding: 16px 12px 40px; }
+      .prose h1 { font-size: 1.3rem; padding-bottom: 8px; }
+      .prose h2 { font-size: 1.1rem; margin-top: 24px; padding-bottom: 6px; }
+      .prose h3 { font-size: 0.95rem; margin-top: 18px; }
+      .prose h4 { font-size: 0.88rem; }
+      .prose p { margin: 8px 0; }
+      .prose ul, .prose ol { padding-left: 18px; margin: 8px 0; }
+      .prose li { margin: 4px 0; }
+      .prose pre { padding: 10px; font-size: 0.72rem; border-radius: 8px; }
+      .prose code { font-size: 0.8em; padding: 1px 4px; }
+      .prose blockquote { padding: 10px 12px; font-size: 0.88rem; }
+      .prose table { font-size: 0.75rem; }
+      .prose th, .prose td { padding: 6px 8px; }
+      .prose img { border-radius: 8px; margin: 10px 0; }
+      .prev-next-btn { min-height: 48px; padding: 10px 12px; }
+      .prev-next-label { font-size: 0.68rem; }
+      .prev-next-title { font-size: 0.85rem; }
+      /* Force inline grids to stack */
+      [style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       ACCESSIBILITY
+       ═══════════════════════════════════════════ */
+    :focus-visible {
+      outline: 3px solid var(--tiba-green);
+      outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Overlay for mobile sidebar -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()" aria-hidden="true"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Menu de navigation des documents">
+      <div class="sidebar-header">
+        <img src="Img/Logogreen.png" alt="Tiba" class="sidebar-logo">
+        <h1><span>Tiba</span> Docs</h1>
+      </div>
+      <div class="sidebar-body">
+        
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
+          Identite et Vision
+        </div>
+        <ul class="nav-list">
+          <li><a href="brand.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Charte Graphique</a></li>
+          <li><a href="ideation.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Session d'Ideation</a></li>
+          <li><a href="market.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Analyse Marche Afrique</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></span>
+          Produit et Specifications
+        </div>
+        <ul class="nav-list">
+          <li><a href="brief.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Product Brief</a></li>
+          <li><a href="mvp.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Planification MVP</a></li>
+          <li><a href="prd.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Product Requirements (PRD)</a></li>
+          <li><a href="ux.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Design System et UX</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+          Ingenierie et Architecture
+        </div>
+        <ul class="nav-list">
+          <li><a href="architecture.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Technique</a></li>
+          <li><a href="database.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Base de Donnees</a></li>
+          <li><a href="database-sql.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Code SQL Complet</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span>
+          Execution et Sprints
+        </div>
+        <ul class="nav-list">
+          <li><a href="epics.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Epics et Stories</a></li>
+          <li><a href="story-1-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.1: Design System</a></li>
+          <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
+        </ul>
+      </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main-area">
+      <div class="topbar" role="banner">
+        <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-title">Epics et Stories</div>
+        <div class="topbar-badge">11 / 13</div>
+      </div>
+
+      <article class="content-wrap" role="main" aria-label="Contenu du document">
+        <div class="prose">
+          <h1>Tiba - Epic Breakdown</h1>
+<h2>Overview</h2>
+<p>This document provides the complete epic and story breakdown for Tiba, decomposing the requirements from the PRD, UX Design if it exists, and Architecture requirements into implementable stories.</p>
+<h2>Requirements Inventory</h2>
+<h3>Functional Requirements</h3>
+<ul>
+<li><strong>FR1:</strong> L&#39;utilisateur peut scanner le code-barres d&#39;une boîte de médicament pour identifier le produit.</li>
+<li><strong>FR2:</strong> L&#39;utilisateur peut scanner le nom imprimé sur une boîte (OCR texte) lorsque le code-barres est absent ou illisible.</li>
+<li><strong>FR3:</strong> Le système peut faire correspondre le scan à une notice certifiée dans la base de données interne.</li>
+<li><strong>FR4:</strong> Le système peut informer l&#39;utilisateur lorsqu&#39;un médicament scanné n&#39;est pas trouvé dans la base de données.</li>
+<li><strong>FR5:</strong> L&#39;utilisateur peut poser une question vocale à l&#39;IA concernant un médicament identifié.</li>
+<li><strong>FR6:</strong> L&#39;utilisateur peut poser une question textuelle (chat) à l&#39;IA concernant un médicament identifié.</li>
+<li><strong>FR7:</strong> L&#39;utilisateur peut accéder à l&#39;assistant IA sans avoir scanné de produit (mode global).</li>
+<li><strong>FR8:</strong> L&#39;IA peut répondre vocalement en se basant exclusivement sur le contenu de la notice certifiée du médicament (RAG Strict, Température 0.0).</li>
+<li><strong>FR9:</strong> L&#39;utilisateur peut fournir un contexte patient (adulte/enfant, âge, poids estimé) avant d&#39;interroger l&#39;IA.</li>
+<li><strong>FR10:</strong> Le système peut détecter et bloquer toute requête utilisateur demandant un diagnostic, une prescription, ou un conseil médical hors notice.</li>
+<li><strong>FR11:</strong> Le système peut déclencher un message de sécurité (&quot;Consultez un médecin&quot;) lorsqu&#39;une requête est hors du périmètre de la notice.</li>
+<li><strong>FR12:</strong> Le système peut déclencher un message de sécurité lorsque l&#39;information demandée est introuvable dans la notice.</li>
+<li><strong>FR13:</strong> L&#39;utilisateur peut rechercher les pharmacies de garde ouvertes à proximité de sa position GPS.</li>
+<li><strong>FR14:</strong> Le système peut afficher la distance et l&#39;itinéraire vers les pharmacies trouvées.</li>
+<li><strong>FR15:</strong> L&#39;utilisateur peut consulter l&#39;annuaire des pharmacies de garde même hors connexion (cache local).</li>
+<li><strong>FR16:</strong> Le système peut suggérer automatiquement une pharmacie de garde après un scan ou une requête IA.</li>
+<li><strong>FR17:</strong> L&#39;utilisateur peut créer un compte via son numéro de téléphone (OTP).</li>
+<li><strong>FR18:</strong> L&#39;utilisateur peut utiliser l&#39;application gratuitement pour un nombre limité de scans par mois.</li>
+<li><strong>FR19:</strong> L&#39;utilisateur peut souscrire à un abonnement Premium via Mobile Money (Orange, Airtel, Moov).</li>
+<li><strong>FR20:</strong> Le système peut gérer la transition Freemium → Premium (paywall) après épuisement du quota gratuit.</li>
+<li><strong>FR21:</strong> L&#39;utilisateur peut accepter le disclaimer légal obligatoire au premier lancement de l&#39;application.</li>
+<li><strong>FR22:</strong> Le système peut ingérer et mettre à jour les notices médicamenteuses exclusivement depuis des sources officielles certifiées.</li>
+<li><strong>FR23:</strong> Le système peut anonymiser de manière irréversible les données d&#39;utilisation avant toute agrégation analytique.</li>
+<li><strong>FR24:</strong> Le système peut journaliser (logger) chaque interaction IA pour audit de sécurité médicale.</li>
+<li><strong>FR25:</strong> Le système peut fonctionner en mode dégradé (cache local) en cas de perte de réseau.</li>
+<li><strong>FR26:</strong> Le système peut agréger les données de scan anonymisées par zone géographique et par période.</li>
+<li><strong>FR27:</strong> Un opérateur B2B peut consulter un dashboard d&#39;analytiques sur les tendances de consommation pharmaceutique.</li>
+<li><strong>FR28:</strong> Un opérateur B2B peut recevoir des alertes prédictives (pic anormal de recherches sur un médicament dans une zone).</li>
+<li><strong>FR29:</strong> Un Opérateur Tiba (accès administrateur) peut consulter et gérer la base de données pharmaceutique depuis le Web Admin Dashboard.</li>
+<li><strong>FR30:</strong> Un Opérateur Tiba peut créer et éditer des fiches produit (incluant photos, texte de la notice, nom) qui se synchronisent immédiatement sur l&#39;app.</li>
+<li><strong>FR30b:</strong> Un Opérateur Tiba peut mettre à jour les disponibilités de médicaments et les horaires de garde d&#39;une pharmacie depuis le Web Admin Dashboard.</li>
+<li><strong>FR31:</strong> Un administrateur peut ajouter, modifier ou retirer une notice médicamenteuse de la base de données.</li>
+<li><strong>FR32:</strong> Le système peut synchroniser les données locales avec le serveur après rétablissement de la connexion sans perte de données.</li>
+<li><strong>FR33:</strong> L&#39;utilisateur peut parcourir un tutoriel de première utilisation expliquant les capacités et les limites de l&#39;application.</li>
+<li><strong>FR34:</strong> Le système peut proposer une action alternative immédiate (localiser un médecin, appeler le SAMU local) lorsqu&#39;il refuse une requête hors périmètre.</li>
+<li><strong>FR35:</strong> L&#39;utilisateur peut consulter son historique de paiements et de souscriptions.</li>
+<li><strong>FR36:</strong> L&#39;utilisateur peut consulter son quota restant de scans gratuits.</li>
+<li><strong>FR37:</strong> L&#39;utilisateur peut signaler une réponse de l&#39;IA qu&#39;il considère comme incorrecte ou dangereuse.</li>
+</ul>
+<h3>NonFunctional Requirements</h3>
+<ul>
+<li><strong>NFR1:</strong> Le traitement vocal complet (Micro → RAG → Synthèse vocale) doit s&#39;exécuter en moins de 3.5 secondes sur un réseau 3G standard.</li>
+<li><strong>NFR2:</strong> Le scan de code-barres doit identifier le médicament en moins de 1.5 secondes après la mise au point de la caméra.</li>
+<li><strong>NFR3:</strong> La liste des pharmacies de garde doit s&#39;afficher en moins de 2 secondes (mode en ligne) ou 0.5 seconde (mode cache local).</li>
+<li><strong>NFR4:</strong> Le temps de réponse IA au premier appel (cold start) ne doit pas dépasser 6 secondes.</li>
+<li><strong>NFR5:</strong> Toutes les communications client-serveur doivent être chiffrées en TLS 1.3 minimum.</li>
+<li><strong>NFR6:</strong> Les données du futur carnet de santé familial doivent être chiffrées au repos avec AES-256.</li>
+<li><strong>NFR7:</strong> Les tokens d&#39;authentification (OTP) doivent expirer après 5 minutes et être à usage unique.</li>
+<li><strong>NFR8:</strong> Les journaux d&#39;audit des interactions IA doivent être conservés pendant un minimum de 24 mois et être immuables.</li>
+<li><strong>NFR9:</strong> L&#39;anonymisation des données B2B doit être irréversible.</li>
+<li><strong>NFR10:</strong> Le système doit limiter les requêtes IA à un maximum de 30 par utilisateur par heure.</li>
+<li><strong>NFR11:</strong> L&#39;architecture backend doit supporter un passage de 1 000 à 50 000 utilisateurs actifs mensuels sans refactoring majeur.</li>
+<li><strong>NFR12:</strong> La base de données des notices médicamenteuses doit supporter l&#39;ajout de 10 000+ références sans dégradation des performances du RAG.</li>
+<li><strong>NFR13:</strong> L&#39;architecture doit prévoir un chemin de migration documenté vers 500 000+ MAU.</li>
+<li><strong>NFR14:</strong> L&#39;API backend (hors IA) doit maintenir un uptime de 99.9%.</li>
+<li><strong>NFR15:</strong> En cas de panne du service IA, l&#39;annuaire des pharmacies de garde et le scanner doivent rester 100% opérationnels.</li>
+<li><strong>NFR16:</strong> Le cache local (pharmacies + notices récentes) doit rester fonctionnel pendant 7 jours sans connexion internet.</li>
+<li><strong>NFR17:</strong> L&#39;interface vocale doit être utilisable par un utilisateur analphabète sans jamais nécessiter de lecture à l&#39;écran pour les fonctions critiques.</li>
+<li><strong>NFR18:</strong> L&#39;application doit fonctionner correctement sur des appareils avec 2 Go de RAM et des écrans de 5 pouces minimum.</li>
+<li><strong>NFR19:</strong> La taille de l&#39;APK initial ne doit pas dépasser 30 Mo.</li>
+<li><strong>NFR20:</strong> L&#39;interface doit maintenir un ratio de contraste minimum de 7:1 (WCAG AAA) pour tous les éléments textuels critiques.</li>
+<li><strong>NFR21:</strong> Les données anonymisées exportées vers le Data Warehouse B2B doivent avoir un taux de complétude minimum de 95%.</li>
+</ul>
+<h3>Additional Requirements</h3>
+<ul>
+<li>[Architecture/Starter] Mobile App: Initialiser via <code>flutter create --org com.tiba tiba_app</code> (Epic 1 Story 1).</li>
+<li>[Architecture/Starter] Web Admin: Initialiser via <code>npx create-next-app -e with-supabase suddenly-tiba-admin</code> (Epic 1 Story 1).</li>
+<li>[Architecture] Base de données et Backend: PostgreSQL hébergé sur Supabase, avec utilisation de Supabase Auth et Edge Functions (Deno).</li>
+<li>[Architecture] Infrastructure Mobile: Utilisation de <code>Drift</code> (SQLite) pour la base de données locale (Offline-First).</li>
+<li>[Architecture] State Management: Utilisation de <code>Riverpod</code> (Flutter) et <code>Zustand</code> ou Server Components (Next.js).</li>
+<li>[Architecture] Mono-Repo: Configurer la racine du projet pour héberger <code>apps/tiba-mobile</code>, <code>apps/tiba-admin</code> et <code>supabase/</code>.</li>
+<li>[Architecture] Naming Conventions: <code>snake_case</code> pour la DB et APIs, <code>camelCase</code>/<code>PascalCase</code> pour le code. Organiser le code Flutter en Features (<code>lib/features/</code>).</li>
+</ul>
+<h3>UX Design Requirements</h3>
+<ul>
+<li>UX-DR1: Implémenter le &quot;Hero Scan Viewfinder&quot; (AR Camera) avec 3 états : Searching, Focused (retour haptique), Processing (squelette gris).</li>
+<li>UX-DR2: Implémenter le &quot;Voice Assistant Orb&quot; (Hold-to-Talk) avec onde sonore dynamique pour le mode vocal.</li>
+<li>UX-DR3: Implémenter le &quot;Medical Result Pill&quot; comme composant structurel incluant 3 sections fixes (Posologie, Dangers, Âge) et lecteur audio TTS.</li>
+<li>UX-DR4: Structurer la navigation autour d&#39;une Bottom Navigation Bar de 3 onglets maximum (Scanner, Historique, Secours). Aucun Menu Hamburger caché.</li>
+<li>UX-DR5: Implémenter le design system basé sur Material 3 surchargé (Angles 24px &quot;soft edge&quot;, Vert Santé #0B8E71, Fond Sable #F5F0E6, Alert rouge #E85D75).</li>
+<li>UX-DR6: Tous les boutons et cibles interactives doivent avoir une taille de 48x48px minimum (&quot;Fat Finger&quot;).</li>
+<li>UX-DR7: Remplacer tous les indicateurs de chargement tournants (spinners) par des Skeleton Loaders apaisants.</li>
+<li>UX-DR8: Assurer le support strict des polices agrandies du système d&#39;exploitation et utiliser le couple typographique Outfit (Titres) / Inter (Texte).</li>
+</ul>
+<h3>FR Coverage Map</h3>
+<ul>
+<li>FR1, FR2, FR3, FR4, FR17, FR21, FR25, FR32, FR33: Epic 1 - L&#39;Expérience Cœur &quot;Scan &amp; Know&quot; (Scanner OCR, Base locale Drift, Info Produit, Inscription OTP, Support Offline initial, Tutoriel)</li>
+<li>FR5, FR6, FR7, FR8, FR9, FR10, FR11, FR12, FR22, FR24, FR34, FR37: Epic 2 - Le Pharmacien Digital IA (Questions Vocales/Textuelles, RAG Strict, Température 0.0, Pare-feu diagnostic, Logs de sécurité d&#39;audit)</li>
+<li>FR13, FR14, FR15, FR16: Epic 3 - Le Filet de Sécurité Local (Localisation GPS des Pharmacies de Garde, Cache offline, Itinéraires)</li>
+<li>FR29, FR30, FR30b, FR31: Epic 4 - La Tour de Contrôle Opérationnelle (Web Admin Dashboard B2B pour la gestion DB et pharmacies)</li>
+<li>FR18, FR19, FR20, FR35, FR36: Epic 5 - Monétisation &amp; Quotas (Modèle Freemium 3 scans/mois, Paiements Mobile Money, Paywall)</li>
+<li>FR23, FR26, FR27, FR28: Epic 6 - Le Pivot Licorne &quot;Data SaaS&quot; (Anonymisation des KPI santé, Dashboard analytique mondial, Alertes prédictives)</li>
+</ul>
+<h2>Epic List</h2>
+<h3>Epic 1: L&#39;Expérience Cœur &quot;Scan &amp; Know&quot; (MVP Patient)</h3>
+<p>Permettre à un utilisateur de s&#39;inscrire, de scanner une boîte de médicament (OCR) très facilement, et de lire une fiche produit simplifiée (avec support hors-ligne de base de la notice grâce à la synchronisation Drift). <strong>Includes Architecture/UI Setup (NFR2, UX-DR1, UX-DR3, UX-DR5).</strong><br><strong>FRs covered:</strong> FR1, FR2, FR3, FR4, FR17, FR21, FR25, FR32, FR33</p>
+<h3>Epic 2: Le Pharmacien Digital IA (Le RAG Strict)</h3>
+<p>Permettre à un utilisateur enregistré de poser des questions vocales (ou texte) sur la notice scannée, tout en le protégeant par un pare-feu anti-diagnostic via un RAG Strict et en gardant un journal inaltérable des requêtes pour des questions d&#39;audit médical. <strong>(NFR1, NFR4, NFR8, NFR10, NFR17, UX-DR2, UX-DR7)</strong><br><strong>FRs covered:</strong> FR5, FR6, FR7, FR8, FR9, FR10, FR11, FR12, FR22, FR24, FR34, FR37</p>
+<h3>Epic 3: Le Filet de Sécurité Local (Pharmacies de Garde)</h3>
+<p>Fournir l&#39;emplacement de la pharmacie de garde physique la plus proche du patient pour prolonger le diagnostic ou obtenir son remède, de façon instantanée, avec ou sans connexion GPS 3G, grâce au stockage local SQLite. <strong>(NFR3, NFR15, NFR16, UX-DR4)</strong><br><strong>FRs covered:</strong> FR13, FR14, FR15, FR16</p>
+<h3>Epic 4: La Tour de Contrôle Opérationnelle (Web Admin Dashboard)</h3>
+<p>Permettre aux opérateurs Tiba de saisir massivement les nouvelles notices officielles et de mettre à jour en direct les stocks des pharmacies dans un portail React Next.js connecté en temps réel via Supabase et les Edge Functions.<br><strong>FRs covered:</strong> FR29, FR30, FR30b, FR31</p>
+<h3>Epic 5: Monétisation &amp; Quotas (Le Moteur Économique)</h3>
+<p>Gérer rigoureusement la limite des 3 scans Freemium gratuits, en affichant un paywall bien synchronisé de transactions avec l&#39;écosystème Mobile Money d&#39;Afrique Centrale (Airtel/Orange/Moov) pour activer la version Premium. <strong>(NFR7)</strong><br><strong>FRs covered:</strong> FR18, FR19, FR20, FR35, FR36</p>
+<h3>Epic 6: Le Pivot Licorne &quot;Data SaaS&quot; (Analytique et Insights)</h3>
+<p>Agréger et expurger toutes les données individuelles des scans afin d&#39;offrir des alertes prédictives et un puissant tableau de bord de macro-tendances médicales pour les Ministères, OMS ou géants pharmaceutiques en B2B. <strong>(NFR9, NFR21)</strong><br><strong>FRs covered:</strong> FR23, FR26, FR27, FR28</p>
+<hr>
+<h2>Epic 1: L&#39;Expérience Cœur &quot;Scan &amp; Know&quot; (MVP Patient)</h2>
+<p><strong>Epic Goal:</strong> Permettre à un utilisateur de s&#39;inscrire, de scanner une boîte de médicament (OCR), et de lire une fiche produit simplifiée (avec support hors-ligne de base).</p>
+<h3>Story 1.1: Project Initialization &amp; Design System</h3>
+<p>As a <strong>développeur Tiba</strong>,<br>I want <strong>un mono-repo correctement configuré avec le Design System Tiba implémenté</strong>,<br>So that <strong>toutes les futures stories s&#39;appuient sur une fondation technique et visuelle cohérente</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> le développeur clone le dépôt pour la première fois<br><strong>When</strong> il exécute les commandes d&#39;initialisation<br><strong>Then</strong> la structure mono-repo contient <code>apps/tiba-mobile/</code> (Flutter), <code>apps/tiba-admin/</code> (Next.js stub), et <code>supabase/</code><br><strong>And</strong> le projet Flutter est initialisé via <code>flutter create --org com.tiba</code> avec le package name <code>com.tiba.app</code></p>
+<p><strong>Given</strong> le projet Flutter est initialisé<br><strong>When</strong> le développeur ouvre <code>lib/core/theme/</code><br><strong>Then</strong> le fichier <code>tiba_theme.dart</code> contient le ThemeData Material 3 surchargé avec :</p>
+<ul>
+<li>Couleur primaire : Vert Santé <code>#0B8E71</code></li>
+<li>Couleur de fond : Sable Chaud <code>#F5F0E6</code></li>
+<li>Couleur d&#39;alerte : Rouge Corail <code>#E85D75</code></li>
+<li>Couleur texte : Charbon Profond <code>#1A1A1A</code></li>
+<li>Border radius global : <code>24px</code> (soft edge)</li>
+<li>Polices : Outfit (titres), Inter (corps de texte)<br><strong>And</strong> tous les boutons et cibles interactives ont un minimum de <code>48x48px</code> (UX-DR6)<br><strong>And</strong> le ratio de contraste texte/fond respecte 7:1 minimum (NFR20)</li>
+</ul>
+<p><strong>Given</strong> le Design System est en place<br><strong>When</strong> le développeur navigue dans l&#39;application<br><strong>Then</strong> la Bottom Navigation Bar de 3 onglets (Scanner, Historique, Secours) est visible (UX-DR4)<br><strong>And</strong> aucun Menu Hamburger n&#39;existe dans l&#39;application</p>
+<p><strong>Given</strong> le projet est configuré<br><strong>When</strong> <code>flutter analyze</code> est exécuté<br><strong>Then</strong> zéro erreur et zéro warning sont reportés</p>
+<hr>
+<h3>Story 1.2: Onboarding &amp; Disclaimer Légal</h3>
+<p>As a <strong>nouvel utilisateur Tiba (Aminata)</strong>,<br>I want <strong>comprendre ce que l&#39;application peut et ne peut pas faire, et accepter les conditions légales</strong>,<br>So that <strong>je sois informée des limites de l&#39;IA avant de l&#39;utiliser pour ma famille</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur lance l&#39;application pour la toute première fois<br><strong>When</strong> l&#39;écran d&#39;accueil s&#39;affiche<br><strong>Then</strong> un tutoriel de 3-4 écrans défilants (swipe) explique :</p>
+<ol>
+<li>Le scan de médicaments et ce qu&#39;il permet</li>
+<li>L&#39;assistant IA et ses limites strictes (pas de diagnostic)</li>
+<li>Les pharmacies de garde à proximité<br><strong>And</strong> chaque écran utilise des illustrations et un texte large lisible (Outfit/Inter)<br><strong>And</strong> un bouton &quot;Passer&quot; est visible à tout moment</li>
+</ol>
+<p><strong>Given</strong> l&#39;utilisateur a terminé ou passé le tutoriel<br><strong>When</strong> l&#39;écran de disclaimer légal s&#39;affiche<br><strong>Then</strong> le texte du disclaimer est affiché en entier avec scroll<br><strong>And</strong> une checkbox &quot;J&#39;ai lu et j&#39;accepte&quot; est présente<br><strong>And</strong> le bouton &quot;Continuer&quot; reste désactivé tant que la checkbox n&#39;est pas cochée (FR21)</p>
+<p><strong>Given</strong> l&#39;utilisateur coche la checkbox et appuie sur &quot;Continuer&quot;<br><strong>When</strong> l&#39;acceptation est enregistrée<br><strong>Then</strong> le flag <code>disclaimer_accepted = true</code> est sauvegardé localement (SharedPreferences)<br><strong>And</strong> l&#39;utilisateur ne reverra jamais le tutoriel ni le disclaimer lors des lancements suivants</p>
+<p><strong>Given</strong> l&#39;utilisateur relance l&#39;application après avoir déjà accepté<br><strong>When</strong> l&#39;application démarre<br><strong>Then</strong> l&#39;écran d&#39;accueil principal (Scanner) s&#39;affiche directement (FR33)</p>
+<hr>
+<h3>Story 1.3: Authentification Utilisateur OTP</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>créer un compte avec mon numéro de téléphone et me connecter facilement</strong>,<br>So that <strong>mes scans et mon historique soient associés à mon profil de façon sécurisée</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur a accepté le disclaimer (Story 1.2)<br><strong>When</strong> l&#39;écran d&#39;inscription s&#39;affiche<br><strong>Then</strong> un champ de saisie pour le numéro de téléphone (format international +237, +242, +243) est présenté<br><strong>And</strong> un sélecteur de préfixe pays est disponible</p>
+<p><strong>Given</strong> l&#39;utilisateur saisit un numéro de téléphone valide et appuie sur &quot;Recevoir le code&quot;<br><strong>When</strong> la requête est envoyée à Supabase Auth (OTP Phone)<br><strong>Then</strong> un SMS contenant un code OTP à 6 chiffres est envoyé au numéro<br><strong>And</strong> un écran de saisie du code OTP avec un timer de 5 minutes s&#39;affiche (NFR7)<br><strong>And</strong> un Skeleton Loader s&#39;affiche pendant l&#39;envoi (UX-DR7)</p>
+<p><strong>Given</strong> l&#39;utilisateur saisit le code OTP correct dans les 5 minutes<br><strong>When</strong> le code est vérifié par Supabase Auth<br><strong>Then</strong> la session utilisateur est créée et le JWT est stocké en local de manière sécurisée<br><strong>And</strong> l&#39;utilisateur est redirigé vers l&#39;écran Scanner principal (FR17)</p>
+<p><strong>Given</strong> l&#39;utilisateur saisit un code OTP incorrect ou expiré<br><strong>When</strong> la vérification échoue<br><strong>Then</strong> un message d&#39;erreur clair s&#39;affiche en Rouge Corail (#E85D75)<br><strong>And</strong> l&#39;utilisateur peut renvoyer un nouveau code après le délai du timer</p>
+<p><strong>Given</strong> l&#39;utilisateur est déjà connecté<br><strong>When</strong> il relance l&#39;application<br><strong>Then</strong> la session est restaurée automatiquement sans redemander le code OTP<br><strong>And</strong> toutes les communications utilisent TLS 1.3 minimum (NFR5)</p>
+<hr>
+<h3>Story 1.4: Infrastructure Locale &amp; Synchronisation DB</h3>
+<p>As a <strong>utilisateur Tiba en zone rurale (Aminata)</strong>,<br>I want <strong>que l&#39;application fonctionne même sans connexion internet</strong>,<br>So that <strong>je puisse consulter les notices des médicaments déjà scannés quand le réseau est indisponible</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;application est installée et l&#39;utilisateur est connecté<br><strong>When</strong> le module Drift (SQLite) est initialisé<br><strong>Then</strong> les tables locales pour les notices médicamenteuses récemment consultées sont créées<br><strong>And</strong> le schéma Drift est versionné et prêt pour les migrations futures</p>
+<p><strong>Given</strong> l&#39;utilisateur a consulté des notices en ligne<br><strong>When</strong> la connexion réseau est perdue<br><strong>Then</strong> les notices consultées dans les 7 derniers jours sont accessibles depuis le cache local (NFR16, FR25)<br><strong>And</strong> un indicateur visuel discret &quot;Mode Hors-ligne&quot; apparaît dans la barre de statut</p>
+<p><strong>Given</strong> l&#39;utilisateur est en mode hors-ligne<br><strong>When</strong> il effectue des actions (consultation de notices en cache)<br><strong>Then</strong> les actions sont enregistrées localement dans une file d&#39;attente de synchronisation</p>
+<p><strong>Given</strong> la connexion réseau est rétablie<br><strong>When</strong> le système détecte la reconnexion<br><strong>Then</strong> la file d&#39;attente de synchronisation est traitée automatiquement (FR32)<br><strong>And</strong> les données locales sont synchronisées avec Supabase sans perte de données<br><strong>And</strong> aucun conflit ne produit de duplication</p>
+<p><strong>Given</strong> l&#39;application fonctionne sur un appareil avec 2 Go de RAM<br><strong>When</strong> le cache local est plein<br><strong>Then</strong> les notices les plus anciennes sont purgées en premier (FIFO) pour respecter les contraintes mémoire (NFR18)</p>
+<hr>
+<h3>Story 1.5: &quot;Hero Scan Viewfinder&quot; (Caméra AR)</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>scanner la boîte de médicament de mon enfant avec la caméra de mon téléphone</strong>,<br>So that <strong>l&#39;application identifie instantanément le produit sans que j&#39;aie besoin de taper quoi que ce soit</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur est connecté et navigue vers l&#39;onglet Scanner<br><strong>When</strong> l&#39;écran de scan s&#39;affiche<br><strong>Then</strong> le &quot;Hero Scan Viewfinder&quot; s&#39;active avec la caméra arrière (UX-DR1)<br><strong>And</strong> l&#39;état initial est &quot;Searching&quot; avec un cadre de visée animé subtilement<br><strong>And</strong> le texte d&#39;instruction &quot;Pointez vers la boîte du médicament&quot; est affiché en grand (Outfit)</p>
+<p><strong>Given</strong> la caméra détecte un code-barres dans le cadre de visée<br><strong>When</strong> la mise au point est réussie<br><strong>Then</strong> l&#39;état passe à &quot;Focused&quot; avec un retour haptique (vibration courte) (UX-DR1)<br><strong>And</strong> le cadre de visée change de couleur vers le Vert Santé (#0B8E71)<br><strong>And</strong> le code-barres est lu et décodé en moins de 1.5 seconde (NFR2, FR1)</p>
+<p><strong>Given</strong> aucun code-barres n&#39;est détecté après 5 secondes<br><strong>When</strong> le système bascule en mode OCR<br><strong>Then</strong> un message &quot;Pas de code-barres ? Pointez vers le nom du médicament&quot; s&#39;affiche<br><strong>And</strong> le moteur OCR tente de lire le nom du médicament imprimé sur la boîte (FR2)</p>
+<p><strong>Given</strong> le scan (code-barres ou OCR) identifie un texte exploitable<br><strong>When</strong> l&#39;état passe à &quot;Processing&quot;<br><strong>Then</strong> un Skeleton Loader gris s&#39;affiche pour la fiche résultat (UX-DR1, UX-DR7)<br><strong>And</strong> la requête de matching est envoyée (vers Supabase ou cache local)</p>
+<p><strong>Given</strong> l&#39;utilisateur n&#39;a pas de réseau et le médicament n&#39;est pas en cache local<br><strong>When</strong> le matching échoue<br><strong>Then</strong> un message &quot;Ce médicament n&#39;a pas pu être identifié en mode hors-ligne. Réessayez avec une connexion.&quot; s&#39;affiche</p>
+<hr>
+<h3>Story 1.6: Fiche Résultat &quot;Medical Pill&quot; &amp; Matching Notice</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>voir les informations essentielles du médicament scanné dans une fiche claire et structurée</strong>,<br>So that <strong>je comprenne rapidement la posologie, les dangers et les indications d&#39;âge pour mon enfant</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> le scan a identifié un code-barres ou un texte OCR<br><strong>When</strong> la requête de matching trouve une notice certifiée dans la base de données (Supabase ou cache Drift)<br><strong>Then</strong> la fiche &quot;Medical Result Pill&quot; s&#39;affiche avec 3 sections fixes (UX-DR3) :</p>
+<ol>
+<li><strong>Posologie</strong> : dosages recommandés (adulte/enfant si disponible)</li>
+<li><strong>Dangers</strong> : contre-indications et effets secondaires principaux</li>
+<li><strong>Âge</strong> : restrictions d&#39;âge et précautions pédiatriques<br><strong>And</strong> un bouton lecteur audio TTS (Text-to-Speech) est visible sur la fiche (UX-DR3, NFR17)<br><strong>And</strong> la fiche utilise les couleurs et arrondis du Design System (Vert Santé, Sable Chaud, 24px radius)</li>
+</ol>
+<p><strong>Given</strong> le matching est réussi et la fiche est affichée<br><strong>When</strong> l&#39;utilisateur appuie sur le bouton TTS<br><strong>Then</strong> le contenu des 3 sections est lu à haute voix par le moteur TTS du système<br><strong>And</strong> l&#39;utilisateur peut mettre en pause ou arrêter la lecture</p>
+<p><strong>Given</strong> le scan a identifié un code-barres ou un texte OCR<br><strong>When</strong> aucune notice correspondante n&#39;est trouvée dans la base de données<br><strong>Then</strong> un écran &quot;Médicament non reconnu&quot; s&#39;affiche avec un message rassurant (FR4)<br><strong>And</strong> le message suggère : &quot;Ce médicament n&#39;est pas encore dans notre base. Consultez votre pharmacien.&quot;<br><strong>And</strong> un bouton d&#39;action secondaire &quot;Signaler ce médicament&quot; est disponible</p>
+<p><strong>Given</strong> la fiche est affichée avec succès<br><strong>When</strong> l&#39;utilisateur navigue sur la fiche résultat<br><strong>Then</strong> la notice consultée est automatiquement sauvegardée dans le cache Drift local<br><strong>And</strong> la notice est accessible dans l&#39;onglet &quot;Historique&quot; de la navigation</p>
+<p><strong>Given</strong> la notice est sauvegardée<br><strong>When</strong> l&#39;utilisateur consulte l&#39;onglet &quot;Historique&quot;<br><strong>Then</strong> la liste des médicaments récemment consultés s&#39;affiche avec le nom, la date de scan, et une miniature<br><strong>And</strong> cliquer sur un élément rouvre la fiche &quot;Medical Result Pill&quot; complète (FR3)</p>
+<hr>
+<h2>Epic 2: Le Pharmacien Digital IA (Le RAG Strict)</h2>
+<p><strong>Epic Goal:</strong> Permettre à un utilisateur enregistré de poser des questions vocales ou textuelles sur la notice scannée, tout en le protégeant par un pare-feu anti-diagnostic via un RAG Strict (Température 0.0).</p>
+<h3>Story 2.1: Pipeline RAG Strict &amp; Edge Function IA</h3>
+<p>As a <strong>système Tiba</strong>,<br>I want <strong>un pipeline RAG backend qui répond exclusivement à partir des notices certifiées avec une température de 0.0</strong>,<br>So that <strong>aucune hallucination ou information non vérifiée ne puisse être communiquée à un patient</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> une notice certifiée est présente dans la base de données Supabase<br><strong>When</strong> une requête utilisateur est envoyée à la Supabase Edge Function <code>ai-query</code><br><strong>Then</strong> le système effectue un embedding search (pgvector) sur la table des notices<br><strong>And</strong> seul le contenu de la notice correspondante est utilisé comme contexte du prompt LLM<br><strong>And</strong> la température du modèle est fixée à <code>0.0</code> (aucune créativité) (FR8)</p>
+<p><strong>Given</strong> la notice certifiée est fournie comme contexte<br><strong>When</strong> le LLM génère une réponse<br><strong>Then</strong> la réponse est strictement limitée au contenu de la notice<br><strong>And</strong> aucune information externe, supposition ou conseil médical n&#39;est ajouté<br><strong>And</strong> le temps de réponse ne dépasse pas 6 secondes au cold start (NFR4)</p>
+<p><strong>Given</strong> une notice est ingérée dans le système pour la première fois<br><strong>When</strong> l&#39;opérateur publie la notice via l&#39;Admin (ou via script SQL initial)<br><strong>Then</strong> le texte est découpé en chunks, vectorisé via l&#39;embedding model, et stocké dans pgvector (FR22)<br><strong>And</strong> la notice est immédiatement interrogeable par le pipeline RAG</p>
+<p><strong>Given</strong> le serveur IA est indisponible<br><strong>When</strong> l&#39;utilisateur tente une requête<br><strong>Then</strong> un message d&#39;erreur gracieux s&#39;affiche : &quot;Le service IA est temporairement indisponible&quot;<br><strong>And</strong> le scanner et les pharmacies de garde restent 100% opérationnels (NFR15)</p>
+<hr>
+<h3>Story 2.2: Chat Textuel sur la Notice</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>poser une question écrite sur le médicament que je viens de scanner</strong>,<br>So that <strong>je puisse comprendre des détails spécifiques de la notice sans avoir à la lire en entier</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur a scanné un médicament et la fiche &quot;Medical Pill&quot; est affichée<br><strong>When</strong> il appuie sur le bouton &quot;Poser une question&quot;<br><strong>Then</strong> une interface de chat s&#39;ouvre en bas de l&#39;écran (bottom sheet)<br><strong>And</strong> le champ de saisie textuel est pré-focalisé avec le clavier ouvert<br><strong>And</strong> le nom du médicament est affiché en en-tête du chat comme contexte</p>
+<p><strong>Given</strong> l&#39;utilisateur saisit une question textuelle et appuie sur &quot;Envoyer&quot;<br><strong>When</strong> la requête est envoyée au pipeline RAG (Story 2.1)<br><strong>Then</strong> un Skeleton Loader s&#39;affiche pendant le traitement (UX-DR7)<br><strong>And</strong> la réponse de l&#39;IA apparaît dans une bulle de chat en moins de 3.5 secondes sur 3G (NFR1)<br><strong>And</strong> la réponse est basée exclusivement sur la notice du médicament scanné (FR6)</p>
+<p><strong>Given</strong> l&#39;utilisateur pose une question de suivi<br><strong>When</strong> la question est envoyée<br><strong>Then</strong> le contexte de la conversation précédente est maintenu dans la même session<br><strong>And</strong> la réponse reste ancrée sur la même notice certifiée</p>
+<p><strong>Given</strong> le nombre de requêtes IA de l&#39;utilisateur atteint 30 dans l&#39;heure en cours<br><strong>When</strong> il tente d&#39;envoyer une nouvelle question<br><strong>Then</strong> un message &quot;Vous avez atteint la limite horaire. Réessayez dans quelques minutes.&quot; s&#39;affiche (NFR10)</p>
+<hr>
+<h3>Story 2.3: &quot;Voice Assistant Orb&quot; (Hold-to-Talk)</h3>
+<p>As a <strong>utilisateur Tiba analphabète ou occupé (Aminata)</strong>,<br>I want <strong>poser ma question en parlant directement à mon téléphone</strong>,<br>So that <strong>je n&#39;aie pas besoin de savoir lire ou écrire pour obtenir des informations sur le médicament</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur est sur la fiche &quot;Medical Pill&quot; ou dans l&#39;interface de chat<br><strong>When</strong> il maintient enfoncé le bouton &quot;Voice Assistant Orb&quot; (UX-DR2)<br><strong>Then</strong> le micro s&#39;active immédiatement<br><strong>And</strong> une onde sonore dynamique s&#39;affiche sur l&#39;Orb pour indiquer que l&#39;écoute est active<br><strong>And</strong> un retour haptique léger confirme l&#39;activation</p>
+<p><strong>Given</strong> l&#39;utilisateur parle tout en maintenant le bouton enfoncé<br><strong>When</strong> il relâche le bouton<br><strong>Then</strong> l&#39;audio capturé est envoyé au service Speech-to-Text (STT)<br><strong>And</strong> le texte transcrit s&#39;affiche dans le chat comme une bulle utilisateur<br><strong>And</strong> la requête transcrite est envoyée au pipeline RAG (Story 2.1, FR5)</p>
+<p><strong>Given</strong> le pipeline RAG retourne une réponse textuelle<br><strong>When</strong> la réponse est reçue<br><strong>Then</strong> le texte de la réponse est automatiquement lu à haute voix via le moteur TTS du système<br><strong>And</strong> l&#39;onde sonore de l&#39;Orb s&#39;anime pendant la lecture vocale<br><strong>And</strong> le cycle complet (Micro → STT → RAG → TTS) s&#39;exécute en moins de 3.5 secondes sur 3G (NFR1, FR8)</p>
+<p><strong>Given</strong> la transcription STT échoue ou le micro n&#39;est pas disponible<br><strong>When</strong> l&#39;erreur se produit<br><strong>Then</strong> un message vocal et visuel &quot;Je n&#39;ai pas compris. Réessayez.&quot; s&#39;affiche<br><strong>And</strong> l&#39;utilisateur peut réessayer immédiatement</p>
+<p><strong>Given</strong> l&#39;utilisateur est analphabète<br><strong>When</strong> il utilise exclusivement le mode vocal pour les fonctions critiques (scan + question vocale + réponse vocale)<br><strong>Then</strong> aucune étape ne nécessite de lecture ou de saisie de texte à l&#39;écran (NFR17)</p>
+<hr>
+<h3>Story 2.4: Contexte Patient (Adulte/Enfant/Poids)</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>indiquer si le médicament est pour un adulte ou un enfant, avec l&#39;âge et le poids estimé</strong>,<br>So that <strong>l&#39;IA puisse filtrer les informations de la notice pertinentes pour mon cas spécifique</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur est sur la fiche &quot;Medical Pill&quot; ou ouvre le chat IA<br><strong>When</strong> il appuie sur le bouton &quot;Préciser le patient&quot; (icône profil)<br><strong>Then</strong> un formulaire compact s&#39;affiche en bottom sheet avec :</p>
+<ol>
+<li>Sélecteur : Adulte / Enfant</li>
+<li>Champ âge (numérique, en années ou mois pour les nourrissons)</li>
+<li>Champ poids estimé (kg, optionnel)<br><strong>And</strong> les valeurs sont pré-remplies avec &quot;Adulte&quot; par défaut (FR9)</li>
+</ol>
+<p><strong>Given</strong> l&#39;utilisateur remplit le contexte patient et confirme<br><strong>When</strong> il pose une question au RAG (textuelle ou vocale)<br><strong>Then</strong> le contexte patient est injecté dans le prompt RAG comme filtre additionnel<br><strong>And</strong> la réponse de l&#39;IA priorise les informations de la notice pertinentes pour le profil (ex: posologie enfant si &quot;Enfant&quot; est sélectionné)</p>
+<p><strong>Given</strong> l&#39;utilisateur a rempli le contexte patient<br><strong>When</strong> il scanne un nouveau médicament dans la même session<br><strong>Then</strong> le contexte patient précédent est conservé et proposé comme valeur par défaut<br><strong>And</strong> l&#39;utilisateur peut le modifier à tout moment</p>
+<p><strong>Given</strong> l&#39;utilisateur ne remplit pas le contexte patient<br><strong>When</strong> il pose une question au RAG<br><strong>Then</strong> le système retourne les informations générales de la notice sans filtrage</p>
+<hr>
+<h3>Story 2.5: Pare-feu Anti-Diagnostic &amp; Messages de Sécurité</h3>
+<p>As a <strong>système Tiba (protection médicale)</strong>,<br>I want <strong>détecter et bloquer toute requête qui demande un diagnostic, une prescription ou un conseil médical hors notice</strong>,<br>So that <strong>aucun utilisateur ne puisse confondre Tiba avec un médecin et mettre sa santé en danger</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur pose une question au RAG (vocale ou textuelle)<br><strong>When</strong> la requête contient une demande de diagnostic (ex: &quot;Mon enfant a de la fièvre, qu&#39;est-ce qu&#39;il a ?&quot;)<br><strong>Then</strong> le système bloque la requête AVANT qu&#39;elle n&#39;atteigne le LLM (FR10)<br><strong>And</strong> un message de sécurité s&#39;affiche : &quot;⚠️ Tiba ne peut pas poser de diagnostic. Consultez un médecin.&quot; (FR11)<br><strong>And</strong> le message est également lu à haute voix si le mode vocal est actif</p>
+<p><strong>Given</strong> le système détecte une requête hors périmètre<br><strong>When</strong> le message de sécurité s&#39;affiche<br><strong>Then</strong> des actions alternatives immédiates sont proposées (FR34) :</p>
+<ol>
+<li>&quot;📍 Localiser un médecin à proximité&quot;</li>
+<li>&quot;📞 Appeler le SAMU local&quot;</li>
+<li>&quot;🏥 Trouver une pharmacie de garde&quot;<br><strong>And</strong> chaque bouton est fonctionnel et redirige vers le service approprié</li>
+</ol>
+<p><strong>Given</strong> l&#39;utilisateur pose une question dont la réponse n&#39;existe pas dans la notice<br><strong>When</strong> le RAG ne trouve aucun chunk pertinent au-dessus du seuil de similarité<br><strong>Then</strong> un message s&#39;affiche : &quot;Cette information n&#39;est pas disponible dans la notice de ce médicament. Consultez votre pharmacien.&quot; (FR12)<br><strong>And</strong> le système NE FABRIQUE PAS de réponse (température 0.0 + seuil de similarité)</p>
+<p><strong>Given</strong> une requête de prescription est détectée (ex: &quot;Quel médicament donner à mon enfant pour la toux ?&quot;)<br><strong>When</strong> le pare-feu intervient<br><strong>Then</strong> la requête est bloquée avec le message : &quot;Tiba ne peut pas prescrire de médicaments. Seul un médecin peut le faire.&quot; (FR10)<br><strong>And</strong> l&#39;interaction bloquée est journalisée pour audit (FR24)</p>
+<hr>
+<h3>Story 2.6: Mode Global IA (Sans Scan)</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>poser une question à l&#39;IA sans avoir scanné de médicament spécifique</strong>,<br>So that <strong>je puisse obtenir des informations générales sur un médicament dont je connais le nom</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur est sur l&#39;écran principal de l&#39;application<br><strong>When</strong> il accède à l&#39;assistant IA via un bouton d&#39;accès global (ex: FAB ou élément de navigation)<br><strong>Then</strong> l&#39;interface de chat IA s&#39;ouvre sans contexte médicament pré-chargé (FR7)<br><strong>And</strong> un message d&#39;accueil s&#39;affiche : &quot;Bonjour ! Quel médicament souhaitez-vous connaître ?&quot;</p>
+<p><strong>Given</strong> l&#39;utilisateur saisit ou dicte le nom d&#39;un médicament en mode global<br><strong>When</strong> le système recherche le médicament dans la base de données<br><strong>Then</strong> si le médicament est trouvé, le contexte de la notice est chargé automatiquement<br><strong>And</strong> les questions suivantes sont traitées par le pipeline RAG avec cette notice comme contexte</p>
+<p><strong>Given</strong> l&#39;utilisateur mentionne un médicament introuvable dans la base<br><strong>When</strong> la recherche échoue<br><strong>Then</strong> un message s&#39;affiche : &quot;Ce médicament n&#39;est pas encore dans notre base. Essayez de scanner la boîte.&quot;<br><strong>And</strong> un bouton &quot;Scanner maintenant&quot; redirige vers l&#39;onglet Scanner</p>
+<p><strong>Given</strong> l&#39;utilisateur est en mode global<br><strong>When</strong> il pose une question sans mentionner de médicament spécifique (ex: &quot;C&#39;est quoi un antibiotique ?&quot;)<br><strong>Then</strong> le pare-feu détecte l&#39;absence de notice contextuelle<br><strong>And</strong> un message s&#39;affiche : &quot;Pour vous aider, indiquez le nom d&#39;un médicament ou scannez sa boîte.&quot;</p>
+<hr>
+<h3>Story 2.7: Audit Logging &amp; Signalement Utilisateur</h3>
+<p>As a <strong>administrateur Tiba (sécurité médicale)</strong>,<br>I want <strong>que chaque interaction IA soit journalisée de manière immuable et que les utilisateurs puissent signaler des réponses incorrectes</strong>,<br>So that <strong>nous puissions auditer la qualité des réponses et détecter les problèmes de sécurité médicale</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> un utilisateur pose une question au RAG (textuelle ou vocale)<br><strong>When</strong> la réponse est générée et affichée<br><strong>Then</strong> l&#39;interaction complète est journalisée dans la table <code>ai_audit_logs</code> avec :</p>
+<ul>
+<li><code>user_id</code> (anonymisé hash)</li>
+<li><code>medication_id</code> (référence à la notice)</li>
+<li><code>query_text</code> (question posée)</li>
+<li><code>response_text</code> (réponse du RAG)</li>
+<li><code>context_patient</code> (adulte/enfant/âge/poids si fourni)</li>
+<li><code>was_blocked</code> (boolean si pare-feu activé)</li>
+<li><code>timestamp</code> (horodatage UTC)<br><strong>And</strong> le log est immuable (INSERT ONLY, pas d&#39;UPDATE ni DELETE) (FR24, NFR8)</li>
+</ul>
+<p><strong>Given</strong> les logs d&#39;audit sont créés<br><strong>When</strong> 24 mois se sont écoulés<br><strong>Then</strong> les logs restent accessibles et ne sont pas purgés automatiquement (NFR8)</p>
+<p><strong>Given</strong> l&#39;utilisateur lit une réponse de l&#39;IA dans le chat<br><strong>When</strong> il appuie sur le bouton &quot;⚠️ Signaler cette réponse&quot; (icône drapeau)<br><strong>Then</strong> un formulaire rapide s&#39;affiche avec les options :</p>
+<ol>
+<li>&quot;Information incorrecte&quot;</li>
+<li>&quot;Information dangereuse&quot;</li>
+<li>&quot;Autre&quot; (champ libre)<br><strong>And</strong> le signalement est enregistré en base avec référence au log d&#39;audit concerné (FR37)</li>
+</ol>
+<p><strong>Given</strong> un signalement est enregistré<br><strong>When</strong> l&#39;administrateur consulte le dashboard (Epic 4)<br><strong>Then</strong> le signalement apparaît dans la liste avec le contexte complet de l&#39;interaction<br><strong>And</strong> un compteur d&#39;alertes non traitées est visible</p>
+<hr>
+<h2>Epic 3: Le Filet de Sécurité Local (Pharmacies de Garde)</h2>
+<p><strong>Epic Goal:</strong> Fournir l&#39;emplacement de la pharmacie de garde physique la plus proche du patient, de façon instantanée, avec ou sans connexion, grâce au stockage local SQLite.</p>
+<h3>Story 3.1: Recherche des Pharmacies de Garde par GPS</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>trouver les pharmacies de garde ouvertes à proximité de ma position actuelle</strong>,<br>So that <strong>je puisse obtenir mes médicaments rapidement, même la nuit ou un dimanche</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur navigue vers l&#39;onglet &quot;Secours&quot; de la Bottom Navigation Bar<br><strong>When</strong> l&#39;écran des pharmacies de garde s&#39;affiche<br><strong>Then</strong> le système demande la permission de géolocalisation (si pas encore accordée)<br><strong>And</strong> un Skeleton Loader s&#39;affiche pendant le chargement (UX-DR7)</p>
+<p><strong>Given</strong> la permission GPS est accordée et le réseau est disponible<br><strong>When</strong> la position de l&#39;utilisateur est obtenue<br><strong>Then</strong> une requête PostGIS est envoyée à Supabase pour trouver les pharmacies de garde dans un rayon de 10 km<br><strong>And</strong> les résultats s&#39;affichent en moins de 2 secondes (NFR3)<br><strong>And</strong> les pharmacies sont triées par distance croissante (FR13)</p>
+<p><strong>Given</strong> les résultats sont affichés<br><strong>When</strong> l&#39;utilisateur consulte la liste<br><strong>Then</strong> chaque entrée affiche :</p>
+<ul>
+<li>Le nom de la pharmacie</li>
+<li>L&#39;adresse</li>
+<li>La distance estimée (en km)</li>
+<li>Les horaires de garde actuels</li>
+<li>Un indicateur visuel &quot;Ouverte maintenant&quot; (Vert Santé) ou &quot;Fermée&quot; (gris)</li>
+</ul>
+<p><strong>Given</strong> la permission GPS est refusée<br><strong>When</strong> l&#39;écran tente de charger<br><strong>Then</strong> un message explicatif s&#39;affiche : &quot;Activez la localisation pour trouver les pharmacies proches&quot;<br><strong>And</strong> un bouton &quot;Ouvrir les paramètres&quot; redirige vers les réglages du téléphone</p>
+<p><strong>Given</strong> aucune pharmacie de garde n&#39;est trouvée dans le rayon de 10 km<br><strong>When</strong> les résultats sont vides<br><strong>Then</strong> un message s&#39;affiche : &quot;Aucune pharmacie de garde trouvée à proximité. Élargir la recherche ?&quot;<br><strong>And</strong> un bouton permet d&#39;étendre le rayon à 25 km</p>
+<hr>
+<h3>Story 3.2: Affichage Distance &amp; Itinéraire</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>voir la distance exacte et l&#39;itinéraire vers la pharmacie de garde choisie</strong>,<br>So that <strong>je puisse m&#39;y rendre sans me perdre, même dans un quartier que je ne connais pas</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur consulte la liste des pharmacies de garde (Story 3.1)<br><strong>When</strong> il appuie sur une pharmacie dans la liste<br><strong>Then</strong> une fiche détaillée s&#39;affiche avec :</p>
+<ul>
+<li>Le nom et l&#39;adresse complète</li>
+<li>Le numéro de téléphone (cliquable pour appeler)</li>
+<li>La distance précise en km</li>
+<li>Les horaires de garde détaillés<br><strong>And</strong> un bouton &quot;Itinéraire&quot; est visible en bas de la fiche (FR14)</li>
+</ul>
+<p><strong>Given</strong> l&#39;utilisateur appuie sur &quot;Itinéraire&quot;<br><strong>When</strong> une application de navigation est disponible sur le téléphone (Google Maps, Waze, etc.)<br><strong>Then</strong> l&#39;application de navigation s&#39;ouvre avec la destination pré-remplie (latitude/longitude de la pharmacie)<br><strong>And</strong> l&#39;itinéraire est calculé automatiquement depuis la position actuelle</p>
+<p><strong>Given</strong> aucune application de navigation n&#39;est installée<br><strong>When</strong> l&#39;utilisateur appuie sur &quot;Itinéraire&quot;<br><strong>Then</strong> le navigateur web s&#39;ouvre avec Google Maps en mode web vers la destination</p>
+<p><strong>Given</strong> l&#39;utilisateur est sur la fiche détaillée d&#39;une pharmacie<br><strong>When</strong> il appuie sur le numéro de téléphone<br><strong>Then</strong> le composeur téléphonique s&#39;ouvre avec le numéro pré-rempli</p>
+<hr>
+<h3>Story 3.3: Cache Local des Pharmacies (Mode Hors-ligne)</h3>
+<p>As a <strong>utilisateur Tiba en zone à couverture instable (Aminata)</strong>,<br>I want <strong>consulter la liste des pharmacies de garde même sans connexion internet</strong>,<br>So that <strong>je puisse trouver une pharmacie de garde en cas d&#39;urgence nocturne sans réseau</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur a consulté les pharmacies de garde au moins une fois en ligne<br><strong>When</strong> les résultats sont affichés avec succès<br><strong>Then</strong> la liste complète des pharmacies (noms, adresses, coordonnées GPS, horaires) est automatiquement sauvegardée dans la base Drift locale</p>
+<p><strong>Given</strong> l&#39;utilisateur est hors connexion<br><strong>When</strong> il navigue vers l&#39;onglet &quot;Secours&quot;<br><strong>Then</strong> les pharmacies de garde depuis le cache local s&#39;affichent en moins de 0.5 seconde (NFR3)<br><strong>And</strong> un indicateur &quot;Données hors-ligne (mises à jour le [date])&quot; est visible en haut de la liste<br><strong>And</strong> les pharmacies restent consultables pendant au moins 7 jours sans connexion (NFR16, FR15)</p>
+<p><strong>Given</strong> l&#39;utilisateur est hors connexion et consulte le cache<br><strong>When</strong> il appuie sur une pharmacie<br><strong>Then</strong> la fiche détaillée s&#39;affiche avec toutes les informations cachées<br><strong>And</strong> le bouton &quot;Itinéraire&quot; fonctionne si une app de navigation hors-ligne est installée<br><strong>And</strong> le numéro de téléphone reste cliquable pour appeler</p>
+<p><strong>Given</strong> la connexion réseau est rétablie<br><strong>When</strong> l&#39;utilisateur navigue vers l&#39;onglet &quot;Secours&quot;<br><strong>Then</strong> le cache local est silencieusement mis à jour avec les données fraîches de Supabase<br><strong>And</strong> les nouvelles pharmacies ou mises à jour d&#39;horaires sont reflétées</p>
+<p><strong>Given</strong> le cache a plus de 7 jours<br><strong>When</strong> l&#39;utilisateur consulte les pharmacies hors-ligne<br><strong>Then</strong> un avertissement s&#39;affiche : &quot;Ces données datent de plus de 7 jours. Connectez-vous pour les actualiser.&quot;<br><strong>And</strong> les données restent affichées mais avec un badge d&#39;avertissement jaune</p>
+<hr>
+<h3>Story 3.4: Suggestion Automatique Post-Scan/IA</h3>
+<p>As a <strong>système Tiba</strong>,<br>I want <strong>suggérer automatiquement une pharmacie de garde après un scan ou une interaction IA</strong>,<br>So that <strong>l&#39;utilisateur puisse se procurer le médicament identifié sans effort supplémentaire</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur a scanné un médicament et la fiche &quot;Medical Pill&quot; est affichée (Epic 1)<br><strong>When</strong> le résultat du scan est affiché avec succès<br><strong>Then</strong> un encart discret &quot;📍 Pharmacie de garde la plus proche&quot; apparaît sous la fiche résultat<br><strong>And</strong> l&#39;encart affiche le nom et la distance de la pharmacie de garde la plus proche (FR16)<br><strong>And</strong> l&#39;encart utilise le style du Design System (fond Sable, bordure Vert Santé, 24px radius)</p>
+<p><strong>Given</strong> l&#39;utilisateur a posé une question IA et reçu une réponse (Epic 2)<br><strong>When</strong> la réponse du RAG est affichée dans le chat<br><strong>Then</strong> une suggestion contextuelle &quot;Besoin du médicament ? 📍 Pharmacie de garde à [X] km&quot; apparaît sous la réponse<br><strong>And</strong> le lien est cliquable et redirige vers la fiche de la pharmacie (Story 3.2)</p>
+<p><strong>Given</strong> le pare-feu anti-diagnostic a bloqué une requête (Story 2.5)<br><strong>When</strong> les actions alternatives s&#39;affichent<br><strong>Then</strong> le bouton &quot;🏥 Trouver une pharmacie de garde&quot; utilise les données de l&#39;Epic 3 pour afficher directement la plus proche<br><strong>And</strong> l&#39;utilisateur n&#39;a pas besoin de naviguer manuellement vers l&#39;onglet &quot;Secours&quot;</p>
+<p><strong>Given</strong> l&#39;utilisateur est hors connexion<br><strong>When</strong> la suggestion de pharmacie apparaît après un scan (cache local)<br><strong>Then</strong> la pharmacie suggérée provient du cache Drift local<br><strong>And</strong> la mention &quot;(données hors-ligne)&quot; est visible à côté de la distance</p>
+<hr>
+<h2>Epic 4: La Tour de Contrôle Opérationnelle (Web Admin Dashboard)</h2>
+<p><strong>Epic Goal:</strong> Permettre aux opérateurs Tiba de saisir les nouvelles notices officielles et de mettre à jour les stocks et horaires des pharmacies dans un portail Next.js connecté à Supabase.</p>
+<h3>Story 4.1: Scaffold Admin Dashboard &amp; Authentification Opérateur</h3>
+<p>As a <strong>opérateur Tiba (administrateur)</strong>,<br>I want <strong>accéder à un portail web sécurisé réservé aux administrateurs</strong>,<br>So that <strong>je puisse gérer la base pharmaceutique sans risque d&#39;accès non autorisé</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> le projet Next.js <code>apps/tiba-admin/</code> est initialisé via <code>npx create-next-app -e with-supabase</code><br><strong>When</strong> le développeur ouvre le projet<br><strong>Then</strong> la structure contient les dossiers <code>app/</code>, <code>components/</code>, et <code>lib/</code><br><strong>And</strong> Supabase Auth est configuré avec le support email/mot de passe pour les opérateurs<br><strong>And</strong> le thème utilise les couleurs Tiba (Vert Santé, Sable Chaud) adaptées au contexte Desktop</p>
+<p><strong>Given</strong> un opérateur non authentifié accède à l&#39;URL du dashboard<br><strong>When</strong> la page se charge<br><strong>Then</strong> l&#39;écran de connexion s&#39;affiche avec les champs email + mot de passe<br><strong>And</strong> aucune autre page n&#39;est accessible sans authentification (middleware Next.js)</p>
+<p><strong>Given</strong> un opérateur saisit des identifiants valides<br><strong>When</strong> la connexion via Supabase Auth réussit<br><strong>Then</strong> le tableau de bord principal s&#39;affiche avec une sidebar de navigation :</p>
+<ul>
+<li>&quot;Notices&quot; (gestion de la base pharmaceutique)</li>
+<li>&quot;Pharmacies&quot; (gestion des pharmacies de garde)</li>
+<li>&quot;Signalements&quot; (alertes utilisateurs - FR37, lié à Story 2.7)<br><strong>And</strong> le JWT de session est stocké en cookie HTTP-only sécurisé (TLS 1.3, NFR5)</li>
+</ul>
+<p><strong>Given</strong> un utilisateur avec un rôle non-administrateur tente d&#39;accéder au dashboard<br><strong>When</strong> la vérification du rôle échoue<br><strong>Then</strong> l&#39;accès est refusé avec un message &quot;Accès non autorisé&quot;<br><strong>And</strong> la tentative est journalisée</p>
+<p><strong>Given</strong> la session de l&#39;opérateur expire<br><strong>When</strong> il tente une action sur le dashboard<br><strong>Then</strong> il est redirigé vers la page de connexion avec un message &quot;Session expirée&quot;</p>
+<hr>
+<h3>Story 4.2: Gestion de la Base Pharmaceutique (CRUD Notices)</h3>
+<p>As a <strong>opérateur Tiba (administrateur)</strong>,<br>I want <strong>consulter, ajouter, modifier et retirer des notices médicamenteuses de la base de données</strong>,<br>So that <strong>la base pharmaceutique reste à jour avec les dernières informations certifiées</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;opérateur est connecté et navigue vers la section &quot;Notices&quot;<br><strong>When</strong> la page s&#39;affiche<br><strong>Then</strong> un tableau paginé liste toutes les notices avec :</p>
+<ul>
+<li>Nom du médicament</li>
+<li>Code-barres (si disponible)</li>
+<li>Date d&#39;ajout</li>
+<li>Date de dernière modification</li>
+<li>Statut (Actif / Retiré)<br><strong>And</strong> un champ de recherche par nom ou code-barres est disponible en haut (FR29)</li>
+</ul>
+<p><strong>Given</strong> l&#39;opérateur clique sur &quot;Ajouter une notice&quot;<br><strong>When</strong> le formulaire de création s&#39;affiche<br><strong>Then</strong> les champs suivants sont disponibles :</p>
+<ul>
+<li>Nom du médicament (obligatoire)</li>
+<li>Code-barres (optionnel)</li>
+<li>Texte complet de la notice (obligatoire, éditeur riche)</li>
+<li>Source officielle (obligatoire, URL ou référence)</li>
+<li>Photos de la boîte (upload multiple)<br><strong>And</strong> le bouton &quot;Publier&quot; déclenche l&#39;ingestion dans pgvector (vectorisation automatique) (FR31, FR22)</li>
+</ul>
+<p><strong>Given</strong> l&#39;opérateur publie une nouvelle notice<br><strong>When</strong> la sauvegarde réussit<br><strong>Then</strong> le texte de la notice est découpé en chunks et vectorisé automatiquement via une Edge Function<br><strong>And</strong> la notice est immédiatement interrogeable par le RAG sur l&#39;app mobile<br><strong>And</strong> un toast de confirmation &quot;Notice publiée avec succès&quot; s&#39;affiche</p>
+<p><strong>Given</strong> l&#39;opérateur clique sur &quot;Modifier&quot; pour une notice existante<br><strong>When</strong> il met à jour les champs et sauvegarde<br><strong>Then</strong> les anciennes données sont archivées (versionnage)<br><strong>And</strong> les nouveaux embeddings sont recalculés (FR31)</p>
+<p><strong>Given</strong> l&#39;opérateur clique sur &quot;Retirer&quot; pour une notice<br><strong>When</strong> la confirmation est validée<br><strong>Then</strong> le statut passe à &quot;Retiré&quot; (pas de suppression physique, soft delete)<br><strong>And</strong> la notice n&#39;apparaît plus dans les résultats de scan de l&#39;app mobile<br><strong>And</strong> les logs d&#39;audit existants référençant cette notice restent intacts</p>
+<hr>
+<h3>Story 4.3: Édition des Fiches Produit avec Synchronisation Temps Réel</h3>
+<p>As a <strong>opérateur Tiba</strong>,<br>I want <strong>créer et éditer des fiches produit avec photos qui se synchronisent immédiatement sur l&#39;app mobile</strong>,<br>So that <strong>les patients aient accès aux informations les plus récentes dès leur publication</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;opérateur crée ou modifie une fiche produit (Story 4.2)<br><strong>When</strong> il uploade des photos de la boîte du médicament<br><strong>Then</strong> les images sont stockées dans Supabase Storage avec compression automatique<br><strong>And</strong> un aperçu miniature est généré pour l&#39;affichage dans la liste</p>
+<p><strong>Given</strong> l&#39;opérateur publie ou met à jour une fiche produit<br><strong>When</strong> la sauvegarde est confirmée<br><strong>Then</strong> la modification est immédiatement visible sur l&#39;app mobile via Supabase Realtime (FR30)<br><strong>And</strong> les utilisateurs mobiles qui consultent cette notice en temps réel voient la mise à jour sans rafraîchir manuellement</p>
+<p><strong>Given</strong> l&#39;opérateur modifie le texte de la notice<br><strong>When</strong> la sauvegarde est confirmée<br><strong>Then</strong> les embeddings pgvector sont recalculés automatiquement en arrière-plan<br><strong>And</strong> un indicateur &quot;Réindexation en cours...&quot; s&#39;affiche temporairement<br><strong>And</strong> les nouvelles réponses du RAG reflètent le contenu mis à jour</p>
+<p><strong>Given</strong> l&#39;opérateur uploade une image invalide (format non supporté, taille &gt; 5 Mo)<br><strong>When</strong> l&#39;upload échoue<br><strong>Then</strong> un message d&#39;erreur clair s&#39;affiche avec les formats acceptés (JPG, PNG, WebP) et la taille maximale</p>
+<hr>
+<h3>Story 4.4: Gestion des Pharmacies de Garde &amp; Disponibilités</h3>
+<p>As a <strong>opérateur Tiba</strong>,<br>I want <strong>mettre à jour les horaires de garde et les disponibilités de médicaments des pharmacies</strong>,<br>So that <strong>les patients trouvent des informations fiables et à jour sur les pharmacies ouvertes</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;opérateur navigue vers la section &quot;Pharmacies&quot;<br><strong>When</strong> la page s&#39;affiche<br><strong>Then</strong> un tableau paginé liste toutes les pharmacies enregistrées avec :</p>
+<ul>
+<li>Nom de la pharmacie</li>
+<li>Ville / Quartier</li>
+<li>Statut de garde actuel (De garde / Normale)</li>
+<li>Prochaine date de garde<br><strong>And</strong> un champ de recherche et des filtres par ville sont disponibles (FR30b)</li>
+</ul>
+<p><strong>Given</strong> l&#39;opérateur clique sur &quot;Modifier&quot; pour une pharmacie<br><strong>When</strong> le formulaire d&#39;édition s&#39;affiche<br><strong>Then</strong> les champs suivants sont éditables :</p>
+<ul>
+<li>Nom, adresse, coordonnées GPS (latitude/longitude)</li>
+<li>Numéro de téléphone</li>
+<li>Planning de garde (calendrier avec sélection de dates/plages horaires)</li>
+<li>Liste de disponibilité des médicaments (optionnel)</li>
+</ul>
+<p><strong>Given</strong> l&#39;opérateur met à jour le planning de garde<br><strong>When</strong> la sauvegarde est confirmée<br><strong>Then</strong> les nouvelles dates de garde sont immédiatement reflétées sur l&#39;app mobile (Supabase Realtime)<br><strong>And</strong> le cache Drift local des utilisateurs sera mis à jour lors de leur prochaine synchronisation</p>
+<p><strong>Given</strong> l&#39;opérateur ajoute une nouvelle pharmacie<br><strong>When</strong> il remplit le formulaire et publie<br><strong>Then</strong> la pharmacie apparaît dans les résultats de recherche géolocalisée de l&#39;app mobile<br><strong>And</strong> les coordonnées GPS sont validées (format latitude/longitude correct)</p>
+<p><strong>Given</strong> l&#39;opérateur modifie la disponibilité d&#39;un médicament dans une pharmacie<br><strong>When</strong> il active ou désactive un médicament<br><strong>Then</strong> l&#39;information de stock est disponible dans la suggestion de pharmacie post-scan (Story 3.4)<br><strong>And</strong> les médicaments marqués &quot;en rupture&quot; ne sont pas suggérés en priorité</p>
+<hr>
+<h2>Epic 5: Monétisation &amp; Quotas (Le Moteur Économique)</h2>
+<p><strong>Epic Goal:</strong> Gérer rigoureusement la limite des scans Freemium gratuits et intégrer les paiements Mobile Money d&#39;Afrique Centrale pour activer la version Premium.</p>
+<h3>Story 5.1: Compteur de Quota Freemium &amp; Affichage</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>voir combien de scans gratuits il me reste ce mois-ci</strong>,<br>So that <strong>je puisse planifier mes utilisations et décider si je veux passer en Premium</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur est inscrit avec un compte Freemium (par défaut)<br><strong>When</strong> il ouvre l&#39;application<br><strong>Then</strong> un compteur discret &quot;X scans restants ce mois&quot; est visible sur l&#39;écran Scanner<br><strong>And</strong> le compteur affiche le quota restant sur le total mensuel (ex: &quot;2/3 restants&quot;) (FR36, FR18)</p>
+<p><strong>Given</strong> l&#39;utilisateur effectue un scan avec succès (code-barres ou OCR)<br><strong>When</strong> le médicament est identifié<br><strong>Then</strong> le compteur de scans est décrémenté de 1<br><strong>And</strong> le nouveau total est mis à jour visuellement en temps réel</p>
+<p><strong>Given</strong> le compteur atteint 1 scan restant<br><strong>When</strong> l&#39;utilisateur consulte l&#39;écran Scanner<br><strong>Then</strong> un avertissement discret en jaune s&#39;affiche : &quot;Dernier scan gratuit ce mois&quot;<br><strong>And</strong> un lien &quot;Passer en Premium&quot; est visible sous l&#39;avertissement</p>
+<p><strong>Given</strong> le premier jour d&#39;un nouveau mois calendaire<br><strong>When</strong> l&#39;utilisateur ouvre l&#39;application<br><strong>Then</strong> le compteur Freemium est réinitialisé au quota mensuel complet<br><strong>And</strong> aucune notification intrusive n&#39;est affichée</p>
+<p><strong>Given</strong> l&#39;utilisateur est en mode Premium<br><strong>When</strong> il consulte l&#39;écran Scanner<br><strong>Then</strong> le compteur de quota n&#39;est pas affiché (scans illimités)<br><strong>And</strong> un badge &quot;Premium ✨&quot; remplace le compteur</p>
+<hr>
+<h3>Story 5.2: Paywall &amp; Transition Freemium → Premium</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>comprendre clairement pourquoi je suis bloquée et comment débloquer les scans illimités</strong>,<br>So that <strong>je puisse décider rapidement de passer en Premium si j&#39;en ai besoin</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur Freemium a épuisé son quota de scans mensuels (compteur = 0)<br><strong>When</strong> il tente d&#39;effectuer un nouveau scan<br><strong>Then</strong> l&#39;écran de scan est remplacé par un écran de paywall (FR20)<br><strong>And</strong> l&#39;écran de paywall affiche :</p>
+<ul>
+<li>Un message empathique : &quot;Vous avez utilisé vos 3 scans gratuits ce mois.&quot;</li>
+<li>Les avantages Premium (scans illimités, questions IA illimitées, priorité support)</li>
+<li>Le prix de l&#39;abonnement mensuel</li>
+<li>Un bouton CTA prominent &quot;Passer en Premium&quot; (Vert Santé)</li>
+<li>Un lien secondaire &quot;Revenir le mois prochain&quot; pour fermer le paywall</li>
+</ul>
+<p><strong>Given</strong> l&#39;utilisateur Freemium bloqué appuie sur &quot;Passer en Premium&quot;<br><strong>When</strong> l&#39;écran de paiement s&#39;affiche<br><strong>Then</strong> il est redirigé vers le flux de paiement Mobile Money (Story 5.3)</p>
+<p><strong>Given</strong> l&#39;utilisateur Freemium bloqué choisit &quot;Revenir le mois prochain&quot;<br><strong>When</strong> il ferme le paywall<br><strong>Then</strong> il est redirigé vers l&#39;écran principal avec les fonctionnalités non liées au scan toujours accessibles (Historique, Pharmacies de Garde, Chat IA sur notices déjà scannées)</p>
+<p><strong>Given</strong> l&#39;utilisateur souscrit à Premium depuis le paywall<br><strong>When</strong> le paiement est confirmé (Story 5.3)<br><strong>Then</strong> le paywall disparaît immédiatement<br><strong>And</strong> le scanner redevient actif sans limite<br><strong>And</strong> le badge &quot;Premium ✨&quot; apparaît</p>
+<hr>
+<h3>Story 5.3: Intégration Paiement Mobile Money</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>payer mon abonnement Premium via Mobile Money (Orange, Airtel, Moov)</strong>,<br>So that <strong>je puisse souscrire facilement avec le moyen de paiement que j&#39;utilise au quotidien</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur appuie sur &quot;Passer en Premium&quot; (depuis le paywall ou les paramètres)<br><strong>When</strong> l&#39;écran de paiement s&#39;affiche<br><strong>Then</strong> les 3 opérateurs Mobile Money sont proposés :</p>
+<ol>
+<li>Orange Money (logo + couleur)</li>
+<li>Airtel Money (logo + couleur)</li>
+<li>Moov Money (logo + couleur)<br><strong>And</strong> le montant de l&#39;abonnement est clairement affiché (FR19)</li>
+</ol>
+<p><strong>Given</strong> l&#39;utilisateur sélectionne un opérateur Mobile Money<br><strong>When</strong> il saisit son numéro de téléphone Mobile Money<br><strong>Then</strong> une requête de paiement est envoyée au fournisseur via l&#39;API de paiement intégrée (Edge Function Supabase)<br><strong>And</strong> un Skeleton Loader avec le message &quot;Paiement en cours...&quot; s&#39;affiche (UX-DR7)</p>
+<p><strong>Given</strong> le paiement est validé côté opérateur<br><strong>When</strong> la confirmation est reçue par le backend<br><strong>Then</strong> le statut de l&#39;utilisateur passe à &quot;Premium&quot; dans Supabase<br><strong>And</strong> un écran de confirmation &quot;Bienvenue en Premium ! 🎉&quot; s&#39;affiche<br><strong>And</strong> l&#39;expiration de l&#39;abonnement est fixée à J+30 jours</p>
+<p><strong>Given</strong> le paiement échoue (solde insuffisant, timeout, erreur réseau)<br><strong>When</strong> l&#39;erreur est reçue<br><strong>Then</strong> un message d&#39;erreur clair s&#39;affiche en Rouge Corail : &quot;Le paiement n&#39;a pas abouti. Vérifiez votre solde et réessayez.&quot;<br><strong>And</strong> l&#39;utilisateur reste en mode Freemium<br><strong>And</strong> aucun montant n&#39;est débité</p>
+<p><strong>Given</strong> l&#39;abonnement Premium arrive à expiration (J+30)<br><strong>When</strong> le système vérifie le statut<br><strong>Then</strong> l&#39;utilisateur repasse automatiquement en mode Freemium<br><strong>And</strong> un message push notification l&#39;informe : &quot;Votre abonnement Premium a expiré. Renouvelez pour continuer.&quot;<br><strong>And</strong> le compteur Freemium est réinitialisé</p>
+<hr>
+<h3>Story 5.4: Historique de Paiements &amp; Gestion d&#39;Abonnement</h3>
+<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>consulter mes paiements passés et le statut de mon abonnement</strong>,<br>So that <strong>je puisse garder le contrôle de mes dépenses et savoir quand mon abonnement expire</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> l&#39;utilisateur navigue vers les paramètres de son profil<br><strong>When</strong> il appuie sur &quot;Mon abonnement&quot;<br><strong>Then</strong> l&#39;écran affiche :</p>
+<ul>
+<li>Statut actuel : Freemium / Premium</li>
+<li>Si Premium : date d&#39;expiration de l&#39;abonnement en cours</li>
+<li>Si Freemium : quota de scans restant ce mois</li>
+<li>Un bouton &quot;Passer en Premium&quot; (si Freemium) ou &quot;Renouveler&quot; (si Premium expiré)</li>
+</ul>
+<p><strong>Given</strong> l&#39;utilisateur appuie sur &quot;Historique des paiements&quot;<br><strong>When</strong> la liste s&#39;affiche<br><strong>Then</strong> chaque entrée contient (FR35) :</p>
+<ul>
+<li>Date du paiement</li>
+<li>Montant payé</li>
+<li>Opérateur Mobile Money utilisé (Orange/Airtel/Moov)</li>
+<li>Statut (Réussi / Échoué / Remboursé)</li>
+<li>Période couverte (ex: &quot;15 mars - 14 avril 2026&quot;)</li>
+</ul>
+<p><strong>Given</strong> l&#39;historique est vide (nouvel utilisateur)<br><strong>When</strong> la liste s&#39;affiche<br><strong>Then</strong> un message &quot;Aucun paiement enregistré&quot; s&#39;affiche<br><strong>And</strong> un bouton &quot;Découvrir Premium&quot; redirige vers les avantages</p>
+<p><strong>Given</strong> l&#39;utilisateur est Premium et son abonnement expire dans 3 jours<br><strong>When</strong> il ouvre l&#39;application<br><strong>Then</strong> un bandeau discret s&#39;affiche en haut : &quot;Votre abonnement expire dans 3 jours. Renouvelez maintenant.&quot;<br><strong>And</strong> le bandeau contient un bouton &quot;Renouveler&quot; qui ouvre le flux Mobile Money (Story 5.3)</p>
+<hr>
+<h2>Epic 6: Le Pivot Licorne &quot;Data SaaS&quot; (Analytique et Insights)</h2>
+<p><strong>Epic Goal:</strong> Agréger et expurger toutes les données individuelles des scans afin d&#39;offrir des alertes prédictives et un puissant tableau de bord de macro-tendances médicales pour les institutions de santé en B2B.</p>
+<h3>Story 6.1: Pipeline d&#39;Anonymisation Irréversible</h3>
+<p>As a <strong>système Tiba (conformité données)</strong>,<br>I want <strong>anonymiser de manière irréversible toutes les données d&#39;utilisation avant leur agrégation</strong>,<br>So that <strong>aucune donnée personnelle ne puisse jamais être récupérée à partir des datasets B2B</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> un utilisateur effectue un scan ou une interaction IA<br><strong>When</strong> les données brutes sont collectées<br><strong>Then</strong> un pipeline d&#39;anonymisation s&#39;exécute automatiquement (Edge Function ou Trigger PostgreSQL) (FR23)<br><strong>And</strong> les champs suivants sont anonymisés de manière irréversible :</p>
+<ul>
+<li><code>user_id</code> → hash SHA-256 salé non réversible</li>
+<li><code>phone_number</code> → complètement supprimé</li>
+<li><code>precise_location</code> → arrondi à la granularité quartier/commune (pas de GPS exact)</li>
+<li><code>patient_context</code> → supprimé (seul le type adulte/enfant est conservé sans âge ni poids)</li>
+</ul>
+<p><strong>Given</strong> les données anonymisées sont stockées<br><strong>When</strong> un analyste tente de recouper les données<br><strong>Then</strong> il est impossible de reconstituer l&#39;identité d&#39;un utilisateur individuel (NFR9)<br><strong>And</strong> les données anonymisées ne contiennent aucun identifiant direct ou indirect</p>
+<p><strong>Given</strong> le pipeline d&#39;anonymisation est en place<br><strong>When</strong> les données transitent vers la table d&#39;agrégation <code>anonymous_scan_events</code><br><strong>Then</strong> les données brutes originales ne sont jamais copiées dans cette table<br><strong>And</strong> seules les données déjà anonymisées y sont insérées</p>
+<p><strong>Given</strong> un audit de conformité est demandé<br><strong>When</strong> les tables d&#39;anonymisation sont inspectées<br><strong>Then</strong> la documentation technique du processus d&#39;anonymisation est disponible<br><strong>And</strong> les tests unitaires prouvent l&#39;irréversibilité du hachage</p>
+<hr>
+<h3>Story 6.2: Agrégation des Données de Scan par Zone &amp; Période</h3>
+<p>As a <strong>système Tiba (Data Pipeline)</strong>,<br>I want <strong>agréger les données de scan anonymisées par zone géographique et par période temporelle</strong>,<br>So that <strong>les tendances de consommation pharmaceutique puissent être analysées sans compromettre la vie privée des patients</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> des scans anonymisés sont accumulés dans <code>anonymous_scan_events</code><br><strong>When</strong> un job d&#39;agrégation s&#39;exécute (quotidien ou hebdomadaire via Supabase Edge Function CRON)<br><strong>Then</strong> les données sont agrégées par :</p>
+<ul>
+<li>Zone géographique (ville / quartier / commune)</li>
+<li>Période temporelle (jour / semaine / mois)</li>
+<li>Médicament (nom ou catégorie thérapeutique)<br><strong>And</strong> les résultats sont stockés dans la table <code>aggregated_scan_metrics</code> (FR26)</li>
+</ul>
+<p><strong>Given</strong> les données agrégées sont créées<br><strong>When</strong> un analyste consulte les métriques<br><strong>Then</strong> chaque entrée contient :</p>
+<ul>
+<li><code>zone_id</code> (identifiant géographique)</li>
+<li><code>period_start</code> / <code>period_end</code> (plage temporelle)</li>
+<li><code>medication_id</code> (référence médicament)</li>
+<li><code>scan_count</code> (nombre total de scans)</li>
+<li><code>unique_scanners_count</code> (nombre de hashes uniques — pas de noms)</li>
+</ul>
+<p><strong>Given</strong> le pipeline d&#39;agrégation a traité les données<br><strong>When</strong> le taux de complétude est vérifié<br><strong>Then</strong> au moins 95% des scans de la période sont représentés dans les agrégats (NFR21)<br><strong>And</strong> les événements manquants (&lt; 5%) sont documentés et traçables</p>
+<p><strong>Given</strong> les données agrégées couvrent une période de 30 jours ou plus<br><strong>When</strong> le volume dépasse 10 000 scans agrégés<br><strong>Then</strong> les performances de requête restent sous 2 secondes pour les requêtes analytiques standard</p>
+<hr>
+<h3>Story 6.3: Dashboard B2B Analytique</h3>
+<p>As a <strong>opérateur B2B (Ministère de la Santé, OMS, laboratoire pharmaceutique)</strong>,<br>I want <strong>consulter un tableau de bord montrant les tendances de consommation pharmaceutique par zone et par période</strong>,<br>So that <strong>je puisse prendre des décisions d&#39;allocation de ressources basées sur des données réelles</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> un opérateur B2B est authentifié sur le Web Admin Dashboard (Epic 4) avec un rôle &quot;Analytique&quot;<br><strong>When</strong> il navigue vers la section &quot;Analytics&quot;<br><strong>Then</strong> le tableau de bord affiche (FR27) :</p>
+<ul>
+<li>Une carte thermique (heatmap) montrant l&#39;intensité des scans par zone géographique</li>
+<li>Un graphique temporel (line chart) montrant l&#39;évolution des scans sur les 30/90/365 derniers jours</li>
+<li>Un classement des top 10 médicaments les plus scannés par zone</li>
+<li>Des filtres par : période, zone géographique, catégorie thérapeutique</li>
+</ul>
+<p><strong>Given</strong> l&#39;opérateur B2B applique un filtre (ex: &quot;Douala, derniers 30 jours&quot;)<br><strong>When</strong> le dashboard se rafraîchit<br><strong>Then</strong> tous les widgets se mettent à jour avec les données filtrées<br><strong>And</strong> le temps de chargement ne dépasse pas 3 secondes</p>
+<p><strong>Given</strong> l&#39;opérateur B2B souhaite exporter les données<br><strong>When</strong> il clique sur &quot;Exporter&quot;<br><strong>Then</strong> un fichier CSV est généré avec les données agrégées filtrées<br><strong>And</strong> le fichier ne contient aucune donnée personnelle (uniquement des agrégats anonymisés)<br><strong>And</strong> un filigrane &quot;Tiba Analytics — Confidentiel&quot; est ajouté au fichier</p>
+<p><strong>Given</strong> un opérateur B2B tente d&#39;accéder au dashboard sans le rôle &quot;Analytique&quot;<br><strong>When</strong> la vérification du rôle échoue<br><strong>Then</strong> l&#39;accès est refusé avec &quot;Vous n&#39;avez pas les droits pour consulter les analytiques&quot;</p>
+<hr>
+<h3>Story 6.4: Alertes Prédictives (Pics Anormaux)</h3>
+<p>As a <strong>opérateur B2B (responsable de veille sanitaire)</strong>,<br>I want <strong>recevoir une alerte automatique lorsqu&#39;un pic anormal de recherches pour un médicament est détecté dans une zone</strong>,<br>So that <strong>je puisse anticiper une pénurie, une épidémie potentielle, ou un usage détourné</strong>.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<p><strong>Given</strong> le pipeline d&#39;agrégation (Story 6.2) calcule les métriques quotidiennement<br><strong>When</strong> le nombre de scans pour un médicament dans une zone dépasse 2x la moyenne mobile des 30 derniers jours<br><strong>Then</strong> une alerte &quot;Pic Anormal Détecté&quot; est générée automatiquement (FR28)<br><strong>And</strong> l&#39;alerte contient :</p>
+<ul>
+<li>Nom du médicament</li>
+<li>Zone géographique concernée</li>
+<li>Volume de scans actuel vs moyenne historique</li>
+<li>Taux d&#39;augmentation (ex: &quot;+245%&quot;)</li>
+<li>Date de début du pic</li>
+</ul>
+<p><strong>Given</strong> une alerte prédictive est générée<br><strong>When</strong> l&#39;opérateur B2B consulte le dashboard Analytics<br><strong>Then</strong> un badge de notification rouge &quot;X alertes&quot; apparaît dans la sidebar<br><strong>And</strong> la section &quot;Alertes&quot; liste toutes les alertes actives triées par sévérité</p>
+<p><strong>Given</strong> l&#39;opérateur B2B ouvre une alerte prédictive<br><strong>When</strong> les détails s&#39;affichent<br><strong>Then</strong> un graphique montre la courbe de scans vs la moyenne mobile sur 30 jours<br><strong>And</strong> des boutons d&#39;action sont disponibles :</p>
+<ol>
+<li>&quot;Marquer comme traité&quot; (archiver l&#39;alerte)</li>
+<li>&quot;Exporter le rapport&quot; (PDF avec le contexte complet)</li>
+<li>&quot;Créer une notification&quot; (envoyer un message aux pharmacies de la zone)</li>
+</ol>
+<p><strong>Given</strong> le système détecte un pic sur un médicament à usage détourné connu (ex: codéine)<br><strong>When</strong> l&#39;alerte est générée<br><strong>Then</strong> elle est marquée avec un niveau de sévérité &quot;Critique&quot; (rouge)<br><strong>And</strong> un email automatique est envoyé à l&#39;administrateur principal du compte B2B</p>
+<p><strong>Given</strong> aucun pic anormal n&#39;est détecté pendant 30 jours<br><strong>When</strong> l&#39;opérateur consulte les alertes<br><strong>Then</strong> un message &quot;Aucune anomalie détectée dans les 30 derniers jours&quot; s&#39;affiche<br><strong>And</strong> un résumé des tendances normales est proposé</p>
+
+        </div>
+        <div class="prev-next"><a href="database-sql.html" class="prev-next-btn prev" aria-label="Page precedente: Code SQL Complet"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Code SQL Complet</span></a><a href="story-1-1.html" class="prev-next-btn next" aria-label="Page suivante: Story 1.1: Design System"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 1.1: Design System</span></a></div>
+      </article>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const btn = document.getElementById('hamburger-btn');
+      const isOpen = sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen);
+      if (isOpen) sidebar.querySelector('.nav-link').focus();
+    }
+    // Close sidebar on nav click (mobile only)
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 900) toggleSidebar();
+      });
+    });
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar.classList.contains('open')) toggleSidebar();
+      }
+    });
+  </script>
+</body>
+</html>

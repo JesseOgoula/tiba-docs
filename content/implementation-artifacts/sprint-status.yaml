@@ -1,0 +1,108 @@
+# generated: 2026-03-19
+# last_updated: 2026-03-19
+# project: Tiba
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-03-19
+last_updated: 2026-03-19
+project: Tiba
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  # ═══════════════════════════════════════════════════════
+  # EPIC 1: L'Expérience Cœur "Scan & Know" (MVP Patient)
+  # ═══════════════════════════════════════════════════════
+  epic-1: in-progress
+  1-1-project-initialization-and-design-system: ready-for-dev
+  1-2-onboarding-et-disclaimer-legal: backlog
+  1-3-authentification-utilisateur-otp: backlog
+  1-4-infrastructure-locale-et-synchronisation-db: backlog
+  1-5-hero-scan-viewfinder-camera-ar: backlog
+  1-6-fiche-resultat-medical-pill-et-matching-notice: backlog
+  epic-1-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════
+  # EPIC 2: Le Pharmacien Digital IA (RAG Strict)
+  # ═══════════════════════════════════════════════════════
+  epic-2: backlog
+  2-1-pipeline-rag-strict-et-edge-function-ia: backlog
+  2-2-chat-textuel-sur-la-notice: backlog
+  2-3-voice-assistant-orb-hold-to-talk: backlog
+  2-4-contexte-patient-adulte-enfant-poids: backlog
+  2-5-pare-feu-anti-diagnostic-et-messages-de-securite: backlog
+  2-6-mode-global-ia-sans-scan: backlog
+  2-7-audit-logging-et-signalement-utilisateur: backlog
+  epic-2-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════
+  # EPIC 3: Le Filet de Sécurité Local (Pharmacies de Garde)
+  # ═══════════════════════════════════════════════════════
+  epic-3: backlog
+  3-1-recherche-des-pharmacies-de-garde-par-gps: backlog
+  3-2-affichage-distance-et-itineraire: backlog
+  3-3-cache-local-des-pharmacies-mode-hors-ligne: backlog
+  3-4-suggestion-automatique-post-scan-ia: backlog
+  epic-3-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════
+  # EPIC 4: La Tour de Contrôle Opérationnelle (Web Admin)
+  # ═══════════════════════════════════════════════════════
+  epic-4: backlog
+  4-1-scaffold-admin-dashboard-et-authentification-operateur: backlog
+  4-2-gestion-de-la-base-pharmaceutique-crud-notices: backlog
+  4-3-edition-des-fiches-produit-avec-synchronisation-temps-reel: backlog
+  4-4-gestion-des-pharmacies-de-garde-et-disponibilites: backlog
+  epic-4-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════
+  # EPIC 5: Monétisation & Quotas (Le Moteur Économique)
+  # ═══════════════════════════════════════════════════════
+  epic-5: backlog
+  5-1-compteur-de-quota-freemium-et-affichage: backlog
+  5-2-paywall-et-transition-freemium-premium: backlog
+  5-3-integration-paiement-mobile-money: backlog
+  5-4-historique-de-paiements-et-gestion-abonnement: backlog
+  epic-5-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════
+  # EPIC 6: Le Pivot Licorne "Data SaaS" (Analytique)
+  # ═══════════════════════════════════════════════════════
+  epic-6: backlog
+  6-1-pipeline-anonymisation-irreversible: backlog
+  6-2-agregation-des-donnees-de-scan-par-zone-et-periode: backlog
+  6-3-dashboard-b2b-analytique: backlog
+  6-4-alertes-predictives-pics-anormaux: backlog
+  epic-6-retrospective: optional

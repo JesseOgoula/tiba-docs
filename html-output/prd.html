@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Requirements (PRD) – Tiba Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="responsive.css">
+  <style>
+    /* ═══════════════════════════════════════════
+       TIBA DESIGN SYSTEM TOKENS
+       ═══════════════════════════════════════════ */
+    :root {
+      --tiba-green: #0B8E71;
+      --tiba-green-light: #0FAF8C;
+      --tiba-green-bg: #E8F5F1;
+      --tiba-sand: #F5F0E6;
+      --tiba-sand-dark: #EDE6D6;
+      --tiba-coral: #E85D75;
+      --tiba-dark: #1A1A1A;
+      --tiba-dark-soft: #2D2D2D;
+      --sidebar-w: 280px;
+      --header-h: 64px;
+      --radius: 12px;
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--tiba-sand); }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--tiba-sand);
+      color: var(--tiba-dark);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT
+       ═══════════════════════════════════════════ */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ─── Sidebar ─── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #fff;
+      border-right: 1px solid #e0ddd5;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-header {
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px;
+      border-bottom: 1px solid #e0ddd5;
+      flex-shrink: 0;
+    }
+    .sidebar-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+    .sidebar-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--tiba-dark);
+      letter-spacing: -0.5px;
+    }
+    .sidebar-header h1 span { color: var(--tiba-green); }
+    .sidebar-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 12px;
+    }
+
+    /* ─── Navigation Sections ─── */
+    .nav-section { margin-bottom: 8px; }
+    .nav-section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--tiba-green);
+      padding: 10px 12px 6px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid #eee;
+    }
+    .nav-section:first-child .nav-section-title {
+      border-top: none;
+    }
+    .nav-section-icon {
+      display: flex;
+      align-items: center;
+      color: var(--tiba-green);
+      opacity: 0.7;
+    }
+    .nav-list { list-style: none; }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px 7px 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #666;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.15s ease;
+      margin-bottom: 1px;
+    }
+    .nav-dot {
+      display: flex;
+      align-items: center;
+      color: #ccc;
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+    .nav-link:hover {
+      background: var(--tiba-green-bg);
+      color: var(--tiba-green);
+    }
+    .nav-link:hover .nav-dot { color: var(--tiba-green); }
+    .nav-link.active {
+      background: var(--tiba-green-bg);
+      color: var(--tiba-green);
+      font-weight: 600;
+    }
+    .nav-link.active .nav-dot { color: var(--tiba-green); }
+
+    /* ─── Main ─── */
+    .main-area {
+      flex: 1;
+      margin-left: var(--sidebar-w);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── Top Bar ─── */
+    .topbar {
+      height: var(--header-h);
+      background: rgba(245, 240, 230, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e0ddd5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--tiba-dark);
+    }
+    .topbar-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--tiba-green-bg);
+      color: var(--tiba-green);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    /* ─── Content Area ─── */
+    .content-wrap {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 32px 80px;
+      width: 100%;
+    }
+
+    /* ─── Mobile hamburger ─── */
+    .hamburger {
+      display: none;
+      background: var(--tiba-green);
+      color: #fff;
+      border: none;
+      font-size: 1.5rem;
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 90;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROSE — Markdown content styling
+       ═══════════════════════════════════════════ */
+    .prose h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--tiba-dark);
+      margin: 0 0 16px;
+      line-height: 1.2;
+      border-bottom: 3px solid var(--tiba-green);
+      padding-bottom: 12px;
+    }
+    .prose h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--tiba-green);
+      margin: 40px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e0ddd5;
+    }
+    .prose h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--tiba-dark);
+      margin: 28px 0 8px;
+    }
+    .prose h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #555;
+      margin: 20px 0 6px;
+    }
+    .prose p { margin: 12px 0; }
+    .prose a {
+      color: var(--tiba-green);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .prose a:hover { color: var(--tiba-green-light); }
+    .prose strong { color: var(--tiba-dark); }
+    .prose ul, .prose ol {
+      padding-left: 24px;
+      margin: 12px 0;
+    }
+    .prose li { margin: 6px 0; }
+    .prose li::marker { color: var(--tiba-green); }
+    .prose blockquote {
+      border-left: 4px solid var(--tiba-green);
+      background: var(--tiba-green-bg);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: #3a3a3a;
+    }
+    .prose code {
+      background: #f0ece3;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: var(--tiba-coral);
+    }
+    .prose pre {
+      background: var(--tiba-dark);
+      color: #e0e0e0;
+      padding: 20px;
+      border-radius: var(--radius);
+      overflow-x: auto;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .prose pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+    .prose table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.9rem;
+    }
+    .prose th {
+      background: var(--tiba-green);
+      color: #fff;
+      font-weight: 600;
+      text-align: left;
+      padding: 10px 14px;
+    }
+    .prose th:first-child { border-radius: 8px 0 0 0; }
+    .prose th:last-child { border-radius: 0 8px 0 0; }
+    .prose td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e0ddd5;
+    }
+    .prose tr:nth-child(even) td { background: #faf8f3; }
+    .prose tr:hover td { background: var(--tiba-green-bg); }
+    .prose hr {
+      border: none;
+      border-top: 2px solid #e0ddd5;
+      margin: 32px 0;
+    }
+    .prose img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      margin: 16px 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       PREV / NEXT NAVIGATION
+       ═══════════════════════════════════════════ */
+    .prev-next {
+      display: flex;
+      gap: 16px;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 2px solid #e0ddd5;
+    }
+    .prev-next-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 20px;
+      background: #fff;
+      border: 1px solid #e0ddd5;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      min-height: 72px;
+    }
+    .prev-next-btn:hover {
+      border-color: var(--tiba-green);
+      box-shadow: 0 4px 16px rgba(11,142,113,0.12);
+      transform: translateY(-2px);
+    }
+    .prev-next-btn.next { text-align: right; }
+    .prev-next-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--tiba-green);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .prev-next-btn.next .prev-next-label { justify-content: flex-end; }
+    .prev-next-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--tiba-dark);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — Tablet
+       ═══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+      }
+      .overlay.open { display: block; }
+      .main-area { margin-left: 0; }
+      .hamburger { display: flex; }
+      .topbar { padding: 0 12px; gap: 8px; }
+      .topbar-title { font-size: 0.95rem; }
+      .content-wrap { padding: 20px 14px 48px; }
+      .prev-next { flex-direction: column; gap: 10px; }
+      .prev-next-btn { min-height: 56px; padding: 12px 16px; }
+      .prose h1 { font-size: 1.6rem; }
+      .prose h2 { font-size: 1.25rem; margin-top: 28px; }
+      .prose h3 { font-size: 1.05rem; }
+      .prose pre { padding: 14px; font-size: 0.78rem; }
+      .prose table { font-size: 0.8rem; display: block; overflow-x: auto; white-space: nowrap; }
+      .prose th, .prose td { padding: 8px 10px; }
+      .prose blockquote { padding: 12px 14px; margin: 14px 0; }
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — Phone
+       ═══════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      :root {
+        --header-h: 52px;
+      }
+      body { font-size: 0.9rem; line-height: 1.65; }
+      .topbar-title { font-size: 0.85rem; }
+      .topbar-badge { display: none; }
+      .hamburger { width: 40px; height: 40px; border-radius: 8px; }
+      .content-wrap { padding: 16px 12px 40px; }
+      .prose h1 { font-size: 1.3rem; padding-bottom: 8px; }
+      .prose h2 { font-size: 1.1rem; margin-top: 24px; padding-bottom: 6px; }
+      .prose h3 { font-size: 0.95rem; margin-top: 18px; }
+      .prose h4 { font-size: 0.88rem; }
+      .prose p { margin: 8px 0; }
+      .prose ul, .prose ol { padding-left: 18px; margin: 8px 0; }
+      .prose li { margin: 4px 0; }
+      .prose pre { padding: 10px; font-size: 0.72rem; border-radius: 8px; }
+      .prose code { font-size: 0.8em; padding: 1px 4px; }
+      .prose blockquote { padding: 10px 12px; font-size: 0.88rem; }
+      .prose table { font-size: 0.75rem; }
+      .prose th, .prose td { padding: 6px 8px; }
+      .prose img { border-radius: 8px; margin: 10px 0; }
+      .prev-next-btn { min-height: 48px; padding: 10px 12px; }
+      .prev-next-label { font-size: 0.68rem; }
+      .prev-next-title { font-size: 0.85rem; }
+      /* Force inline grids to stack */
+      [style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       ACCESSIBILITY
+       ═══════════════════════════════════════════ */
+    :focus-visible {
+      outline: 3px solid var(--tiba-green);
+      outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Overlay for mobile sidebar -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()" aria-hidden="true"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Menu de navigation des documents">
+      <div class="sidebar-header">
+        <img src="Img/Logogreen.png" alt="Tiba" class="sidebar-logo">
+        <h1><span>Tiba</span> Docs</h1>
+      </div>
+      <div class="sidebar-body">
+        
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
+          Identite et Vision
+        </div>
+        <ul class="nav-list">
+          <li><a href="brand.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Charte Graphique</a></li>
+          <li><a href="ideation.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Session d'Ideation</a></li>
+          <li><a href="market.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Analyse Marche Afrique</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></span>
+          Produit et Specifications
+        </div>
+        <ul class="nav-list">
+          <li><a href="brief.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Product Brief</a></li>
+          <li><a href="mvp.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Planification MVP</a></li>
+          <li><a href="prd.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Product Requirements (PRD)</a></li>
+          <li><a href="ux.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Design System et UX</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+          Ingenierie et Architecture
+        </div>
+        <ul class="nav-list">
+          <li><a href="architecture.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Technique</a></li>
+          <li><a href="database.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Base de Donnees</a></li>
+          <li><a href="database-sql.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Code SQL Complet</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">
+          <span class="nav-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span>
+          Execution et Sprints
+        </div>
+        <ul class="nav-list">
+          <li><a href="epics.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Epics et Stories</a></li>
+          <li><a href="story-1-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.1: Design System</a></li>
+          <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
+        </ul>
+      </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main-area">
+      <div class="topbar" role="banner">
+        <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-title">Product Requirements (PRD)</div>
+        <div class="topbar-badge">6 / 13</div>
+      </div>
+
+      <article class="content-wrap" role="main" aria-label="Contenu du document">
+        <div class="prose">
+          <h1>Product Requirements Document - billionaire project (Tiba)</h1>
+<p><strong>Author:</strong> jesse<br><strong>Date:</strong> 2026-03-18</p>
+<h2>Executive Summary</h2>
+<p>Tiba transforme l&#39;angoisse médicale liée à la complexité des traitements en réassurance immédiate pour les familles d&#39;Afrique Centrale. L&#39;application mobile cible le besoin critique d&#39;information fiable et d&#39;accès aux soins en urgence. Elle associe un module de scan médicamenteux à un assistant vocal strict, garantissant la sécurité d&#39;utilisation à domicile, tout en facilitant l&#39;accès physique aux médicaments via la géolocalisation des pharmacies de garde.</p>
+<h3>What Makes This Special</h3>
+<p>Ce produit se distingue par la fusion d&#39;une UX conversationnelle fluide (Scanner + Parler) et d&#39;un pare-feu médical absolu (architecture RAG restreignant l&#39;IA à la restitution stricte des notices certifiées pour éviter tout diagnostic). L&#39;intégration d&#39;une boucle transactionnelle locale (Click &amp; Collect en pharmacie de garde) convertit l&#39;information en action immédiate. L&#39;insight fondamental du projet réside dans sa monétisation : ce modèle B2C freemium à forte rétention agit comme un moteur d&#39;acquisition, générant organiquement la première base de données complète des habitudes de consommation pharmaceutique du dernier kilomètre, modélisable et monétisable en SaaS B2B auprès des institutions mondiales de la santé.</p>
+<h2>Project Classification</h2>
+<ul>
+<li><strong>Project Type:</strong> Application Mobile B2C + Dashboard SaaS B2B</li>
+<li><strong>Domain:</strong> Santé (Healthcare) &amp; E-Pharmacie</li>
+<li><strong>Complexity:</strong> Haute (Contraintes légales, données médicales sensibles, sécurité RAG de l&#39;IA)</li>
+<li><strong>Project Context:</strong> Brownfield (Évolution structurée à partir d&#39;une phase de vision)</li>
+</ul>
+<h2>Success Criteria</h2>
+<h3>User Success</h3>
+<ul>
+<li><strong>Réduction de l&#39;anxiété :</strong> Les parents obtiennent une réponse vocale rassurante et stricte sur la notice du médicament de leur enfant en moins de 10 secondes.</li>
+<li><strong>Accès Physique Garanti :</strong> Localisation et indication claire d&#39;une pharmacie de garde (ou ouverte 24/7) dans le périmètre proche en moins de 3 actions.</li>
+<li><strong>Accessibilité Universelle :</strong> L&#39;interaction vocale complète permet à tous les profils (même avec une faible littératie) de comprendre facilement les dosages complexes et les contre-indications.</li>
+</ul>
+<h3>Business Success</h3>
+<ul>
+<li><strong>Adoption &amp; Rétention (MVP) :</strong> Atteindre 10 000 utilisateurs actifs mensuels (MAU) sur le bassin de lancement, avec une fréquence de 3 scans/requêtes par mois.</li>
+<li><strong>Viabilité Immédiate (Cashflow) :</strong> Taux de conversion de 5% vers le micro-abonnement B2C (Premium Voice à 500 FCFA/mois) après les scans gratuits initiaux.</li>
+<li><strong>Objectif Licorne (SaaS B2B) :</strong> Signature d&#39;un premier &quot;Pilote Data Analytics&quot; avec une ONG, un Ministère de la Santé, ou une Big Pharma dans les 18 mois suivant le lancement.</li>
+</ul>
+<h3>Technical Success</h3>
+<ul>
+<li><strong>Zéro Hallucination Médicale :</strong> Le taux d&#39;erreur du modèle RAG sur la lecture des notices doit être strictement de 0%. Toute requête hors spectre (ex: demande de diagnostic) doit déclencher le filet de sécurité logiciel &quot;Consultez un médecin&quot;.</li>
+<li><strong>Disponibilité Critique :</strong> Uptime de 99.9% pour la base de données et l&#39;API des pharmacies, un point non négociable pour les situations d&#39;urgence nocturnes.</li>
+<li><strong>Temps de latence vocal :</strong> Traitement complet de la requête vocale (Microphone -&gt; IA -&gt; Voix générée) en moins de 3.5 secondes, même sur les réseaux cellulaires lents (3G).</li>
+</ul>
+<h3>Measurable Outcomes</h3>
+<ul>
+<li>Volume de scans anti-faux et lectures vocales documentés quotidiennement.</li>
+<li>Taux de clics (CTR) vers l&#39;annuaire &quot;Pharmacies de Garde&quot; après un scan.</li>
+<li>Volume (en téraoctets) de données comportementales et sanitaires structurées accumulées par trimestre.</li>
+</ul>
+<h2>Product Scope</h2>
+<h3>MVP - Minimum Viable Product</h3>
+<ul>
+<li>Scan de code-barres / Numérisation intelligente des boîtes de médicaments.</li>
+<li>Assistant expert (Chat &amp; Vocal) restreint par architecture RAG stricte sur la base de données des notices officielles.</li>
+<li>Algorithme pré-scan de contexte (Qui est le patient adulte/enfant ? Âge ?).</li>
+<li>Annuaire intelligent, géolocalisé et automatisé des pharmacies de garde.</li>
+<li>Intégration paywall Mobile Money (Airtel Money, Moov, Orange, etc.) pour le modèle Premium.</li>
+</ul>
+<h3>Growth Features (Post-MVP)</h3>
+<ul>
+<li>Mise en place de l&#39;API B2B &#39;Pharmacie&#39; pour l&#39;affichage en direct des stocks et du Click &amp; Collect complet.</li>
+<li>Carnet de santé familial numérique avec profils rattachés.</li>
+<li>Alertes intelligentes de rappels de prise de médicaments.</li>
+</ul>
+<h3>Vision (Future)</h3>
+<ul>
+<li>Déploiement du <strong>&quot;Pharma Analytics Dashboard&quot;</strong> continental. Devenir l&#39;application d&#39;information sanitaire prédictive de référence.</li>
+</ul>
+<h2>User Journeys</h2>
+<p><strong>1. Aminata, Mère Inquiète (Primary User - Core Experience / Succès)</strong><br><em>Situation :</em> Il est 3h du matin. Son fils de 4 ans a une forte fièvre. Elle n&#39;a qu&#39;une boîte de &quot;Doliprane 1000&quot; adulte dans son placard.<br><em>Action :</em> Elle ouvre Tiba, scanne le code-barres de la boîte.<br><em>Climax (Point culminant) :</em> L&#39;application affiche la notice. Elle clique sur l&#39;icône micro et demande à l&#39;IA : &quot;Puis-je couper ce comprimé en deux pour mon garçon de 16kg ?&quot;. L&#39;IA analyse strictement la notice locale et répond vocalement : &quot;Attention. Ce dosage est réservé aux adultes (plus de 50kg). Ne pas donner à cet enfant.&quot;<br><em>Résolution :</em> L&#39;application lui suggère immédiatement les pharmacies de garde autour d&#39;elle disposant de sirop pédiatrique. Aminata réserve le sirop via &quot;Click &amp; Collect&quot; et part rassurée.</p>
+<p><strong>2. Marc, Père Connecté (Primary User - Edge Case / Sécurité Légale)</strong><br><em>Situation :</em> Marc cherche à comprendre un symptôme chez sa fille de 2 ans qui tousse sec depuis 3 jours.<br><em>Action :</em> Il ouvre l&#39;application, sélectionne le chat vocal direct (sans scanner de produit) et demande : &quot;Ma fille tousse beaucoup et a un peu chaud, quel sirop ou antibiotique je dois acheter ?&quot;<br><em>Climax :</em> Le système détecte une tentative de &quot;diagnostic&quot; ou de &quot;prescription&quot;, ce qui est hors limites.<br><em>Résolution :</em> Le pare-feu RAG bloque la requête. L&#39;IA lui répond calmement : &quot;Je ne suis pas habilitée à poser un diagnostic. Veuillez consulter un médecin. Voulez-vous que je vous affiche les cliniques et pharmacies ouvertes à proximité ?&quot;</p>
+<p><strong>3. Équipe Opérationnelle Tiba (Internal User - Operations &amp; Data Entry)</strong><br><em>Situation :</em> Il faut ajouter de nouveaux médicaments dans la base et mettre à jour les stocks des pharmacies.<br><em>Action :</em> L&#39;opérateur utilise le &quot;Web Admin Dashboard&quot; (Backoffice) depuis son ordinateur.<br><em>Climax :</em> Il vérifie par téléphone la disponibilité du Doliprane Enfant et du Sirop Pédiatrique.<br><em>Résolution :</em> L&#39;opérateur met à jour les disponibilités dans l&#39;application instantanément. Aminata (Journey 1) voit la pharmacie de garde garantie avec le stock vérifié.</p>
+<p><strong>4. Sanofi Africa / ONG Sanitaire (API / B2B Consumer - Modèle Licorne)</strong><br><em>Situation :</em> Un directeur des opérations souhaite anticiper les épidémies saisonnières en Afrique Centrale.<br><em>Action :</em> Il se connecte au luxueux &quot;Pharma Analytics SaaS Dashboard&quot; (accès B2B).<br><em>Climax :</em> Il visualise une carte de chaleur (heatmap) : &quot;Alerte : Pic anormal de scans de notices d&#39;antipaludiques à Port-Gentil depuis 48h&quot;.<br><em>Résolution :</em> Il ordonne un réapprovisionnement massif et anticipé vers cette zone, évitant une rupture de stock mortelle et prouvant le ROI ultime du système.</p>
+<h3>Journey Requirements Summary</h3>
+<ul>
+<li><strong>App Mobile B2C :</strong> Scanner OCR, module Voice-to-Text robuste, système de &quot;Soft-Ban&quot; des requêtes de diagnostic médical directes.</li>
+<li><strong>App Mobile B2C (Client) :</strong> Scanner OCR, module Voice-to-Text robuste, système de &quot;Soft-Ban&quot; des requêtes de diagnostic médical directes, géolocalisation dynamique.</li>
+<li><strong>Web Admin Dashboard (Backoffice) :</strong> Interface web dédiée pour l&#39;équipe Tiba permettant la saisie de données complexes (nouveaux produits, scan de notices, photos) et la mise à jour des stocks des pharmacies en temps réel.</li>
+<li><strong>Infrastructure B2B Data :</strong> Data warehouse solide pour anonymiser et remonter la data des scans vers un dashboard d&#39;Analytics B2B.</li>
+</ul>
+<h2>Domain-Specific Requirements</h2>
+<h3>Compliance &amp; Regulatory (Conformité Légale)</h3>
+<ul>
+<li><strong>Protection des Données (Privacy) :</strong> Conformité absolue aux lois locales de protection de la vie privée (équivalents locaux du RGPD / HIPAA). Anonymisation totale et irréversible des historiques de scan ou profils avant toute agrégation dans le Data Warehouse B2B.</li>
+<li><strong>Classification du Produit (Liability) :</strong> Pour éviter d&#39;être régulée et lourdement testée comme un &quot;Dispositif Médical Logiciel&quot; (SaMD), l&#39;application doit légalement rester un strict &quot;outil d&#39;information&quot;. Un <em>disclaimer</em> biométrique ou une case à cocher obligatoire doit rappeler au lancement que l&#39;application ne remplace pas l&#39;avis d&#39;un professionnel de santé.</li>
+</ul>
+<h3>Technical Constraints (Contraintes Techniques)</h3>
+<ul>
+<li><strong>Pare-feu d&#39;Intelligence Artificielle (RAG Strict) :</strong> Le moteur IA doit être construit sur une architecture de <em>Retrieval-Augmented Generation</em> avec une température bloquée à 0.0. Interdiction absolue d&#39;inférer, d&#39;inventer ou de croiser des informations pour poser un &quot;diagnostic&quot;.</li>
+<li><strong>Chiffrement de bout en bout :</strong> Toutes les données sensibles du futur carnet de santé familial doivent être chiffrées (au repos et en transit).</li>
+</ul>
+<h3>Integration Requirements (Requis d&#39;Intégration)</h3>
+<ul>
+<li><strong>Certification des Données Sources :</strong> Le corpus de texte dans lequel l&#39;IA va puiser ses réponses (les notices) doit provenir exclusivement de fournisseurs officiels (laboratoires, OMS, Ministères). Aucune source web externe ou forum ne doit être ingérée.</li>
+<li><strong>API Résiliente pour les Pharmacies :</strong> L&#39;intégration Click &amp; Collect doit s&#39;adapter aux réseaux électriques ou internet parfois instables des officines (système asynchrone fonctionnant même par SMS fallback si besoin).</li>
+</ul>
+<h3>Risk Mitigations (Gestion des Risques Mortels)</h3>
+<ul>
+<li><strong>Risque : Hallucination de l&#39;IA provoquant un surdosage d&#39;un enfant.</strong><ul>
+<li><em>Mitigation :</em> L&#39;IA ne lit que la notice certifiée. Si un parent pose une question hors-sujet ou dont la réponse est introuvable sur la boîte, déclenchement du Fallback : &quot;Information introuvable. Veuillez consulter un médecin en urgence.&quot;</li>
+</ul>
+</li>
+<li><strong>Risque : Indisponibilité Cloud (AWS/GCP) empêchant de trouver une pharmacie de garde la nuit.</strong><ul>
+<li><em>Mitigation :</em> Mise en cache locale (Edge Storage) sur le téléphone de la base de données statique des urgences médicales et des pharmacies 24/7 au moins une fois par semaine.</li>
+</ul>
+</li>
+</ul>
+<h2>Innovation &amp; Novel Patterns</h2>
+<h3>Detected Innovation Areas</h3>
+<ul>
+<li><strong>Asymmetric Data Harvesting (Business Model) :</strong> Utilisation d&#39;un assistant vocal B2C Freemium (résolvant l&#39;urgence nocturne d&#39;un parent) comme cheval de Troie éthique pour capturer, structurer et agréger la donnée épidémiologique et de consommation du dernier kilomètre pour la revendre en B2B.</li>
+<li><strong>Strict-RAG Medical Guardrail (Technologie) :</strong> Transformer le défaut majeur des LLMs (les hallucinations) en avantage en bridant le modèle (Température 0.0) sur un unique document de vérité validé (la notice), créant un &quot;lecteur interactif incassable&quot; au lieu d&#39;un docteur virtuel.</li>
+</ul>
+<h3>Market Context &amp; Competitive Landscape</h3>
+<ul>
+<li>La majorité des HealthTechs en Afrique Centrale se battent sur la téléconsultation ou la livraison. Tiba disrupte ce marché en se positionnant en amont (la rassurance immédiate au domicile) et en aval (la donnée prédictive de masse pour l&#39;industrie mondiale de la santé).</li>
+</ul>
+<h3>Validation Approach</h3>
+<ul>
+<li><strong>Pour le RAG Strict :</strong> Batterie de tests automatisés (Red Teaming) injectant des requêtes trompeuses pour vérifier que l&#39;IA déclenche systématiquement le Fallback de sécurité (taux de réussite exigé : 100%).</li>
+<li><strong>Pour le B2B Data :</strong> Présenter un prototype de &quot;Dashboard Heatmap&quot; simulé (ex: alertes anti-paludiques) à un acteur cible (OMS, LAB) pour valider immédiatement leur disposition à payer (Price Willingness).</li>
+</ul>
+<h3>Risk Mitigation</h3>
+<ul>
+<li><strong>Risque d&#39;acceptation utilisateur :</strong> Les utilisateurs peuvent être frustrés que l&#39;IA refuse de faire un diagnostic ou de prescrire un traitement.<ul>
+<li><em>Mitigation :</em> L&#39;UX doit clairement scénographier son rôle (&quot;Expert en notices&quot;) et compenser l&#39;éventuelle frustration par l&#39;immédiateté de la géolocalisation de la pharmacie de garde disponible via Click &amp; Collect.</li>
+</ul>
+</li>
+</ul>
+<h2>Mobile App Specific Requirements</h2>
+<h3>Project-Type Overview</h3>
+<p>L&#39;application Tiba est un pur produit <em>mobile-first</em>. Elle sera développée en cross-platform (Flutter) pour garantir une couverture totale sur iOS et Android, avec une obsession technique pour les contraintes d&#39;infrastructure locales (réseaux cellulaires lents, batteries nomades, stockage limité).</p>
+<h3>Technical Architecture Considerations</h3>
+<h4>Platform Requirements</h4>
+<ul>
+<li><strong>Framework Core :</strong> Développement en Flutter pour un time-to-market accéléré avec une base de code unifiée.</li>
+<li><strong>Compatibilité Rétroactive :</strong> Support impératif des OS plus anciens régnant sur le marché de l&#39;occasion africain (Android 8+ minimum).</li>
+<li><strong>Légèreté (Taille APK) :</strong> Le poids de l&#39;application initiale au téléchargement doit être maintenu sous la barre des 30 Mo pour économiser la data des forfaits prépayés.</li>
+</ul>
+<h4>Offline Strategy</h4>
+<ul>
+<li><strong>Cache d&#39;Urgence Local :</strong> Synchronisation silencieuse hebdomadaire en arrière-plan de la base de données de l&#39;annuaire des pharmacies de garde. Un parent doit pouvoir trouver une pharmacie ouverte à 4h du matin même sans signal 3G.</li>
+<li><strong>Requêtes Asynchrones :</strong> En cas de perte de réseau au moment d&#39;enregistrer la voix, la question est mise en file d&#39;attente sécurisée et envoyée au RAG dès rétablissement du réseau.</li>
+</ul>
+<h4>Device Features</h4>
+<ul>
+<li><strong>Appareil Photo / Vision par Ordinateur :</strong> Accès de très haut niveau à la caméra pour l&#39;OCR continu du code-barres et du nom du médicament en temps réel.</li>
+<li><strong>Audio (Micro &amp; Haut-parleur) :</strong> Architecture &quot;Zero-Touch&quot; vocal obligatoire. Le parent stressé doit pouvoir parler et entendre la réponse de l&#39;IA sans lire l&#39;écran.</li>
+<li><strong>GPS (Localisation Sécurisée) :</strong> Nécessaire au module géospatial pour lister la pharmacie de garde en temps réel la plus pertinente (calcul piéton ou moto-taxi).</li>
+</ul>
+<h4>Push Strategy</h4>
+<ul>
+<li><strong>Alertes Opérationnelles :</strong> Notifications push critiques pour le suivi de réservation (ex: &quot;Le pharmacien a mis de côté votre sirop pédiatrique, venez le chercher&quot;).</li>
+<li><strong>Observance (Post-MVP) :</strong> Gestion de l&#39;alarme et des rappels locaux pour inciter la prise régulière des comprimés, favorisant la rétention de l&#39;application.</li>
+</ul>
+<h2>Project Scoping &amp; Phased Development</h2>
+<h3>MVP Strategy &amp; Philosophy</h3>
+<p><strong>MVP Approach :</strong> MVP &quot;Problem-Solving&quot; — Résoudre un seul problème douloureux (l&#39;angoisse médicamenteuse nocturne) avec la plus petite boucle possible : <strong>Scanner → Comprendre → Trouver une pharmacie.</strong></p>
+<p><strong>Resource Requirements :</strong> 1 Dev Flutter Full-Stack + 1 Data/AI Engineer (RAG) + 1 Designer UX. Durée estimée de la Phase 1 : 3-4 mois.</p>
+<h3>MVP Feature Set (Phase 1)</h3>
+<p><strong>Core User Journeys Supported :</strong></p>
+<ul>
+<li>✅ <em>Aminata</em> (scan + question vocale + pharmacie de garde)</li>
+<li>✅ <em>Marc</em> (tentative de diagnostic → Firewall RAG déclenché)</li>
+</ul>
+<p><strong>Must-Have Capabilities :</strong></p>
+<ol>
+<li><strong>Scanner de Code-Barres</strong> – OCR en temps réel pour identifier le médicament.</li>
+<li><strong>Assistant IA Vocal (RAG Strict)</strong> – Lecture interactive et vocale de la notice certifiée, avec Firewall anti-diagnostic obligatoire.</li>
+<li><strong>Pré-Scan de Contexte</strong> – Écran simple demandant &quot;Pour qui ? (Adulte/Enfant) / Âge / Poids estimé ?&quot; avant la requête IA.</li>
+<li><strong>Annuaire Géolocalisé des Pharmacies de Garde</strong> – Base de données synchronisée avec cache local offline.</li>
+<li><strong>Authentification Minimaliste (Phone Number + OTP)</strong> – Via Mobile Money ou SMS local.</li>
+<li><strong>Paywall Freemium (Mobile Money)</strong> – 3 scans gratuits/mois, puis Premium Voice à 500 FCFA/mois via Orange/Airtel Money.</li>
+<li><strong>Disclaimer Légal Obligatoire</strong> – Case à cocher au premier lancement confirmant que l&#39;app n&#39;est pas un dispositif médical.</li>
+</ol>
+<h3>Post-MVP Features</h3>
+<p><strong>Phase 2 (Growth) :</strong></p>
+<ul>
+<li>Web Admin Dashboard (Backoffice) étendu pour la saisie massive de données (nouveaux produits, text-mining des notices, upload de photos de boîtes).</li>
+<li>Gestion centralisée des stocks des pharmacies partenaires.</li>
+<li>Carnet de santé familial numérique (profils rattachés : enfants, parents).</li>
+<li>Rappels de prise de médicaments (alarmes locales).</li>
+</ul>
+<p><strong>Phase 3 (Expansion / Vision Licorne) :</strong></p>
+<ul>
+<li>Data Warehouse anonymisé + pipeline ETL pour agrégation des données de consommation.</li>
+<li>&quot;Pharma Analytics Dashboard&quot; SaaS B2B pour les ONG, Ministères, Big Pharma.</li>
+<li>Heatmaps épidémiologiques prédictives en temps réel.</li>
+<li>Expansion géographique (Cameroun, RDC, Côte d&#39;Ivoire...).</li>
+</ul>
+<h3>Risk Mitigation Strategy</h3>
+<p><strong>Technical Risks :</strong> Le RAG Strict est le composant le plus critique. Mitigation : développer la suite de Red-Teaming automatisée dès le Sprint 1, avant toute mise en production.<br><strong>Market Risks :</strong> Le paiement via Mobile Money peut être freiné par la friction utilisateur. Mitigation : offrir un généreux Freemium (3 scans/mois) pour créer le réflexe avant de monétiser.<br><strong>Resource Risks :</strong> Si l&#39;équipe est réduite à 1 seul dev, le scope MVP peut être réduit à : Scanner + IA texte (sans vocal) + Annuaire (sans Click &amp; Collect).</p>
+<h2>Functional Requirements</h2>
+<h3>1. Identification de Médicaments</h3>
+<ul>
+<li><strong>FR1:</strong> L&#39;utilisateur peut scanner le code-barres d&#39;une boîte de médicament pour identifier le produit.</li>
+<li><strong>FR2:</strong> L&#39;utilisateur peut scanner le nom imprimé sur une boîte (OCR texte) lorsque le code-barres est absent ou illisible.</li>
+<li><strong>FR3:</strong> Le système peut faire correspondre le scan à une notice certifiée dans la base de données interne.</li>
+<li><strong>FR4:</strong> Le système peut informer l&#39;utilisateur lorsqu&#39;un médicament scanné n&#39;est pas trouvé dans la base de données.</li>
+</ul>
+<h3>2. Assistant IA &amp; Sécurité Médicale</h3>
+<ul>
+<li><strong>FR5:</strong> L&#39;utilisateur peut poser une question vocale à l&#39;IA concernant un médicament identifié.</li>
+<li><strong>FR6:</strong> L&#39;utilisateur peut poser une question textuelle (chat) à l&#39;IA concernant un médicament identifié.</li>
+<li><strong>FR7:</strong> L&#39;utilisateur peut accéder à l&#39;assistant IA sans avoir scanné de produit (mode global).</li>
+<li><strong>FR8:</strong> L&#39;IA peut répondre vocalement en se basant exclusivement sur le contenu de la notice certifiée du médicament (RAG Strict, Température 0.0).</li>
+<li><strong>FR9:</strong> L&#39;utilisateur peut fournir un contexte patient (adulte/enfant, âge, poids estimé) avant d&#39;interroger l&#39;IA.</li>
+<li><strong>FR10:</strong> Le système peut détecter et bloquer toute requête utilisateur demandant un diagnostic, une prescription, ou un conseil médical hors notice.</li>
+<li><strong>FR11:</strong> Le système peut déclencher un message de sécurité (&quot;Consultez un médecin&quot;) lorsqu&#39;une requête est hors du périmètre de la notice.</li>
+<li><strong>FR12:</strong> Le système peut déclencher un message de sécurité lorsque l&#39;information demandée est introuvable dans la notice.</li>
+</ul>
+<h3>3. Localisation de Pharmacies</h3>
+<ul>
+<li><strong>FR13:</strong> L&#39;utilisateur peut rechercher les pharmacies de garde ouvertes à proximité de sa position GPS.</li>
+<li><strong>FR14:</strong> Le système peut afficher la distance et l&#39;itinéraire vers les pharmacies trouvées.</li>
+<li><strong>FR15:</strong> L&#39;utilisateur peut consulter l&#39;annuaire des pharmacies de garde même hors connexion (cache local).</li>
+<li><strong>FR16:</strong> Le système peut suggérer automatiquement une pharmacie de garde après un scan ou une requête IA.</li>
+</ul>
+<h3>4. Gestion de Compte &amp; Monétisation</h3>
+<ul>
+<li><strong>FR17:</strong> L&#39;utilisateur peut créer un compte via son numéro de téléphone (OTP).</li>
+<li><strong>FR18:</strong> L&#39;utilisateur peut utiliser l&#39;application gratuitement pour un nombre limité de scans par mois.</li>
+<li><strong>FR19:</strong> L&#39;utilisateur peut souscrire à un abonnement Premium via Mobile Money (Orange, Airtel, Moov).</li>
+<li><strong>FR20:</strong> Le système peut gérer la transition Freemium → Premium (paywall) après épuisement du quota gratuit.</li>
+<li><strong>FR21:</strong> L&#39;utilisateur peut accepter le disclaimer légal obligatoire au premier lancement de l&#39;application.</li>
+</ul>
+<h3>5. Conformité &amp; Intégrité des Données</h3>
+<ul>
+<li><strong>FR22:</strong> Le système peut ingérer et mettre à jour les notices médicamenteuses exclusivement depuis des sources officielles certifiées.</li>
+<li><strong>FR23:</strong> Le système peut anonymiser de manière irréversible les données d&#39;utilisation avant toute agrégation analytique.</li>
+<li><strong>FR24:</strong> Le système peut journaliser (logger) chaque interaction IA pour audit de sécurité médicale.</li>
+<li><strong>FR25:</strong> Le système peut fonctionner en mode dégradé (cache local) en cas de perte de réseau.</li>
+</ul>
+<h3>6. Analytics &amp; Données B2B (Phase 2-3)</h3>
+<ul>
+<li><strong>FR26:</strong> Le système peut agréger les données de scan anonymisées par zone géographique et par période.</li>
+<li><strong>FR27:</strong> Un opérateur B2B peut consulter un dashboard d&#39;analytiques sur les tendances de consommation pharmaceutique.</li>
+<li><strong>FR28:</strong> Un opérateur B2B peut recevoir des alertes prédictives (pic anormal de recherches sur un médicament dans une zone).</li>
+<li><strong>FR29:</strong> Un Opérateur Tiba (accès administrateur) peut consulter et gérer la base de données pharmaceutique depuis le Web Admin Dashboard.</li>
+<li><strong>FR30:</strong> Un Opérateur Tiba peut créer et éditer des fiches produit (incluant photos, texte de la notice, nom) qui se synchronisent immédiatement sur l&#39;app.</li>
+<li><strong>FR30b:</strong> Un Opérateur Tiba peut mettre à jour les disponibilités de médicaments et les horaires de garde d&#39;une pharmacie depuis le Web Admin Dashboard.</li>
+</ul>
+<h3>7. Administration &amp; Résilience (Party Mode)</h3>
+<ul>
+<li><strong>FR31:</strong> Un administrateur peut ajouter, modifier ou retirer une notice médicamenteuse de la base de données.</li>
+<li><strong>FR32:</strong> Le système peut synchroniser les données locales avec le serveur après rétablissement de la connexion sans perte de données.</li>
+<li><strong>FR33:</strong> L&#39;utilisateur peut parcourir un tutoriel de première utilisation expliquant les capacités et les limites de l&#39;application.</li>
+<li><strong>FR34:</strong> Le système peut proposer une action alternative immédiate (localiser un médecin, appeler le SAMU local) lorsqu&#39;il refuse une requête hors périmètre.</li>
+<li><strong>FR35:</strong> L&#39;utilisateur peut consulter son historique de paiements et de souscriptions.</li>
+<li><strong>FR36:</strong> L&#39;utilisateur peut consulter son quota restant de scans gratuits.</li>
+<li><strong>FR37:</strong> L&#39;utilisateur peut signaler une réponse de l&#39;IA qu&#39;il considère comme incorrecte ou dangereuse.</li>
+</ul>
+<h2>Non-Functional Requirements</h2>
+<h3>Performance</h3>
+<ul>
+<li><strong>NFR1:</strong> Le traitement vocal complet (Micro → RAG → Synthèse vocale) doit s&#39;exécuter en moins de <strong>3.5 secondes</strong> sur un réseau 3G standard.</li>
+<li><strong>NFR2:</strong> Le scan de code-barres doit identifier le médicament en moins de <strong>1.5 secondes</strong> après la mise au point de la caméra.</li>
+<li><strong>NFR3:</strong> La liste des pharmacies de garde doit s&#39;afficher en moins de <strong>2 secondes</strong> (mode en ligne) ou <strong>0.5 seconde</strong> (mode cache local).</li>
+<li><strong>NFR4:</strong> Le temps de réponse IA au premier appel (cold start) ne doit pas dépasser <strong>6 secondes</strong>. Les appels suivants dans la même session doivent respecter le seuil de 3.5s.</li>
+</ul>
+<h3>Security</h3>
+<ul>
+<li><strong>NFR5:</strong> Toutes les communications client-serveur doivent être chiffrées en <strong>TLS 1.3</strong> minimum.</li>
+<li><strong>NFR6:</strong> Les données du futur carnet de santé familial doivent être chiffrées au repos avec <strong>AES-256</strong>.</li>
+<li><strong>NFR7:</strong> Les tokens d&#39;authentification (OTP) doivent expirer après <strong>5 minutes</strong> et être à usage unique.</li>
+<li><strong>NFR8:</strong> Les journaux d&#39;audit des interactions IA doivent être conservés pendant un minimum de <strong>24 mois</strong> et être immuables.</li>
+<li><strong>NFR9:</strong> L&#39;anonymisation des données B2B doit être <strong>irréversible</strong> (hachage + suppression des identifiants directs).</li>
+<li><strong>NFR10:</strong> Le système doit limiter les requêtes IA à un maximum de <strong>30 par utilisateur par heure</strong>, avec blocage temporaire après dépassement.</li>
+</ul>
+<h3>Scalability</h3>
+<ul>
+<li><strong>NFR11:</strong> L&#39;architecture backend doit supporter un passage de 1 000 à <strong>50 000 utilisateurs actifs mensuels</strong> sans refactoring majeur.</li>
+<li><strong>NFR12:</strong> La base de données des notices médicamenteuses doit supporter l&#39;ajout de <strong>10 000+ références</strong> sans dégradation des performances du RAG.</li>
+<li><strong>NFR13:</strong> L&#39;architecture doit prévoir un chemin de migration documenté vers <strong>500 000+ MAU</strong> (Phase 3) sans réécriture complète du backend.</li>
+</ul>
+<h3>Reliability (Disponibilité)</h3>
+<ul>
+<li><strong>NFR14:</strong> L&#39;API backend (hors IA) doit maintenir un uptime de <strong>99.9%</strong> (moins de 8h45 d&#39;indisponibilité par an).</li>
+<li><strong>NFR15:</strong> En cas de panne du service IA, l&#39;annuaire des pharmacies de garde et le scanner doivent rester <strong>100% opérationnels</strong> (dégradation gracieuse).</li>
+<li><strong>NFR16:</strong> Le cache local (pharmacies + notices récentes) doit rester fonctionnel pendant <strong>7 jours</strong> sans connexion internet.</li>
+</ul>
+<h3>Accessibility (Accessibilité Contextuelle)</h3>
+<ul>
+<li><strong>NFR17:</strong> L&#39;interface vocale doit être utilisable par un utilisateur <strong>analphabète</strong> sans jamais nécessiter de lecture à l&#39;écran pour les fonctions critiques (scan + question + pharmacie).</li>
+<li><strong>NFR18:</strong> L&#39;application doit fonctionner correctement sur des appareils avec <strong>2 Go de RAM</strong> et des écrans de <strong>5 pouces</strong> minimum.</li>
+<li><strong>NFR19:</strong> La taille de l&#39;APK initial ne doit pas dépasser <strong>30 Mo</strong> pour les téléchargements sur forfaits prépayés limités.</li>
+<li><strong>NFR20:</strong> L&#39;interface doit maintenir un ratio de contraste minimum de <strong>7:1</strong> (WCAG AAA) pour tous les éléments textuels critiques (nom du médicament, alerte de sécurité, nom de la pharmacie).</li>
+</ul>
+<h3>Data Quality (Qualité des Données B2B)</h3>
+<ul>
+<li><strong>NFR21:</strong> Les données anonymisées exportées vers le Data Warehouse B2B doivent avoir un taux de complétude minimum de <strong>95%</strong> sur les dimensions clés (zone géographique, catégorie médicamenteuse, période).</li>
+</ul>
+
+        </div>
+        <div class="prev-next"><a href="mvp.html" class="prev-next-btn prev" aria-label="Page precedente: Planification MVP"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Planification MVP</span></a><a href="ux.html" class="prev-next-btn next" aria-label="Page suivante: Design System et UX"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Design System et UX</span></a></div>
+      </article>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const btn = document.getElementById('hamburger-btn');
+      const isOpen = sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen);
+      if (isOpen) sidebar.querySelector('.nav-link').focus();
+    }
+    // Close sidebar on nav click (mobile only)
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 900) toggleSidebar();
+      });
+    });
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar.classList.contains('open')) toggleSidebar();
+      }
+    });
+  </script>
+</body>
+</html>
