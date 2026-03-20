@@ -283,3 +283,63 @@ Aucun déficit critique. Le grand saut du "SaaS Pharmacien" vers un "Tableau de 
 
 **First Implementation Priority:**
 L'initialisation du Workspace Mono-repo physique, du projet `tiba_app` dans `/apps/` et de l'instance Backend Database associée (`supabase start` / Seed DB SQL de base).
+
+## Architectural Diagrams (Mermaid)
+
+### 1. App Startup Routing Flow (Story 1.3)
+```mermaid
+flowchart TD
+    A[App Launch] --> B{Disclaimer\nAccepted?}
+    B -- No --> C[OnboardingPage\n& Disclaimer]
+    B -- Yes --> D{Active\nSession?}
+    D -- No --> E[SocialLoginPage]
+    D -- Yes --> F[AppShell\nHome]
+    C --> E
+    E --> F
+```
+
+### 2. Authentication Sequence (Google + Supabase)
+```mermaid
+sequenceDiagram
+    participant User
+    participant App as Tiba App
+    participant Google as Google Auth
+    participant Supabase as Supabase Auth
+
+    User->>App: Clicks "Continuer avec Google"
+    App->>Google: signIn()
+    Google-->>App: GoogleUser (idToken, accessToken)
+    App->>Supabase: signInWithIdToken(provider: google, idToken)
+    Supabase-->>App: AuthResponse (Session)
+    App->>User: Redirect to AppShell
+```
+
+### 3. Auth Feature Internal Architecture
+```mermaid
+classDiagram
+    class SocialLoginPage {
+        +Widget build()
+        -_signInWithGoogle()
+    }
+    class AuthProviders {
+        +Provider~AuthRepository~
+        +StreamProvider~AuthState~
+    }
+    class AuthRepository {
+        -SupabaseClient _client
+        +signInWithGoogle()
+        +getCurrentSession()
+        +onAuthStateChange()
+        +signOut()
+    }
+    class SupabaseConfig {
+        +String url
+        +String anonKey
+        +String googleWebClientId
+    }
+
+    SocialLoginPage --> AuthProviders : watches
+    SocialLoginPage --> AuthRepository : uses
+    AuthProviders --> AuthRepository : provides
+    AuthRepository --> SupabaseConfig : reads
+```
