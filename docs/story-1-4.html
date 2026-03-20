@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Story 1.3: Auth Google – Tiba Docs</title>
+  <title>Story 1.4: Sync Locale – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -778,8 +778,8 @@
           <li><a href="epics.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Epics et Stories</a></li>
           <li><a href="story-1-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.1: Design System</a></li>
           <li><a href="story-1-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.2: Onboarding & Disclaimer</a></li>
-          <li><a href="story-1-3.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.3: Auth Google</a></li>
-          <li><a href="story-1-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.4: Sync Locale</a></li>
+          <li><a href="story-1-3.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.3: Auth Google</a></li>
+          <li><a href="story-1-4.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.4: Sync Locale</a></li>
           <li><a href="story-1-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.5: Hero Scan AI</a></li>
           <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
         </ul>
@@ -793,35 +793,44 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Story 1.3: Auth Google</div>
-        <div class="topbar-badge">14 / 17</div>
+        <div class="topbar-title">Story 1.4: Sync Locale</div>
+        <div class="topbar-badge">15 / 17</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Story 1.3: Authentification Anonyme (Google)</h1>
+          <h1>Story 1.4: Infrastructure Locale &amp; Synchronisation DB</h1>
 <h2>Objectif</h2>
-<p>Permettre une inscription/connexion sans friction (Zero Friction) via Google Auth, tout en respectant l&#39;architecture &quot;Offline-First&quot;.</p>
-<h2>Spécifications (basées sur Epics)</h2>
+<p>Rendre l&#39;application utilisable entièrement hors-ligne (Offline-First) pour l&#39;accès aux notices déjà consultées, avec une synchronisation automatique au retour de la connexion réseau.</p>
+<h2>Spécifications</h2>
 <ul>
-<li><strong>Given</strong> un utilisateur non authentifié sur la page Login</li>
-<li><strong>When</strong> il clique sur &quot;Continuer avec Google&quot;</li>
-<li><strong>Then</strong> la popup Google native s&#39;ouvre</li>
-<li><strong>And</strong> après succès, un compte Supabase (Auth) est créé</li>
-<li><strong>And</strong> le profil initial est configuré dans <code>user_profile</code></li>
+<li><p><strong>Given</strong> une notice de médicament a été ouverte par l&#39;utilisateur</p>
+</li>
+<li><p><strong>When</strong> la fiche est affichée</p>
+</li>
+<li><p><strong>Then</strong> elle est mise en cache localement via Drift (SQLite)</p>
+</li>
+<li><p><strong>And</strong> l&#39;éviction suit une politique FIFO (7 jours, max 50 notices)</p>
+</li>
+<li><p><strong>Given</strong> le réseau est coupé</p>
+</li>
+<li><p><strong>When</strong> l&#39;utilisateur consulte une notice du cache</p>
+</li>
+<li><p><strong>Then</strong> elle s&#39;affiche instantanément, avec une bannière &quot;Mode hors-ligne&quot;</p>
+</li>
 </ul>
 <h2>Implémentation</h2>
 <ul>
-<li>Utilisation du package <code>google_sign_in</code> et <code>supabase_flutter</code>.</li>
-<li>Création de variables d&#39;environnement (<code>.env</code>) avec <code>flutter_dotenv</code>.</li>
-<li>Déclaration des clés Supabase et du Web Client ID Google.</li>
-<li>Ajout d&#39;une table locale (Drift) pour garder l&#39;identifiant hors-ligne (ajouté globalement).</li>
-<li>Mise en place de Row Level Security (RLS) sur Supabase pour protéger <code>user_profile</code>.</li>
+<li>Intégration de <code>drift</code>, <code>sqlite3_flutter_libs</code>, et <code>path_provider</code>.</li>
+<li>Création de <code>AppDatabase</code> avec les tables <code>cached_medication</code> et <code>sync_queue</code>.</li>
+<li>Implémentation de <code>SyncEngine</code> pour la file d&#39;attente hors-ligne.</li>
+<li>Implémentation de <code>ConnectivityMonitor</code> pour déclencher la synchronisation.</li>
+<li>Ajout du composant UI <code>OfflineBanner</code>.</li>
 </ul>
 <p><strong>Status :</strong> Terminée ✅</p>
 
         </div>
-        <div class="prev-next"><a href="story-1-2.html" class="prev-next-btn prev" aria-label="Page precedente: Story 1.2: Onboarding & Disclaimer"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 1.2: Onboarding & Disclaimer</span></a><a href="story-1-4.html" class="prev-next-btn next" aria-label="Page suivante: Story 1.4: Sync Locale"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 1.4: Sync Locale</span></a></div>
+        <div class="prev-next"><a href="story-1-3.html" class="prev-next-btn prev" aria-label="Page precedente: Story 1.3: Auth Google"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 1.3: Auth Google</span></a><a href="story-1-5.html" class="prev-next-btn next" aria-label="Page suivante: Story 1.5: Hero Scan AI"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 1.5: Hero Scan AI</span></a></div>
       </article>
     </div>
   </div>

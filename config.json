@@ -36,6 +36,8 @@
         { "id": "story-1-1", "title": "Story 1.1: Design System", "path": "content/implementation-artifacts/1-1-project-initialization-and-design-system.md" },
         { "id": "story-1-2", "title": "Story 1.2: Onboarding & Disclaimer", "path": "content/implementation-artifacts/1-2-onboarding-et-disclaimer-legal.md" },
         { "id": "story-1-3", "title": "Story 1.3: Auth Google", "path": "content/implementation-artifacts/1-3-authentification-google.md" },
+        { "id": "story-1-4", "title": "Story 1.4: Sync Locale", "path": "content/implementation-artifacts/1-4-infrastructure-locale-et-synchronisation-db.md" },
+        { "id": "story-1-5", "title": "Story 1.5: Hero Scan AI", "path": "content/implementation-artifacts/1-5-hero-scan-viewfinder-camera-ar.md" },
         { "id": "sprint-status", "title": "Status du Sprint", "path": "content/implementation-artifacts/sprint-status.yaml" }
       ]
     }
