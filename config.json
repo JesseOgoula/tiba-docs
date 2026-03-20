@@ -35,7 +35,7 @@
         { "id": "epics", "title": "Epics et Stories", "path": "content/planning-artifacts/epics.md" },
         { "id": "story-1-1", "title": "Story 1.1: Design System", "path": "content/implementation-artifacts/1-1-project-initialization-and-design-system.md" },
         { "id": "story-1-2", "title": "Story 1.2: Onboarding & Disclaimer", "path": "content/implementation-artifacts/1-2-onboarding-et-disclaimer-legal.md" },
-        { "id": "story-1-3", "title": "Story 1.3: Auth OTP", "path": "content/implementation-artifacts/1-3-authentification-utilisateur-otp.md" },
+        { "id": "story-1-3", "title": "Story 1.3: Auth Google", "path": "content/implementation-artifacts/1-3-authentification-google.md" },
         { "id": "sprint-status", "title": "Status du Sprint", "path": "content/implementation-artifacts/sprint-status.yaml" }
       ]
     }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Story 1.3: Auth OTP – Tiba Docs</title>
+  <title>Story 1.3: Auth Google – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -778,7 +778,7 @@
           <li><a href="epics.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Epics et Stories</a></li>
           <li><a href="story-1-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.1: Design System</a></li>
           <li><a href="story-1-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.2: Onboarding & Disclaimer</a></li>
-          <li><a href="story-1-3.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.3: Auth OTP</a></li>
+          <li><a href="story-1-3.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.3: Auth Google</a></li>
           <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
         </ul>
       </div>
@@ -791,169 +791,13 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Story 1.3: Auth OTP</div>
+        <div class="topbar-title">Story 1.3: Auth Google</div>
         <div class="topbar-badge">14 / 15</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Story 1.3: Authentification Utilisateur OTP</h1>
-<p>Status: ready-for-dev</p>
-<h2>Story</h2>
-<p>As a <strong>utilisateur Tiba (Aminata)</strong>,<br>I want <strong>créer un compte avec mon numéro de téléphone et me connecter facilement</strong>,<br>so that <strong>mes scans et mon historique soient associés à mon profil de façon sécurisée</strong>.</p>
-<h2>Acceptance Criteria</h2>
-<ol>
-<li><p><strong>Given</strong> l&#39;utilisateur a accepté le disclaimer (Story 1.2)<br><strong>When</strong> l&#39;écran d&#39;inscription s&#39;affiche<br><strong>Then</strong> un champ de saisie pour le numéro de téléphone (format international +237, +242, +243) est présenté<br><strong>And</strong> un sélecteur de préfixe pays est disponible</p>
-</li>
-<li><p><strong>Given</strong> l&#39;utilisateur saisit un numéro de téléphone valide et appuie sur &quot;Recevoir le code&quot;<br><strong>When</strong> la requête est envoyée à Supabase Auth (OTP Phone)<br><strong>Then</strong> un SMS contenant un code OTP à 6 chiffres est envoyé au numéro<br><strong>And</strong> un écran de saisie du code OTP avec un timer de 5 minutes s&#39;affiche (NFR7)<br><strong>And</strong> un Skeleton Loader s&#39;affiche pendant l&#39;envoi (UX-DR7)</p>
-</li>
-<li><p><strong>Given</strong> l&#39;utilisateur saisit le code OTP correct dans les 5 minutes<br><strong>When</strong> le code est vérifié par Supabase Auth<br><strong>Then</strong> la session utilisateur est créée et le JWT est stocké en local de manière sécurisée<br><strong>And</strong> l&#39;utilisateur est redirigé vers l&#39;écran Scanner principal (FR17)</p>
-</li>
-<li><p><strong>Given</strong> l&#39;utilisateur saisit un code OTP incorrect ou expiré<br><strong>When</strong> la vérification échoue<br><strong>Then</strong> un message d&#39;erreur clair s&#39;affiche en Rouge Corail (#E85D75)<br><strong>And</strong> l&#39;utilisateur peut renvoyer un nouveau code après le délai du timer</p>
-</li>
-<li><p><strong>Given</strong> l&#39;utilisateur est déjà connecté<br><strong>When</strong> il relance l&#39;application<br><strong>Then</strong> la session est restaurée automatiquement sans redemander le code OTP<br><strong>And</strong> toutes les communications utilisent TLS 1.3 minimum (NFR5)</p>
-</li>
-</ol>
-<h2>Tasks / Subtasks</h2>
-<ul>
-<li><input disabled="" type="checkbox"> Task 1: Add Supabase dependencies &amp; config (AC: all)<ul>
-<li><input disabled="" type="checkbox"> Add <code>supabase_flutter</code> package to <code>pubspec.yaml</code></li>
-<li><input disabled="" type="checkbox"> Create <code>lib/core/config/supabase_config.dart</code> with URL and anon key</li>
-<li><input disabled="" type="checkbox"> Initialize Supabase in <code>main.dart</code> before <code>runApp</code></li>
-<li><input disabled="" type="checkbox"> Create <code>.env</code> or constants file for Supabase credentials (do NOT hardcode in git)</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> Task 2: Auth Repository (AC: #2, #3, #4, #5)<ul>
-<li><input disabled="" type="checkbox"> Create <code>lib/features/auth/data/auth_repository.dart</code></li>
-<li><input disabled="" type="checkbox"> Implement <code>sendOtp(phoneNumber)</code> → calls <code>supabase.auth.signInWithOtp(phone:)</code></li>
-<li><input disabled="" type="checkbox"> Implement <code>verifyOtp(phone, token)</code> → calls <code>supabase.auth.verifyOTP()</code></li>
-<li><input disabled="" type="checkbox"> Implement <code>getCurrentSession()</code> → checks <code>supabase.auth.currentSession</code></li>
-<li><input disabled="" type="checkbox"> Implement <code>signOut()</code></li>
-<li><input disabled="" type="checkbox"> Implement <code>onAuthStateChange</code> stream listener</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> Task 3: Auth Riverpod Providers (AC: all)<ul>
-<li><input disabled="" type="checkbox"> Create <code>lib/features/auth/providers/auth_providers.dart</code></li>
-<li><input disabled="" type="checkbox"> Create <code>authRepositoryProvider</code></li>
-<li><input disabled="" type="checkbox"> Create <code>authStateProvider</code> (StreamProvider listening to auth state changes)</li>
-<li><input disabled="" type="checkbox"> Create <code>sendOtpProvider</code> / <code>verifyOtpProvider</code> (async notifiers or FutureProviders)</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> Task 4: PhoneInputPage widget (AC: #1)<ul>
-<li><input disabled="" type="checkbox"> Create <code>lib/features/auth/presentation/phone_input_page.dart</code></li>
-<li><input disabled="" type="checkbox"> Dropdown for country prefix (+237 Cameroun, +242 Congo, +243 RDC)</li>
-<li><input disabled="" type="checkbox"> Phone number text field with validation (8-10 digits)</li>
-<li><input disabled="" type="checkbox"> &quot;Recevoir le code&quot; TibaButton — disabled until valid phone entered</li>
-<li><input disabled="" type="checkbox"> Skeleton Loader while OTP is being sent (UX-DR7)</li>
-<li><input disabled="" type="checkbox"> Error styling in Rouge Corail (#E85D75 / TibaColors.alert)</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> Task 5: OtpVerificationPage widget (AC: #2, #3, #4)<ul>
-<li><input disabled="" type="checkbox"> Create <code>lib/features/auth/presentation/otp_verification_page.dart</code></li>
-<li><input disabled="" type="checkbox"> 6-digit code input (individual boxes or pin-code style)</li>
-<li><input disabled="" type="checkbox"> Countdown 5-minute timer display (NFR7)</li>
-<li><input disabled="" type="checkbox"> &quot;Renvoyer le code&quot; link — disabled during countdown</li>
-<li><input disabled="" type="checkbox"> Auto-submit when 6 digits entered</li>
-<li><input disabled="" type="checkbox"> Error message in Rouge Corail on invalid/expired code</li>
-<li><input disabled="" type="checkbox"> Loading state (Skeleton) during verification</li>
-<li><input disabled="" type="checkbox"> On success → navigate to AppShell (pushAndRemoveUntil)</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> Task 6: App Routing Update (AC: #5)<ul>
-<li><input disabled="" type="checkbox"> Modify <code>_StartupRouter</code> in <code>lib/app/app.dart</code></li>
-<li><input disabled="" type="checkbox"> Check flow: disclaimer accepted? → session exists? → route accordingly</li>
-<li><input disabled="" type="checkbox"> If no disclaimer → OnboardingPage</li>
-<li><input disabled="" type="checkbox"> If disclaimer but no session → PhoneInputPage</li>
-<li><input disabled="" type="checkbox"> If session exists → AppShell</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> Task 7: Supabase project setup<ul>
-<li><input disabled="" type="checkbox"> Enable Phone Auth (OTP) in Supabase Dashboard</li>
-<li><input disabled="" type="checkbox"> Configure SMS provider (Twilio or built-in Supabase for testing)</li>
-<li><input disabled="" type="checkbox"> Test OTP flow with real/test phone number</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> Task 8: Tests (AC: #1-5)<ul>
-<li><input disabled="" type="checkbox"> Widget test: PhoneInputPage validates phone format</li>
-<li><input disabled="" type="checkbox"> Widget test: OtpVerificationPage shows 6-digit input + timer</li>
-<li><input disabled="" type="checkbox"> Unit test: AuthRepository methods call correct Supabase APIs</li>
-</ul>
-</li>
-</ul>
-<h2>Dev Notes</h2>
-<h3>Project Structure Notes</h3>
-<ul>
-<li><strong>Feature module:</strong> <code>lib/features/auth/</code> following the pattern set by <code>lib/features/onboarding/</code> in Story 1.2.<pre><code>lib/features/auth/
-├── data/
-│   └── auth_repository.dart
-├── providers/
-│   └── auth_providers.dart
-└── presentation/
-    ├── phone_input_page.dart
-    └── otp_verification_page.dart
-</code></pre>
-</li>
-<li><strong>Config module:</strong> <code>lib/core/config/supabase_config.dart</code> — central Supabase init.</li>
-</ul>
-<h3>Previous Story Intelligence</h3>
-<ul>
-<li><strong>Story 1.1:</strong> Design System (TibaColors, TibaTypography, TibaTheme, TibaButton), 3-tab AppShell.</li>
-<li><strong>Story 1.2:</strong> OnboardingPage → DisclaimerPage → AppShell flow. SharedPreferences. <code>_StartupRouter</code> in <code>app.dart</code>.</li>
-<li><strong>Reuse:</strong> <code>TibaButton</code> for &quot;Recevoir le code&quot; / &quot;Vérifier&quot;. <code>TibaColors.alert</code> for errors. Theme text styles everywhere.</li>
-<li><strong>Modify:</strong> <code>app.dart</code> (<code>_StartupRouter</code> needs a 3rd check: session exists?), <code>main.dart</code> (add Supabase.initialize).</li>
-</ul>
-<h3>Architecture Compliance</h3>
-<ul>
-<li><strong>Auth Provider:</strong> Supabase Auth with Phone OTP — see FR17, NFR7 (5-min expiry).</li>
-<li><strong>Security:</strong> JWT stored by <code>supabase_flutter</code> internally (Hive/secure storage). TLS 1.3 enforced by Supabase platform.</li>
-<li><strong>State Management:</strong> Riverpod for auth state. <code>StreamProvider</code> wrapping <code>supabase.auth.onAuthStateChange</code>.</li>
-<li><strong>Offline:</strong> Auth requires network. If offline, show a friendly &quot;connexion requise&quot; message.</li>
-<li><strong>UX:</strong> Skeleton loaders for loading states (UX-DR7). 48px touch targets (UX-DR6).</li>
-</ul>
-<h3>Library &amp; Framework Requirements</h3>
-<table>
-<thead>
-<tr>
-<th>Library</th>
-<th>Version</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>supabase_flutter</code></td>
-<td><code>^2.8.3</code></td>
-<td>Supabase client + Auth (OTP, session, JWT)</td>
-</tr>
-<tr>
-<td><code>flutter_riverpod</code></td>
-<td><code>^2.6.1</code></td>
-<td>Already added in Story 1.1</td>
-</tr>
-</tbody></table>
-<h3>Supabase Configuration Required</h3>
-<p>Before development, ensure:</p>
-<ol>
-<li>Supabase project exists with Phone Auth enabled</li>
-<li>An SMS provider is configured (Twilio recommended for production)</li>
-<li>The Supabase URL and anon key are available</li>
-<li>For testing: use Supabase&#39;s built-in test OTP (no real SMS needed)</li>
-</ol>
-<h3>References</h3>
-<ul>
-<li>[Source: <code>planning-artifacts/epics.md</code>] — Story 1.3 AC (FR17, NFR5, NFR7, UX-DR7)</li>
-<li>[Source: <code>planning-artifacts/architecture.md</code>] — Supabase Auth, Flutter/Riverpod stack</li>
-<li>[Source: <code>implementation-artifacts/1-2-onboarding-et-disclaimer-legal.md</code>] — Routing flow (disclaimer → auth → app)</li>
-</ul>
-<h2>Dev Agent Record</h2>
-<h3>Agent Model Used</h3>
-<p>Antigravity / Gemini</p>
-<h3>Debug Log References</h3>
-<p><em>(To be filled during development)</em></p>
-<h3>Completion Notes List</h3>
-<p><em>(To be filled during development)</em></p>
-<h3>File List</h3>
-<p><em>(To be filled during development)</em></p>
-
+          <div style="background:#FEE; border:1px solid #E85D75; border-radius:12px; padding:20px; color:#A33;"><strong>Erreur:</strong> Impossible de charger <code>content/implementation-artifacts/1-3-authentification-google.md</code></div>
         </div>
         <div class="prev-next"><a href="story-1-2.html" class="prev-next-btn prev" aria-label="Page precedente: Story 1.2: Onboarding & Disclaimer"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 1.2: Onboarding & Disclaimer</span></a><a href="sprint-status.html" class="prev-next-btn next" aria-label="Page suivante: Status du Sprint"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Status du Sprint</span></a></div>
       </article>
