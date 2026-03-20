@@ -981,5 +981,47 @@ Dernière mise à jour : Mars 2026
       }
     });
   </script>
+
+  <!-- Ajouter Mermaid.js pour transformer les blocs de code en graphiques -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    
+    // Configurer le theme pour correspondre a l'identite Tiba
+    mermaid.initialize({ 
+      startOnLoad: false, 
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#E8F5F1',
+        primaryTextColor: '#1A1A1A',
+        primaryBorderColor: '#0FAF8C',
+        lineColor: '#0B8E71',
+        secondaryColor: '#F5F0E6',
+        tertiaryColor: '#fff',
+        fontFamily: 'Inter, sans-serif'
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Marked.js genere <pre><code class="language-mermaid">
+      // Mermaid attend <div class="mermaid">
+      const codeBlocks = document.querySelectorAll('code.language-mermaid');
+      
+      codeBlocks.forEach((block) => {
+        const pre = block.parentElement;
+        const div = document.createElement('div');
+        div.className = 'mermaid';
+        div.textContent = block.textContent;
+        // On remplace le bloc strict code par un conteneur mermaid
+        pre.replaceWith(div);
+      });
+
+      // Lancer le calcul et l'affichage des graphiques
+      if(codeBlocks.length > 0) {
+        await mermaid.run({
+          querySelector: '.mermaid',
+        });
+      }
+    });
+  </script>
 </body>
 </html>
