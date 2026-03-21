@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Story 2.3: Voice Orb – Tiba Docs</title>
+  <title>Epic 4: Dashboard Admin – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -816,7 +816,7 @@
           <li><a href="epic-1-retro.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Rétrospective Epic 1</a></li>
           <li><a href="story-2-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
           <li><a href="story-2-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.2: Chat Textuel</a></li>
-          <li><a href="story-2-3.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.3: Voice Orb</a></li>
+          <li><a href="story-2-3.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.3: Voice Orb</a></li>
           <li><a href="story-2-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.4: Contexte Patient</a></li>
           <li><a href="story-2-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.5: Pare-feu Sécurité</a></li>
           <li><a href="story-2-6.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.6: Mode Global IA</a></li>
@@ -826,7 +826,7 @@
           <li><a href="story-3-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 3.2: Fiche & Itinéraire</a></li>
           <li><a href="story-3-3.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 3.3: Cache Hors-ligne</a></li>
           <li><a href="story-3-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 3.4: Suggestion Post-Scan</a></li>
-          <li><a href="epic-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Epic 4: Dashboard Admin</a></li>
+          <li><a href="epic-4.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Epic 4: Dashboard Admin</a></li>
         </ul>
       </div>
       </div>
@@ -838,26 +838,70 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Story 2.3: Voice Orb</div>
-        <div class="topbar-badge">22 / 32</div>
+        <div class="topbar-title">Epic 4: Dashboard Admin</div>
+        <div class="topbar-badge">32 / 32</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Story 2.3: Voice Assistant Orb (Hold-to-Talk)</h1>
-<h2>Objectif</h2>
-<p>Permettre aux utilisateurs (y compris analphabètes) d&#39;interroger l&#39;IA vocalement via un bouton hold-to-talk avec retour audio automatique.</p>
-<h2>Implémentation</h2>
+          <h1>Epic 4 : La Tour de Contrôle Opérationnelle</h1>
+<h2>🎯 Objectif</h2>
+<p>Portail web Next.js connecté à Supabase permettant aux opérateurs Tiba de gérer les pharmacies, notices médicamenteuses et signalements utilisateurs.</p>
+<h2>🛠️ Stack technique</h2>
 <ul>
-<li><strong><code>VoiceOrb</code></strong> : Widget hold-to-talk avec animation d&#39;ondes concentriques (CustomPainter), STT French locale, feedback haptique, et preview transcription en direct</li>
-<li><strong><code>ChatSheet</code></strong> : Intégration de l&#39;orbe vocal à côté du bouton send, avec auto-TTS sur la réponse IA</li>
-<li><strong><code>ChatNotifier</code></strong> : Support du paramètre <code>sourceType</code> (&#39;text&#39;|&#39;voice&#39;) pour le logging audit</li>
+<li><strong>Next.js 16</strong> (App Router, TailwindCSS 4, TypeScript)</li>
+<li><strong>Supabase SSR</strong> (<code>@supabase/ssr</code>) avec cookies HTTP-only</li>
+<li><strong>Middleware</strong> de session + redirection auth automatique</li>
+<li>Repo dédié : <code>JesseOgoula/tiba-admin</code></li>
 </ul>
-<p><strong>Pipeline vocal :</strong> 🎤 Maintenir → STT (fr_FR) → Texte → RAG → Réponse IA → 🔊 Lecture TTS automatique</p>
-<p><strong>Status :</strong> Terminée ✅</p>
+<h2>📋 Stories implémentées</h2>
+<h3>Story 4.1 : Scaffold &amp; Authentification ✅</h3>
+<ul>
+<li>Page login avec branding Tiba (gradient, logo cœur, formulaire)</li>
+<li>Middleware Next.js : redirect <code>/login</code> si non authentifié</li>
+<li>Supabase Auth email/mot de passe</li>
+<li>Layout admin avec sidebar (Dashboard, Pharmacies, Notices, Signalements)</li>
+</ul>
+<h3>Story 4.2 : Notices (CRUD) ✅</h3>
+<ul>
+<li>Table paginée des médicaments (nom, code-barres, notice)</li>
+<li>Bouton &quot;Nouvelle notice&quot; + &quot;Modifier&quot;</li>
+</ul>
+<h3>Story 4.4 : Pharmacies de Garde ✅</h3>
+<ul>
+<li>Table complète avec recherche par nom et filtre par ville</li>
+<li>Modal ajout/modification (nom, adresse, ville, quartier, téléphone, coordonnées GPS)</li>
+<li>Toggle Active/Inactif</li>
+<li>Modal planning de garde : ajout/suppression de dates avec plages horaires</li>
+<li>Statut visuel (badge Actif vert / Inactif rouge)</li>
+</ul>
+<h3>Signalements ✅</h3>
+<ul>
+<li>Table des rapports utilisateurs depuis <code>ai_usage_logs</code></li>
+<li>Catégorie + détails + date</li>
+</ul>
+<h2>🗂️ Structure du projet</h2>
+<pre><code>src/
+├── app/
+│   ├── globals.css          # Design tokens Tiba
+│   ├── layout.tsx           # Root layout (Google Fonts)
+│   ├── login/page.tsx       # Page de connexion
+│   └── (dashboard)/
+│       ├── layout.tsx       # Vérifie auth + sidebar
+│       ├── page.tsx         # Dashboard (stats)
+│       ├── pharmacies/      # CRUD pharmacies + gardes
+│       ├── notices/         # Table notices
+│       └── signalements/    # Rapports utilisateurs
+├── components/sidebar.tsx
+├── lib/supabase/
+│   ├── server.ts            # Client SSR
+│   ├── client.ts            # Client browser
+│   └── middleware.ts        # Session + redirects
+└── middleware.ts             # Point d&#39;entrée middleware
+</code></pre>
 
         </div>
-        <div class="prev-next"><a href="story-2-2.html" class="prev-next-btn prev" aria-label="Page precedente: Story 2.2: Chat Textuel"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 2.2: Chat Textuel</span></a><a href="story-2-4.html" class="prev-next-btn next" aria-label="Page suivante: Story 2.4: Contexte Patient"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 2.4: Contexte Patient</span></a></div>
+        <div class="prev-next"><a href="story-3-4.html" class="prev-next-btn prev" aria-label="Page precedente: Story 3.4: Suggestion Post-Scan"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 3.4: Suggestion Post-Scan</span></a><div></div></div>
       </article>
     </div>
   </div>
