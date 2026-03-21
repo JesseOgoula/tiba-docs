@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Story 2.1: RAG Pipeline IA – Tiba Docs</title>
+  <title>Story 2.2: Chat Textuel – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -783,8 +783,8 @@
           <li><a href="story-1-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.5: Hero Scan AI</a></li>
           <li><a href="story-1-6.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.6: Resultat & Historique</a></li>
           <li><a href="epic-1-retro.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Rétrospective Epic 1</a></li>
-          <li><a href="story-2-1.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
-          <li><a href="story-2-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.2: Chat Textuel</a></li>
+          <li><a href="story-2-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
+          <li><a href="story-2-2.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.2: Chat Textuel</a></li>
           <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
         </ul>
       </div>
@@ -797,35 +797,26 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Story 2.1: RAG Pipeline IA</div>
-        <div class="topbar-badge">19 / 21</div>
+        <div class="topbar-title">Story 2.2: Chat Textuel</div>
+        <div class="topbar-badge">20 / 21</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Story 2.1: Pipeline RAG Strict &amp; Edge Function IA</h1>
+          <h1>Story 2.2: Chat Textuel sur la Notice</h1>
 <h2>Objectif</h2>
-<p>Mettre en place le pipeline backend RAG avec pgvector pour répondre exclusivement à partir des notices certifiées avec une température de 0.0 (aucune hallucination).</p>
-<h2>Spécifications</h2>
-<ul>
-<li><strong>Given</strong> une notice certifiée est dans la BDD Supabase</li>
-<li><strong>When</strong> une requête utilisateur est envoyée à l&#39;Edge Function <code>ai-query</code></li>
-<li><strong>Then</strong> le système effectue un embedding search (pgvector) sur les chunks de la notice</li>
-<li><strong>And</strong> seul le contenu de la notice est utilisé comme contexte du LLM (temperature 0.0)</li>
-<li><strong>And</strong> la réponse est journalisée dans <code>ai_audit_log</code></li>
-</ul>
+<p>Permettre à l&#39;utilisateur de poser des questions écrites sur le médicament scanné, avec réponses IA strict RAG en temps réel.</p>
 <h2>Implémentation</h2>
 <ul>
-<li><strong>SQL</strong> : Fonction <code>match_notice_chunks</code> avec index HNSW pour la similarité cosinus.</li>
-<li><strong>Edge Function <code>embed-notice</code></strong> : Découpe la notice en chunks → génère les embeddings via OpenAI <code>text-embedding-3-small</code> → stocke dans <code>notice_chunk</code>.</li>
-<li><strong>Edge Function <code>ai-query</code></strong> : Embed la question → recherche vectorielle → appel LLM (<code>gpt-4o-mini</code>, temp 0.0) avec prompt système strict → log dans <code>ai_audit_log</code> → réponse structurée.</li>
-<li><strong>Flutter</strong> : <code>AiQueryService</code> avec support du contexte patient, <code>aiQueryServiceProvider</code> Riverpod.</li>
-<li><strong>Données seed</strong> : Doliprane 500mg et Amoxicilline 500mg avec notices complètes.</li>
+<li><strong><code>ChatMessage</code></strong> : Modèle simple (text, isUser, timestamp)</li>
+<li><strong><code>ChatNotifier</code>/<code>ChatState</code></strong> : Gestion d&#39;état Riverpod avec rate limiting (30 req/heure)</li>
+<li><strong><code>ChatSheet</code></strong> : Bottom sheet (85% hauteur) avec bulles de chat, typing indicator, input bar</li>
+<li><strong><code>MedicalPillSheet</code></strong> : Bouton &quot;Poser une question&quot; ajouté à côté du FAB TTS</li>
 </ul>
 <p><strong>Status :</strong> Terminée ✅</p>
 
         </div>
-        <div class="prev-next"><a href="epic-1-retro.html" class="prev-next-btn prev" aria-label="Page precedente: Rétrospective Epic 1"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Rétrospective Epic 1</span></a><a href="story-2-2.html" class="prev-next-btn next" aria-label="Page suivante: Story 2.2: Chat Textuel"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 2.2: Chat Textuel</span></a></div>
+        <div class="prev-next"><a href="story-2-1.html" class="prev-next-btn prev" aria-label="Page precedente: Story 2.1: RAG Pipeline IA"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 2.1: RAG Pipeline IA</span></a><a href="sprint-status.html" class="prev-next-btn next" aria-label="Page suivante: Status du Sprint"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Status du Sprint</span></a></div>
       </article>
     </div>
   </div>

@@ -59,7 +59,7 @@ development_status:
   # ═══════════════════════════════════════════════════════
   epic-2: in-progress
   2-1-pipeline-rag-strict-et-edge-function-ia: done
-  2-2-chat-textuel-sur-la-notice: backlog
+  2-2-chat-textuel-sur-la-notice: done
   2-3-voice-assistant-orb-hold-to-talk: backlog
   2-4-contexte-patient-adulte-enfant-poids: backlog
   2-5-pare-feu-anti-diagnostic-et-messages-de-securite: backlog
