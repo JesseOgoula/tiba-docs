@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Story 1.5: Hero Scan AI – Tiba Docs</title>
+  <title>Story 2.1: RAG Pipeline IA – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -780,10 +780,10 @@
           <li><a href="story-1-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.2: Onboarding & Disclaimer</a></li>
           <li><a href="story-1-3.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.3: Auth Google</a></li>
           <li><a href="story-1-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.4: Sync Locale</a></li>
-          <li><a href="story-1-5.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.5: Hero Scan AI</a></li>
+          <li><a href="story-1-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.5: Hero Scan AI</a></li>
           <li><a href="story-1-6.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.6: Resultat & Historique</a></li>
           <li><a href="epic-1-retro.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Rétrospective Epic 1</a></li>
-          <li><a href="story-2-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
+          <li><a href="story-2-1.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
           <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
         </ul>
       </div>
@@ -796,36 +796,35 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Story 1.5: Hero Scan AI</div>
-        <div class="topbar-badge">16 / 20</div>
+        <div class="topbar-title">Story 2.1: RAG Pipeline IA</div>
+        <div class="topbar-badge">19 / 20</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Story 1.5: Hero Scan Viewfinder (Caméra AR)</h1>
+          <h1>Story 2.1: Pipeline RAG Strict &amp; Edge Function IA</h1>
 <h2>Objectif</h2>
-<p>Scanner la boîte d&#39;un médicament avec la caméra pour identification automatique (Code-barres ou OCR d&#39;urgence).</p>
+<p>Mettre en place le pipeline backend RAG avec pgvector pour répondre exclusivement à partir des notices certifiées avec une température de 0.0 (aucune hallucination).</p>
 <h2>Spécifications</h2>
 <ul>
-<li><strong>Given</strong> l&#39;onglet Scanner est ouvert</li>
-<li><strong>When</strong> le composant s&#39;affiche</li>
-<li><strong>Then</strong> le cadre de visée est animé (pulse blanc)</li>
-<li><strong>And</strong> si un code-barres est détecté (focus), le cadre devient vert avec un retour haptique</li>
-<li><strong>And</strong> si aucun code-barres n&#39;est trouvé après 5 secondes, l&#39;OCR Google ML Kit prend le relais (lecture du nom).</li>
+<li><strong>Given</strong> une notice certifiée est dans la BDD Supabase</li>
+<li><strong>When</strong> une requête utilisateur est envoyée à l&#39;Edge Function <code>ai-query</code></li>
+<li><strong>Then</strong> le système effectue un embedding search (pgvector) sur les chunks de la notice</li>
+<li><strong>And</strong> seul le contenu de la notice est utilisé comme contexte du LLM (temperature 0.0)</li>
+<li><strong>And</strong> la réponse est journalisée dans <code>ai_audit_log</code></li>
 </ul>
 <h2>Implémentation</h2>
 <ul>
-<li>Utilisation de <code>mobile_scanner</code> pour la lecture ML (très rapide).</li>
-<li>Utilisation de <code>google_mlkit_text_recognition</code> pour l&#39;OCR en fallback.</li>
-<li>Ajout de <code>vibration</code> pour le retour haptique sur détection du focus.</li>
-<li>Ajout des permissions <code>CAMERA</code> (Android/iOS).</li>
-<li>Affichage du <code>ScanViewfinder</code> avec animations custom <code>CustomPainter</code>.</li>
-<li>Création du <code>MedicationLookupService</code> avec priorité Cache -&gt; Supabase.</li>
+<li><strong>SQL</strong> : Fonction <code>match_notice_chunks</code> avec index HNSW pour la similarité cosinus.</li>
+<li><strong>Edge Function <code>embed-notice</code></strong> : Découpe la notice en chunks → génère les embeddings via OpenAI <code>text-embedding-3-small</code> → stocke dans <code>notice_chunk</code>.</li>
+<li><strong>Edge Function <code>ai-query</code></strong> : Embed la question → recherche vectorielle → appel LLM (<code>gpt-4o-mini</code>, temp 0.0) avec prompt système strict → log dans <code>ai_audit_log</code> → réponse structurée.</li>
+<li><strong>Flutter</strong> : <code>AiQueryService</code> avec support du contexte patient, <code>aiQueryServiceProvider</code> Riverpod.</li>
+<li><strong>Données seed</strong> : Doliprane 500mg et Amoxicilline 500mg avec notices complètes.</li>
 </ul>
 <p><strong>Status :</strong> Terminée ✅</p>
 
         </div>
-        <div class="prev-next"><a href="story-1-4.html" class="prev-next-btn prev" aria-label="Page precedente: Story 1.4: Sync Locale"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 1.4: Sync Locale</span></a><a href="story-1-6.html" class="prev-next-btn next" aria-label="Page suivante: Story 1.6: Resultat & Historique"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 1.6: Resultat & Historique</span></a></div>
+        <div class="prev-next"><a href="epic-1-retro.html" class="prev-next-btn prev" aria-label="Page precedente: Rétrospective Epic 1"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Rétrospective Epic 1</span></a><a href="sprint-status.html" class="prev-next-btn next" aria-label="Page suivante: Status du Sprint"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Status du Sprint</span></a></div>
       </article>
     </div>
   </div>

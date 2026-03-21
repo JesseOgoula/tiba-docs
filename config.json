@@ -40,6 +40,7 @@
         { "id": "story-1-5", "title": "Story 1.5: Hero Scan AI", "path": "content/implementation-artifacts/1-5-hero-scan-viewfinder-camera-ar.md" },
         { "id": "story-1-6", "title": "Story 1.6: Resultat & Historique", "path": "content/implementation-artifacts/1-6-fiche-resultat-medical-pill-et-matching-notice.md" },
         { "id": "epic-1-retro", "title": "Rétrospective Epic 1", "path": "content/implementation-artifacts/epic-1-retro.md" },
+        { "id": "story-2-1", "title": "Story 2.1: RAG Pipeline IA", "path": "content/implementation-artifacts/2-1-pipeline-rag-strict-et-edge-function-ia.md" },
         { "id": "sprint-status", "title": "Status du Sprint", "path": "content/implementation-artifacts/sprint-status.yaml" }
       ]
     }
