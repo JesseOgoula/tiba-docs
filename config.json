@@ -24,7 +24,7 @@
       "icon": "layers",
       "items": [
         { "id": "architecture", "title": "Architecture Technique", "path": "content/planning-artifacts/architecture.md" },
-        { "id": "database", "title": "Base de Donnees", "path": "content/database-visual.html" },
+        { "id": "database", "title": "Base de Donnees", "path": "content/database-visual.html" },`n        { "id": "assistant-ia", "title": "Architecture Assistant IA", "path": "content/planning-artifacts/assistant-ia.md" },
         { "id": "database-sql", "title": "Code SQL Complet", "path": "content/planning-artifacts/database-schema.sql" }
       ]
     },
