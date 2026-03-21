@@ -48,7 +48,8 @@
         { "id": "story-2-5", "title": "Story 2.5: Pare-feu Sécurité", "path": "content/implementation-artifacts/2-5-pare-feu-anti-diagnostic-et-messages-de-securite.md" },
         { "id": "story-2-6", "title": "Story 2.6: Mode Global IA", "path": "content/implementation-artifacts/2-6-mode-global-ia-sans-scan.md" },
         { "id": "story-2-7", "title": "Story 2.7: Audit & Signalement", "path": "content/implementation-artifacts/2-7-audit-logging-et-signalement-utilisateur.md" },
-        { "id": "sprint-status", "title": "Status du Sprint", "path": "content/implementation-artifacts/sprint-status.yaml" }
+        { "id": "sprint-status", "title": "Status du Sprint", "path": "content/implementation-artifacts/sprint-status.yaml" },
+        { "id": "story-3-1", "title": "Story 3.1: Pharmacies GPS", "path": "content/implementation-artifacts/3-1-recherche-des-pharmacies-de-garde-par-gps.md" }
       ]
     }
   ]

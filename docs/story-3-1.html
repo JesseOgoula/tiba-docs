@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Story 2.3: Voice Orb – Tiba Docs</title>
+  <title>Story 3.1: Pharmacies GPS – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -816,13 +816,13 @@
           <li><a href="epic-1-retro.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Rétrospective Epic 1</a></li>
           <li><a href="story-2-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
           <li><a href="story-2-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.2: Chat Textuel</a></li>
-          <li><a href="story-2-3.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.3: Voice Orb</a></li>
+          <li><a href="story-2-3.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.3: Voice Orb</a></li>
           <li><a href="story-2-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.4: Contexte Patient</a></li>
           <li><a href="story-2-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.5: Pare-feu Sécurité</a></li>
           <li><a href="story-2-6.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.6: Mode Global IA</a></li>
           <li><a href="story-2-7.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.7: Audit & Signalement</a></li>
           <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
-          <li><a href="story-3-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 3.1: Pharmacies GPS</a></li>
+          <li><a href="story-3-1.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 3.1: Pharmacies GPS</a></li>
         </ul>
       </div>
       </div>
@@ -834,26 +834,41 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Story 2.3: Voice Orb</div>
-        <div class="topbar-badge">22 / 28</div>
+        <div class="topbar-title">Story 3.1: Pharmacies GPS</div>
+        <div class="topbar-badge">28 / 28</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Story 2.3: Voice Assistant Orb (Hold-to-Talk)</h1>
-<h2>Objectif</h2>
-<p>Permettre aux utilisateurs (y compris analphabètes) d&#39;interroger l&#39;IA vocalement via un bouton hold-to-talk avec retour audio automatique.</p>
-<h2>Implémentation</h2>
+          <h1>Story 3.1 : Recherche des Pharmacies de Garde par GPS</h1>
+<h2>🎯 Objectif</h2>
+<p>Permettre à l&#39;utilisateur de trouver les pharmacies de garde ouvertes à proximité de sa position GPS.</p>
+<h2>🛠️ Implémentation</h2>
+<h3>Backend Supabase</h3>
 <ul>
-<li><strong><code>VoiceOrb</code></strong> : Widget hold-to-talk avec animation d&#39;ondes concentriques (CustomPainter), STT French locale, feedback haptique, et preview transcription en direct</li>
-<li><strong><code>ChatSheet</code></strong> : Intégration de l&#39;orbe vocal à côté du bouton send, avec auto-TTS sur la réponse IA</li>
-<li><strong><code>ChatNotifier</code></strong> : Support du paramètre <code>sourceType</code> (&#39;text&#39;|&#39;voice&#39;) pour le logging audit</li>
+<li><strong>PostGIS</strong> 3.3.7 déjà installé. La colonne <code>location</code> de la table <code>pharmacy</code> est de type <code>geography</code>.</li>
+<li><strong>RPC <code>find_nearby_pharmacies</code></strong> : Fonction SQL qui prend les coordonnées GPS, un rayon (défaut 10 km), et retourne les pharmacies triées par distance croissante, avec jointure sur <code>pharmacy_schedule</code> pour savoir si elles sont de garde aujourd&#39;hui.</li>
+<li><strong>7 pharmacies de test</strong> seedées à Libreville (Gabon), dont 3 sont configurées &quot;de garde&quot; pour la date du jour.</li>
 </ul>
-<p><strong>Pipeline vocal :</strong> 🎤 Maintenir → STT (fr_FR) → Texte → RAG → Réponse IA → 🔊 Lecture TTS automatique</p>
-<p><strong>Status :</strong> Terminée ✅</p>
+<h3>Flutter</h3>
+<ul>
+<li><strong><code>geolocator</code></strong> : Permission GPS, récupération de la position actuelle.</li>
+<li><strong><code>url_launcher</code></strong> : Ouverture de Google Maps pour l&#39;itinéraire et du composeur téléphonique.</li>
+<li><strong><code>PharmacyService</code></strong> : Appelle la RPC <code>find_nearby_pharmacies</code> et retourne une liste de <code>PharmacyResult</code>.</li>
+<li><strong><code>PharmacyProvider</code></strong> : Gère les états (loading, loaded, noPermission, error, empty), la permission GPS, et l&#39;extension de rayon à 25 km.</li>
+<li><strong><code>SecoursPage</code></strong> : Écran complet avec :<ul>
+<li>Header avec compteur de rayon et bouton refresh</li>
+<li>Skeleton loader pendant le chargement</li>
+<li>Gestion de l&#39;état &quot;localisation refusée&quot; avec bouton vers les paramètres</li>
+<li>Liste de cartes de pharmacies avec badge &quot;De garde&quot; vert, distance, horaires</li>
+<li>Bouton téléphone (clickable) + bouton itinéraire (Google Maps)</li>
+<li>État vide avec option &quot;Élargir à 25 km&quot;</li>
+</ul>
+</li>
+</ul>
 
         </div>
-        <div class="prev-next"><a href="story-2-2.html" class="prev-next-btn prev" aria-label="Page precedente: Story 2.2: Chat Textuel"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 2.2: Chat Textuel</span></a><a href="story-2-4.html" class="prev-next-btn next" aria-label="Page suivante: Story 2.4: Contexte Patient"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 2.4: Contexte Patient</span></a></div>
+        <div class="prev-next"><a href="sprint-status.html" class="prev-next-btn prev" aria-label="Page precedente: Status du Sprint"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Status du Sprint</span></a><div></div></div>
       </article>
     </div>
   </div>
