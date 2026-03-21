@@ -42,6 +42,7 @@
         { "id": "epic-1-retro", "title": "Rétrospective Epic 1", "path": "content/implementation-artifacts/epic-1-retro.md" },
         { "id": "story-2-1", "title": "Story 2.1: RAG Pipeline IA", "path": "content/implementation-artifacts/2-1-pipeline-rag-strict-et-edge-function-ia.md" },
         { "id": "story-2-2", "title": "Story 2.2: Chat Textuel", "path": "content/implementation-artifacts/2-2-chat-textuel-sur-la-notice.md" },
+        { "id": "story-2-3", "title": "Story 2.3: Voice Orb", "path": "content/implementation-artifacts/2-3-voice-assistant-orb-hold-to-talk.md" },
         { "id": "sprint-status", "title": "Status du Sprint", "path": "content/implementation-artifacts/sprint-status.yaml" }
       ]
     }
