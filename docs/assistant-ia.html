@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rétrospective Epic 1 – Tiba Docs</title>
+  <title>Architecture Assistant IA – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -796,7 +796,7 @@
         <ul class="nav-list">
           <li><a href="architecture.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Technique</a></li>
           <li><a href="database.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Base de Donnees</a></li>
-          <li><a href="assistant-ia.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Assistant IA</a></li>
+          <li><a href="assistant-ia.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Assistant IA</a></li>
           <li><a href="database-sql.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Code SQL Complet</a></li>
         </ul>
       </div>
@@ -813,7 +813,7 @@
           <li><a href="story-1-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.4: Sync Locale</a></li>
           <li><a href="story-1-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.5: Hero Scan AI</a></li>
           <li><a href="story-1-6.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.6: Resultat & Historique</a></li>
-          <li><a href="epic-1-retro.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Rétrospective Epic 1</a></li>
+          <li><a href="epic-1-retro.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Rétrospective Epic 1</a></li>
           <li><a href="story-2-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
           <li><a href="story-2-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.2: Chat Textuel</a></li>
           <li><a href="story-2-3.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.3: Voice Orb</a></li>
@@ -831,40 +831,74 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Rétrospective Epic 1</div>
-        <div class="topbar-badge">19 / 25</div>
+        <div class="topbar-title">Architecture Assistant IA</div>
+        <div class="topbar-badge">10 / 25</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Rétrospective Epic 1 : L&#39;Expérience Cœur &quot;Scan &amp; Know&quot; (MVP Patient)</h1>
-<p><strong>Date :</strong> 20 Mars 2026<br><strong>Participants :</strong> Jesse (Project Lead), Alice (Product Owner), Bob (Scrum Master), Charlie (Senior Dev), Dana (QA Engineer), Elena (Junior Dev)</p>
-<h2>📊 Résumé des Métriques</h2>
+          <h1>🤖 Assistant IA Tiba : Architecture et Fonctionnement</h1>
+<p>Cette documentation détaille le fonctionnement du cœur de Tiba : le Pharmacien Digital IA. L&#39;intelligence artificielle de Tiba repose sur un principe fondamental : <strong>Le RAG (Retrieval-Augmented Generation) Strict</strong>.</p>
+<hr>
+<h2>🏗️ 1. L&#39;Architecture Globale (Pipeline RAG)</h2>
+<p>Tiba n&#39;utilise jamais les connaissances générales du modèle d&#39;IA pour répondre aux questions médicales. Tout est sourcé à partir de la <strong>base de données vectorielle</strong> des notices de médicaments.</p>
+<h3>Le processus RAG :</h3>
+<ol>
+<li><strong>Application Mobile</strong> : L&#39;utilisateur pose une question (via texte ou voix).</li>
+<li><strong>Edge Function (<code>ai-query</code>)</strong> : La requête est envoyée à Supabase via Deno.</li>
+<li><strong>Embedding</strong> : La requête est transformée en vecteur via <code>text-embedding-3-small</code> (OpenAI via OpenRouter).</li>
+<li><strong>Similarity Search (PostGIS/pgvector)</strong> : La fonction <code>match_notice_chunks</code> fouille la notice du médicament cible pour trouver les 5 blocs de texte les plus pertinents (Cosine Similarity &gt; 0.3).</li>
+<li><strong>Prompting</strong> : Les blocs trouvés sont injectés dans le prompt système comme <em>unique source de vérité</em>.</li>
+<li><strong>Génération LLM</strong> : <code>gpt-4o-mini</code> (temperature = 0.1) génère la réponse finale en suivant des règles strictes.</li>
+</ol>
+<hr>
+<h2>🗣️ 2. Approche Conversationnelle (Multi-tours)</h2>
+<p>Initialement, le contexte patient (âge, poids) devait être rempli via un formulaire avant de chatter. Après révision ergonomique, Tiba utilise une <strong>approche purement conversationnelle</strong>.</p>
+<h3>Fonctionnement :</h3>
 <ul>
-<li><strong>Stories complétées :</strong> 6/6 (100%)</li>
-<li><strong>Statut :</strong> Epic 1 officiellement terminé.</li>
+<li>Le client Flutter conserve un <code>ChatState</code> avec l&#39;historique complet de la session.</li>
+<li>Avant chaque appel à l&#39;Edge Function, la méthode <code>_buildConversationHistory()</code> extrait les <strong>4 derniers échanges</strong> (8 messages : paires utilisateur/assistant) et les envoie sous forme de <code>conversation_history</code>.</li>
+<li>Le prompt système a été adapté avec une consigne claire : <blockquote>
+<p><em>Si l&#39;utilisateur pose une question de posologie mais que tu ignores si c&#39;est pour un adulte ou un enfant, ou son poids, pose-lui la question avant de répondre.</em></p>
+</blockquote>
+</li>
 </ul>
-<h2>🏆 Ce qui a bien fonctionné (Succès)</h2>
+<p>Cette approche permet une interaction vocale (&quot;Voice-First&quot;) ou textuelle beaucoup plus fluide et naturelle.</p>
+<hr>
+<h2>🔒 3. Le Prompt Système (Règles Absolues)</h2>
+<p>Voici les instructions fondamentales injectées à chaque requête. Elles garantissent la sécurité médicale (Pare-feu) :</p>
 <ol>
-<li><strong>Architecture Locale &amp; Hors-Ligne (Drift)</strong> : L&#39;implémentation de la base de données locale SQLite et de la file d&#39;attente hors-ligne permet une expérience fluide, avec un affichage quasi-instantané de l&#39;historique sans appel réseau.</li>
-<li><strong>Scanner IA et UX</strong> : Le Hero Scan Viewfinder et l&#39;idée d&#39;un &quot;fallback&quot; OCR avec Google ML Kit (qui prend le relais quand le code-barres n&#39;est pas lisible) est une immense victoire pour l&#39;accessibilité métier dans les zones à faible connectivité.</li>
-<li><strong>Text-to-Speech (TTS) Rapide</strong> : L&#39;ajout de <code>flutter_tts</code> dans la dernière story montre notre flexibilité face aux enjeux d&#39;accessibilité.</li>
+<li>Tu ne réponds QU&#39;À PARTIR du contexte de la notice.</li>
+<li>Tu ne poses JAMAIS de diagnostic.</li>
+<li>Tu ne prescris JAMAIS de traitement.</li>
+<li>Si l&#39;information manque : &quot;Cette information n&#39;est pas disponible dans la notice.&quot;</li>
+<li>Si diagnostic demandé : &quot;⚠️ Tiba ne peut pas poser de diagnostic. Consultez un médecin.&quot;</li>
+<li>CONTEXTE PATIENT : Demande naturellement l&#39;âge/poids/type si non spécifié dans l&#39;historique avant de donner une posologie.</li>
 </ol>
-<h2>⚠️ Les Défis Rencontrés &amp; Dette Technique</h2>
-<ol>
-<li><strong>Rigueur sur la Qualité du Code (Linter)</strong> : Lors de la complétion des stories 1.5 et 1.6, des imports inutilisés et de vieilles variables non nettoyées ont causé des échecs temporaires lors de l&#39;analyse CI locale (<code>flutter analyze</code>).</li>
-<li><strong>Oublis de Dépendances Communes</strong> : Une dépendance critique pour l&#39;UI (<code>intl</code> pour le formatage des dates) a été oubliée dans le plan initial, nécessitant un hotfix.</li>
-</ol>
-<h2>🎯 Plan d&#39;action &amp; Engagements pour l&#39;Epic 2</h2>
-<p>L&#39;Epic 2 se concentre sur <strong>Le Pharmacien Digital IA (RAG Strict)</strong>, ce qui introduira plus de complexité back-end (Supabase Edge Functions).</p>
-<ol>
-<li><strong>Rigueur du Refactoring (Clean Code) :</strong> L&#39;agent développeur s&#39;engage à exécuter systématiquement <code>flutter analyze</code> et s&#39;assurer du nettoyage des lints (variables orphelines, imports inutilisés) <em>avant</em> chaque commit final.</li>
-<li><strong>Anticipation des Packages :</strong> Pour éviter les multiples redémarrages de l&#39;analyseur, toutes les dépendances évidentes (comme le formatage de texte) seront listées et installées en amont du ticket.</li>
-</ol>
-<p><em>Rétrospective clôturée avec succès, l&#39;équipe est prête pour l&#39;Epic 2 !</em></p>
+<p><em>(La sécurité sera encore renforcée à l&#39;Avenir avec un modèle de classification en amont pour bloquer les requêtes à haut risque : Story 2.5).</em></p>
+<hr>
+<h2>🎙️ 4. Flux Vocal (Voice Orb)</h2>
+<p>La fonctionnalité vocale (<code>VoiceOrb</code>) intègre l&#39;écoute interactive et le retour vocal (TTS) :</p>
+<ul>
+<li><strong>Appui long (&quot;Hold-to-Talk&quot;)</strong> : Démarre le plugin natif <code>speech_to_text</code> avec des ondes visuelles animées via un <code>CustomPainter</code> et retour haptique.</li>
+<li><strong>Envoi automatique</strong> : Au relâchement, le texte transcrit est envoyé au chat.</li>
+<li><strong>Retour TTS Auto</strong> : Le Riverpod <code>ChatNotifier</code> écoute les changements d&#39;état. Si la réponse provient de l&#39;IA (après une requête vocale), le plugin <code>flutter_tts</code> s&#39;active automatiquement pour lire la réponse à voix haute.</li>
+</ul>
+<hr>
+<h2>📝 5. Table d&#39;Audit (<code>ai_audit_log</code>)</h2>
+<p>Chaque interaction avec l&#39;Edge Function IA est loggée dans Supabase pour des raisons légales et statistiques :</p>
+<ul>
+<li><code>medication_id</code> concerné</li>
+<li><code>query_text</code> (Question brute de l&#39;utilisateur)</li>
+<li><code>response_text</code> (Réponse générée)</li>
+<li><code>was_blocked</code> (Booléen : la requête a-t-elle été rejetée par le RAG ou l&#39;anti-diagnostic ?)</li>
+<li><code>block_reason</code> (ex: &quot;no_matching_context&quot;)</li>
+<li><code>source_type</code> (&quot;text&quot; ou &quot;voice&quot;)</li>
+</ul>
+<p><em>Les <code>user_id</code> ne sont pas stockés en clair, mais sous forme de hash anonymisé pour respecter la vie privée (Epic 6).</em></p>
 
         </div>
-        <div class="prev-next"><a href="story-1-6.html" class="prev-next-btn prev" aria-label="Page precedente: Story 1.6: Resultat & Historique"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 1.6: Resultat & Historique</span></a><a href="story-2-1.html" class="prev-next-btn next" aria-label="Page suivante: Story 2.1: RAG Pipeline IA"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 2.1: RAG Pipeline IA</span></a></div>
+        <div class="prev-next"><a href="database.html" class="prev-next-btn prev" aria-label="Page precedente: Base de Donnees"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Base de Donnees</span></a><a href="database-sql.html" class="prev-next-btn next" aria-label="Page suivante: Code SQL Complet"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Code SQL Complet</span></a></div>
       </article>
     </div>
   </div>

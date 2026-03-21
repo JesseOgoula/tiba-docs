@@ -87,6 +87,33 @@
       padding: 16px 12px;
     }
 
+    /* ─── Search ─── */
+    .sidebar-search {
+      padding: 12px 12px 4px;
+      flex-shrink: 0;
+    }
+    .sidebar-search input {
+      width: 100%;
+      padding: 9px 14px 9px 36px;
+      border: 1px solid #e0ddd5;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: var(--tiba-dark);
+      background: var(--tiba-sand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 12px center no-repeat;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .sidebar-search input::placeholder {
+      color: #aaa;
+    }
+    .sidebar-search input:focus {
+      border-color: var(--tiba-green);
+      box-shadow: 0 0 0 3px rgba(11,142,113,0.1);
+    }
+    .nav-section.hidden-by-search { display: none; }
+    .nav-link.hidden-by-search { display: none; }
+
     /* ─── Navigation Sections ─── */
     .nav-section { margin-bottom: 8px; }
     .nav-section-title {
@@ -733,6 +760,9 @@
         <img src="Img/Logogreen.png" alt="Tiba" class="sidebar-logo">
         <h1><span>Tiba</span> Docs</h1>
       </div>
+      <div class="sidebar-search">
+        <input type="text" id="search-input" placeholder="Rechercher..." autocomplete="off" />
+      </div>
       <div class="sidebar-body">
         
       <div class="nav-section">
@@ -766,6 +796,7 @@
         <ul class="nav-list">
           <li><a href="architecture.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Technique</a></li>
           <li><a href="database.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Base de Donnees</a></li>
+          <li><a href="assistant-ia.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Assistant IA</a></li>
           <li><a href="database-sql.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Code SQL Complet</a></li>
         </ul>
       </div>
@@ -786,6 +817,8 @@
           <li><a href="story-2-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
           <li><a href="story-2-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.2: Chat Textuel</a></li>
           <li><a href="story-2-3.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.3: Voice Orb</a></li>
+          <li><a href="story-2-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.4: Contexte Patient</a></li>
+          <li><a href="story-2-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.5: Pare-feu Sécurité</a></li>
           <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
         </ul>
       </div>
@@ -799,7 +832,7 @@
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
         <div class="topbar-title">Code SQL Complet</div>
-        <div class="topbar-badge">10 / 22</div>
+        <div class="topbar-badge">11 / 25</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
@@ -1275,7 +1308,7 @@ COMMENT ON TABLE aggregated_scan_metric IS &#39;Métriques agrégées par zone/p
 </code></pre>
 
         </div>
-        <div class="prev-next"><a href="database.html" class="prev-next-btn prev" aria-label="Page precedente: Base de Donnees"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Base de Donnees</span></a><a href="epics.html" class="prev-next-btn next" aria-label="Page suivante: Epics et Stories"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Epics et Stories</span></a></div>
+        <div class="prev-next"><a href="assistant-ia.html" class="prev-next-btn prev" aria-label="Page precedente: Architecture Assistant IA"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Architecture Assistant IA</span></a><a href="epics.html" class="prev-next-btn next" aria-label="Page suivante: Epics et Stories"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Epics et Stories</span></a></div>
       </article>
     </div>
   </div>
@@ -1303,6 +1336,32 @@ COMMENT ON TABLE aggregated_scan_metric IS &#39;Métriques agrégées par zone/p
         if (sidebar.classList.contains('open')) toggleSidebar();
       }
     });
+
+    // ─── Search functionality ───
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        document.querySelectorAll('.nav-section').forEach(section => {
+          const links = section.querySelectorAll('.nav-link');
+          let visibleCount = 0;
+          links.forEach(link => {
+            const text = link.textContent.toLowerCase();
+            const match = !query || text.includes(query);
+            link.classList.toggle('hidden-by-search', !match);
+            if (match) visibleCount++;
+          });
+          section.classList.toggle('hidden-by-search', visibleCount === 0 && query.length > 0);
+        });
+      });
+      // Keyboard shortcut: Ctrl+K or Cmd+K to focus search
+      document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+    }
   </script>
 
   <!-- Ajouter Mermaid.js pour transformer les blocs de code en graphiques -->

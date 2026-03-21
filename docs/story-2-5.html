@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rétrospective Epic 1 – Tiba Docs</title>
+  <title>Story 2.5: Pare-feu Sécurité – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -813,12 +813,12 @@
           <li><a href="story-1-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.4: Sync Locale</a></li>
           <li><a href="story-1-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.5: Hero Scan AI</a></li>
           <li><a href="story-1-6.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.6: Resultat & Historique</a></li>
-          <li><a href="epic-1-retro.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Rétrospective Epic 1</a></li>
+          <li><a href="epic-1-retro.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Rétrospective Epic 1</a></li>
           <li><a href="story-2-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
           <li><a href="story-2-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.2: Chat Textuel</a></li>
           <li><a href="story-2-3.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.3: Voice Orb</a></li>
           <li><a href="story-2-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.4: Contexte Patient</a></li>
-          <li><a href="story-2-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.5: Pare-feu Sécurité</a></li>
+          <li><a href="story-2-5.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.5: Pare-feu Sécurité</a></li>
           <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
         </ul>
       </div>
@@ -831,40 +831,43 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Rétrospective Epic 1</div>
-        <div class="topbar-badge">19 / 25</div>
+        <div class="topbar-title">Story 2.5: Pare-feu Sécurité</div>
+        <div class="topbar-badge">24 / 25</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Rétrospective Epic 1 : L&#39;Expérience Cœur &quot;Scan &amp; Know&quot; (MVP Patient)</h1>
-<p><strong>Date :</strong> 20 Mars 2026<br><strong>Participants :</strong> Jesse (Project Lead), Alice (Product Owner), Bob (Scrum Master), Charlie (Senior Dev), Dana (QA Engineer), Elena (Junior Dev)</p>
-<h2>📊 Résumé des Métriques</h2>
+          <h1>Story 2.5 : Pare-feu Anti-Diagnostic &amp; Messages de Sécurité</h1>
+<h2>🎯 Objectif</h2>
+<p>S&#39;assurer que l&#39;IA ne dévie jamais vers le diagnostic ou la prescription, et que tout refus de répondre pour des raisons de sécurité soit clairement affiché à l&#39;utilisateur via une UI d&#39;alerte spécifique, différente d&#39;une réponse normale.</p>
+<h2>🛠️ Implémentation Backend (Deno Edge Function)</h2>
 <ul>
-<li><strong>Stories complétées :</strong> 6/6 (100%)</li>
-<li><strong>Statut :</strong> Epic 1 officiellement terminé.</li>
+<li>Le modèle Gpt-4o-mini est désormais forcé de répondre en JSON (via l&#39;option <code>response_format: { type: &quot;json_object&quot; }</code>).</li>
+<li>Le <code>SYSTEM_PROMPT</code> exige que chaque réponse précise :<pre><code class="language-json">{
+  &quot;response&quot;: &quot;Texte généré...&quot;,
+  &quot;is_blocked&quot;: true/false,
+  &quot;block_reason&quot;: &quot;diagnostic&quot; | &quot;prescription&quot; | &quot;not_in_notice&quot; | null
+}
+</code></pre>
+</li>
+<li>L&#39;Edge Function parse ce JSON sécurisé, sauvegarde le vrai statut <code>was_blocked</code> et la raison dans la table d&#39;audit Supabase (<code>ai_audit_log</code>), et renvoie les booléens au client mobile.</li>
 </ul>
-<h2>🏆 Ce qui a bien fonctionné (Succès)</h2>
-<ol>
-<li><strong>Architecture Locale &amp; Hors-Ligne (Drift)</strong> : L&#39;implémentation de la base de données locale SQLite et de la file d&#39;attente hors-ligne permet une expérience fluide, avec un affichage quasi-instantané de l&#39;historique sans appel réseau.</li>
-<li><strong>Scanner IA et UX</strong> : Le Hero Scan Viewfinder et l&#39;idée d&#39;un &quot;fallback&quot; OCR avec Google ML Kit (qui prend le relais quand le code-barres n&#39;est pas lisible) est une immense victoire pour l&#39;accessibilité métier dans les zones à faible connectivité.</li>
-<li><strong>Text-to-Speech (TTS) Rapide</strong> : L&#39;ajout de <code>flutter_tts</code> dans la dernière story montre notre flexibilité face aux enjeux d&#39;accessibilité.</li>
-</ol>
-<h2>⚠️ Les Défis Rencontrés &amp; Dette Technique</h2>
-<ol>
-<li><strong>Rigueur sur la Qualité du Code (Linter)</strong> : Lors de la complétion des stories 1.5 et 1.6, des imports inutilisés et de vieilles variables non nettoyées ont causé des échecs temporaires lors de l&#39;analyse CI locale (<code>flutter analyze</code>).</li>
-<li><strong>Oublis de Dépendances Communes</strong> : Une dépendance critique pour l&#39;UI (<code>intl</code> pour le formatage des dates) a été oubliée dans le plan initial, nécessitant un hotfix.</li>
-</ol>
-<h2>🎯 Plan d&#39;action &amp; Engagements pour l&#39;Epic 2</h2>
-<p>L&#39;Epic 2 se concentre sur <strong>Le Pharmacien Digital IA (RAG Strict)</strong>, ce qui introduira plus de complexité back-end (Supabase Edge Functions).</p>
-<ol>
-<li><strong>Rigueur du Refactoring (Clean Code) :</strong> L&#39;agent développeur s&#39;engage à exécuter systématiquement <code>flutter analyze</code> et s&#39;assurer du nettoyage des lints (variables orphelines, imports inutilisés) <em>avant</em> chaque commit final.</li>
-<li><strong>Anticipation des Packages :</strong> Pour éviter les multiples redémarrages de l&#39;analyseur, toutes les dépendances évidentes (comme le formatage de texte) seront listées et installées en amont du ticket.</li>
-</ol>
-<p><em>Rétrospective clôturée avec succès, l&#39;équipe est prête pour l&#39;Epic 2 !</em></p>
+<h2>📱 Implémentation Frontend (Flutter)</h2>
+<ul>
+<li><strong>Modèles &amp; Provider</strong> : <code>ChatMessage</code> intègre <code>isBlocked</code> et <code>blockReason</code>. Le <code>ChatNotifier</code> passe ces données à partir de l&#39;objet <code>AiQueryResponse</code>.</li>
+<li><strong>UI (ChatSheet)</strong> : La méthode <code>_buildMessageBubble</code> a été transformée pour le rendu visuel. Si <code>isBlocked</code> est <code>true</code> :<ul>
+<li>La couleur de fond vert classique est remplacée par un fond <code>Coral</code> clair.</li>
+<li>La bordure de la bulle devient visible (<code>TibaColors.coral.withOpacity(0.3)</code>).</li>
+<li>L&#39;icône du &quot;robot&quot; Tiba est remplacée par un <strong>Warning (⚠️)</strong> sur fond rouge/corail (<code>Icons.warning_amber_rounded</code>).</li>
+</ul>
+</li>
+<li><strong>Nettoyage</strong> : Le fichier mort <code>patient_context_dialog.dart</code> a été définitivement supprimé pour garder l&#39;arbre de code clair depuis le passage au mode multi-tours.</li>
+</ul>
+<h2>📊 Résultat</h2>
+<p>Lorsqu&#39;un utilisateur demande : &quot;Qu&#39;est-ce que j&#39;ai si j&#39;ai mal à la tête ?&quot;, l&#39;IA génère sa réponse habituelle de refus, MAIS la bulle de chat Flutter est affichée comme un avertissement de sécurité. Ceci clarifie immédiatement le rôle non constructeur de profil médical de l&#39;application Tiba.</p>
 
         </div>
-        <div class="prev-next"><a href="story-1-6.html" class="prev-next-btn prev" aria-label="Page precedente: Story 1.6: Resultat & Historique"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 1.6: Resultat & Historique</span></a><a href="story-2-1.html" class="prev-next-btn next" aria-label="Page suivante: Story 2.1: RAG Pipeline IA"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 2.1: RAG Pipeline IA</span></a></div>
+        <div class="prev-next"><a href="story-2-4.html" class="prev-next-btn prev" aria-label="Page precedente: Story 2.4: Contexte Patient"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 2.4: Contexte Patient</span></a><a href="sprint-status.html" class="prev-next-btn next" aria-label="Page suivante: Status du Sprint"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Status du Sprint</span></a></div>
       </article>
     </div>
   </div>

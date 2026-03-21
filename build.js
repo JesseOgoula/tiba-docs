@@ -162,6 +162,33 @@ function generatePage(item, content) {
       padding: 16px 12px;
     }
 
+    /* ─── Search ─── */
+    .sidebar-search {
+      padding: 12px 12px 4px;
+      flex-shrink: 0;
+    }
+    .sidebar-search input {
+      width: 100%;
+      padding: 9px 14px 9px 36px;
+      border: 1px solid #e0ddd5;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: var(--tiba-dark);
+      background: var(--tiba-sand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 12px center no-repeat;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .sidebar-search input::placeholder {
+      color: #aaa;
+    }
+    .sidebar-search input:focus {
+      border-color: var(--tiba-green);
+      box-shadow: 0 0 0 3px rgba(11,142,113,0.1);
+    }
+    .nav-section.hidden-by-search { display: none; }
+    .nav-link.hidden-by-search { display: none; }
+
     /* ─── Navigation Sections ─── */
     .nav-section { margin-bottom: 8px; }
     .nav-section-title {
@@ -545,6 +572,9 @@ ${responsiveCss}
         <img src="Img/Logogreen.png" alt="Tiba" class="sidebar-logo">
         <h1><span>Tiba</span> Docs</h1>
       </div>
+      <div class="sidebar-search">
+        <input type="text" id="search-input" placeholder="Rechercher..." autocomplete="off" />
+      </div>
       <div class="sidebar-body">
         ${nav}
       </div>
@@ -592,6 +622,32 @@ ${responsiveCss}
         if (sidebar.classList.contains('open')) toggleSidebar();
       }
     });
+
+    // ─── Search functionality ───
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        document.querySelectorAll('.nav-section').forEach(section => {
+          const links = section.querySelectorAll('.nav-link');
+          let visibleCount = 0;
+          links.forEach(link => {
+            const text = link.textContent.toLowerCase();
+            const match = !query || text.includes(query);
+            link.classList.toggle('hidden-by-search', !match);
+            if (match) visibleCount++;
+          });
+          section.classList.toggle('hidden-by-search', visibleCount === 0 && query.length > 0);
+        });
+      });
+      // Keyboard shortcut: Ctrl+K or Cmd+K to focus search
+      document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+    }
   </script>
 
   <!-- Ajouter Mermaid.js pour transformer les blocs de code en graphiques -->
