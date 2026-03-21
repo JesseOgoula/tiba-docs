@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Architecture Technique – Tiba Docs</title>
+  <title>Story 2.7: Audit & Signalement – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -794,7 +794,7 @@
           Ingenierie et Architecture
         </div>
         <ul class="nav-list">
-          <li><a href="architecture.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Technique</a></li>
+          <li><a href="architecture.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Technique</a></li>
           <li><a href="database.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Base de Donnees</a></li>
           <li><a href="assistant-ia.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Architecture Assistant IA</a></li>
           <li><a href="database-sql.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Code SQL Complet</a></li>
@@ -820,7 +820,7 @@
           <li><a href="story-2-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.4: Contexte Patient</a></li>
           <li><a href="story-2-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.5: Pare-feu Sécurité</a></li>
           <li><a href="story-2-6.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.6: Mode Global IA</a></li>
-          <li><a href="story-2-7.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.7: Audit & Signalement</a></li>
+          <li><a href="story-2-7.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.7: Audit & Signalement</a></li>
           <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
         </ul>
       </div>
@@ -833,327 +833,43 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Architecture Technique</div>
-        <div class="topbar-badge">8 / 27</div>
+        <div class="topbar-title">Story 2.7: Audit & Signalement</div>
+        <div class="topbar-badge">26 / 27</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Architecture Decision Document</h1>
-<p><em>This document builds collaboratively through step-by-step discovery. Sections are appended as we work through each architectural decision together.</em></p>
-<h2>Project Context Analysis</h2>
-<h3>Requirements Overview</h3>
-<p><strong>Functional Requirements:</strong><br>Le système combine 3 systèmes majeurs : Un client mobile ultra-léger axé sur la capture (Scan OCR/Voix), un moteur RAG hautement sécurisé restreint aux sources certifiées, et un moteur de synchronisation asynchrone pour les pharmacies et le paiement Mobile Money.</p>
-<p><strong>Non-Functional Requirements:</strong><br>L&#39;architecture sera pilotée par les contraintes matérielles (3G, 2Go RAM, APK &lt;30Mo) et les exigences de sécurité médicale (Audit logs de 24 mois, TLS 1.3, RAG strict &lt; 3.5s de latence). La disponibilité hors-ligne est absolue pour la résilience.</p>
-<p><strong>Scale &amp; Complexity:</strong></p>
+          <h1>Story 2.7 : Audit Logging &amp; Signalement Utilisateur</h1>
+<h2>🎯 Objectif</h2>
+<p>Permettre la traçabilité complète de chaque interaction IA (audit log immuable) et donner la possibilité aux utilisateurs de <strong>signaler une réponse incorrecte ou dangereuse</strong>.</p>
+<h2>🛠️ Implémentation</h2>
+<h3>Backend (Edge Function v12)</h3>
 <ul>
-<li>Primary domain: Mobile App (Flutter B2C) + Web Admin (Backoffice) + Backend API/RAG</li>
-<li>Complexity level: Haute (Saisie de données complexes + RAG Healthcare)</li>
-<li>Estimated architectural components: Mobile Client B2C, Web Admin Dashboard, Auth/Payment Gateway, Core IA/RAG Engine, Geolocation Service, Offline Sync Engine, B2B Data Warehouse.</li>
+<li>L&#39;insertion dans <code>ai_audit_log</code> utilise désormais <code>.select(&#39;id&#39;).single()</code> pour récupérer l&#39;<code>audit_log_id</code> généré.</li>
+<li>Ce champ est retourné au client dans la réponse JSON.</li>
 </ul>
-<h3>Technical Constraints &amp; Dependencies</h3>
+<h3>Flutter — Modèles</h3>
 <ul>
-<li>Dépendance critique aux APIs de Mobile Money locales (Orange, Airtel, Moov) nécessitant une gestion robuste des webhooks réseau.</li>
-<li>Sources de données (notices) limitées aux registres pharmaceutiques officiels (pas de scraping libre).</li>
+<li><code>ChatMessage.auditLogId</code> : chaque réponse IA porte l&#39;ID de son entrée d&#39;audit.</li>
+<li><code>AiQueryResponse.auditLogId</code> : parsé depuis la réponse de l&#39;Edge Function.</li>
 </ul>
-<h3>Cross-Cutting Concerns Identified</h3>
+<h3>Flutter — Service (<code>AiQueryService</code>)</h3>
 <ul>
-<li><strong>Offline-First &amp; Graceful Degradation :</strong> Basculer sans erreur du RAG en ligne vers l&#39;annuaire hors-ligne.</li>
-<li><strong>Sécurité &amp; Auditabilité :</strong> Journalisation immuable de chaque interaction (scan/voix).</li>
-<li><strong>Data Privacy Pipeline :</strong> Anonymisation irréversible à la source pour le Data Warehouse B2B.</li>
+<li>Nouvelle méthode <code>submitReport(auditLogId, reason, description?)</code> qui insère directement dans la table <code>user_report</code> via Supabase.</li>
 </ul>
-<h2>Starter Template Evaluation</h2>
-<h3>Primary Technology Domain</h3>
-<p>Application Mobile B2C + Web Admin Backoffice + Backend API/RAG.</p>
-<h3>Starter Options Selected</h3>
-<p><strong>1. Mobile App B2C : Flutter</strong></p>
+<h3>Flutter — UI</h3>
 <ul>
-<li><strong>Rationale :</strong> Réservé exclusivement aux utilisateurs finaux. Permet un accès natif à la caméra (OCR) et au microphone (RAG vocal) sur iOS/Android avec une interface ultra-allégée.</li>
-<li><strong>Command :</strong> <code>flutter create --org com.tiba tiba_app</code></li>
+<li><strong>Bouton &quot;Signaler&quot;</strong> : Discret, en gris clair sous chaque bulle IA (icône drapeau + texte). N&#39;apparaît que si l&#39;<code>auditLogId</code> est disponible.</li>
+<li><strong>ReportDialog</strong> : Dialog élégant avec 3 options radio (Information incorrecte / dangereuse / Autre) + champ libre optionnel. Affiche une animation de succès avant de se fermer.</li>
 </ul>
-<p><strong>2. Web Admin Dashboard : Next.js</strong></p>
+<h2>📊 Tables Supabase utilisées</h2>
 <ul>
-<li><strong>Rationale :</strong> L&#39;outil parfait pour un backoffice riche (formulaires complexes de saisie de médicaments, gestion de tableaux, upload massif de photos). Il s&#39;intégrera parfaitement à la base de données pour une mise à jour en temps réel.</li>
-<li><strong>Command :</strong> <code>npx create-next-app -e with-supabase suddenly-tiba-admin</code></li>
+<li><code>ai_audit_log</code> : INSERT ONLY, rétention 24 mois, champs <code>user_hash</code>, <code>medication_id</code>, <code>query_text</code>, <code>response_text</code>, <code>was_blocked</code>, <code>block_reason</code>, <code>source_type</code>.</li>
+<li><code>user_report</code> : FK vers <code>ai_audit_log.id</code>, raisons <code>incorrect</code> / <code>dangerous</code> / <code>other</code>, statut <code>pending</code> / <code>reviewed</code> / <code>resolved</code>.</li>
 </ul>
-<p><strong>3. Backend &amp; Base de données : Supabase</strong></p>
-<ul>
-<li><strong>Rationale :</strong> Agit comme le routeur central. Dès que l&#39;équipe Admin saisit un nouveau médicament dans Next.js, Supabase met à jour la table PostgreSQL, qui est lue à la seconde même par l&#39;application Flutter B2C.</li>
-</ul>
-<h3>Architectural Decisions Provided</h3>
-<ul>
-<li><strong>Language :</strong> Dart (Mobile) et TypeScript (Web Admin &amp; Backend).</li>
-<li><strong>Data Flow :</strong> Opérations CRUD massives via le Web Admin -&gt; Supabase -&gt; Lecture (Offline-First) par l&#39;app Mobile.</li>
-</ul>
-<h2>Core Architectural Decisions</h2>
-<h3>Decision Priority Analysis</h3>
-<p><strong>Critical Decisions (Block Implementation):</strong></p>
-<ul>
-<li><strong>Architecture Offline-First :</strong> Base de données locale <code>Drift</code> (SQLite) pour la persistance et la synchronisation.</li>
-<li><strong>Backend &amp; Auth Centrale :</strong> Supabase pour la base PostgreSQL, l&#39;Auth centralisée et RLS pour la séparation des rôles.</li>
-</ul>
-<p><strong>Important Decisions (Shape Architecture):</strong></p>
-<ul>
-<li><strong>State Management B2C :</strong> Riverpod pour Flutter.</li>
-<li><strong>State Management B2B :</strong> React Server Components (RSC) + Zustand pour Next.js Admin.</li>
-<li><strong>APIs &amp; Edge :</strong> Protocoles REST auto-générés via PostgREST + WebSockets (Realtime) et Edge Functions Deno pour RAG/IA.</li>
-</ul>
-<p><strong>Deferred Decisions (Post-MVP):</strong></p>
-<ul>
-<li>Data Warehouse complexe pour l&#39;export analytique vers les ONG/Sanofi (Phase 3).</li>
-<li>Intégration avancée Mobile Money (Webhooks complexes) à externaliser dans un micro-service dédié si le volume devient trop important.</li>
-</ul>
-<h3>Data Architecture</h3>
-<ul>
-<li><strong>Primary Database:</strong> PostgreSQL (hébergé sur Supabase).</li>
-<li><strong>Local Persistence (Mobile):</strong> Drift (SQLite pour Dart/Flutter) version 3.x stable.</li>
-<li><strong>Sync Strategy:</strong> Lecture locale prioritaire (Offline-First). Écriture locale -&gt; Queue de synchronisation asynchrone -&gt; Push vers Supabase lorsque le réseau est disponible.</li>
-<li><strong>Admin Data Entry:</strong> Insertions directes et massives via l&#39;interface Next.js en TypeScript vers Supabase.</li>
-</ul>
-<h3>Authentication &amp; Security</h3>
-<ul>
-<li><strong>Primary Auth Method (B2C):</strong> Social Login (Google &amp; Apple) géré par Supabase Auth.</li>
-<li><strong>Fallback Auth Method (B2C):</strong> Numéro de téléphone + SMS OTP (via intégration Custom SMS Hook comme Africa&#39;s Talking ou Twilio).</li>
-<li><strong>Admin Auth Method (B2B):</strong> Authentification forte Supabase avec gestion des profils internes rattachés à un rôle <code>admin</code>.</li>
-<li><strong>Data Protection:</strong> Chiffrement au repos (AES-256 standard de Supabase), TLS 1.3 en transit, sécurisation des tables par Row Level Security (RLS) empêchant l&#39;accès des utilisateurs B2C aux données globales ou d&#39;autres utilisateurs.</li>
-</ul>
-<h3>API &amp; Communication Patterns</h3>
-<ul>
-<li><strong>API Principale:</strong> Supabase Client SDK (PostgREST) gérant nativement le cache et la sérialisation des requêtes REST.</li>
-<li><strong>Realtime / PubSub:</strong> Supabase Realtime (WebSockets) utilisé spécifiquement pour actualiser les stocks instantanément sur le mobile lors de la mise à jour côté Admin.</li>
-<li><strong>Traitement IA:</strong> Requêtes IA (voix/ocr) proxyfiées par des Supabase Edge Functions (Deno) pour ne pas exposer les clés API d&#39;OpenAI/Gemini dans le front-end.</li>
-</ul>
-<h3>Frontend Architecture</h3>
-<ul>
-<li><strong>Mobile Client:</strong> Flutter (3.x stable).</li>
-<li><strong>Mobile State Management:</strong> Riverpod pour la flexibilité structurelle et l&#39;injection de dépendances, accouplé à Freezed pour l&#39;immutabilité des modèles de données.</li>
-<li><strong>Web Admin Client:</strong> Next.js (version 15+ App Router) en TypeScript.</li>
-<li><strong>Web State Management:</strong> React Context / Zustand, TailwindCSS pour le styling.</li>
-</ul>
-<h3>Infrastructure &amp; Deployment</h3>
-<ul>
-<li><strong>Backend &amp; Database Hosting:</strong> Supabase Cloud (Managed).</li>
-<li><strong>Web Admin Hosting:</strong> Vercel (Déploiement continu automatisé).</li>
-<li><strong>CI/CD Pipeline:</strong> GitHub Actions configurées pour :<ul>
-<li>Linter &amp; Tester le code Dart/Flutter.</li>
-<li>Déployer l&#39;interface Next.js sur Vercel à chaque main merge.</li>
-<li>Générer les releases/AAB pour Google Play Console et TestFlight.</li>
-</ul>
-</li>
-</ul>
-<h2>Implementation Patterns &amp; Consistency Rules</h2>
-<h3>Pattern Categories Defined</h3>
-<p><strong>Critical Conflict Points Identified:</strong><br>4 areas where AI agents could make different choices (Database naming, API payloads, Code component structure, Error handling).</p>
-<h3>Naming Patterns</h3>
-<p><strong>Database Naming Conventions:</strong></p>
-<ul>
-<li>Tables and Columns: <code>snake_case</code>, singular (e.g., <code>pharmacy</code>, <code>user_profile</code>, <code>product</code>).</li>
-<li>Foreign Keys: <code>table_name_id</code> (e.g., <code>pharmacy_id</code>).</li>
-<li>Indexes: <code>idx_table_column</code> (e.g., <code>idx_pharmacy_status</code>).</li>
-</ul>
-<p><strong>API &amp; Data Exchange Formats:</strong></p>
-<ul>
-<li>JSON exchange format: <code>snake_case</code> (Aligns natively with Supabase Postgres schema, avoiding unnecessary serialization overhead on the client).</li>
-</ul>
-<p><strong>Code Naming Conventions:</strong></p>
-<ul>
-<li>Dart/TypeScript Variables &amp; Functions: <code>camelCase</code> (e.g., <code>getUserProfile</code>, <code>pharmacyList</code>).</li>
-<li>Dart/React Classes, Widgets &amp; Components: <code>PascalCase</code> (e.g., <code>PharmacyCard</code>, <code>AuthController</code>).</li>
-<li>File naming: <code>snake_case.dart</code> pour Flutter, <code>kebab-case.tsx</code> pour Next.js.</li>
-</ul>
-<h3>Structure Patterns</h3>
-<p><strong>Project Organization (Flutter B2C App):</strong></p>
-<ul>
-<li><strong>Architecture:</strong> Feature-First (Domain-Driven Design).</li>
-<li><strong>Structure:</strong> <code>lib/features/{feature_name}/</code> contenant ses propres couches <code>presentation/</code>, <code>domain/</code>, et <code>data/</code>. Le code générique ou partagé résidera dans <code>lib/core/</code>.</li>
-</ul>
-<p><strong>Project Organization (Next.js Admin):</strong></p>
-<ul>
-<li><strong>Architecture:</strong> App Router Standard (Next.js 15+).</li>
-<li><strong>Structure:</strong> Features regroupées par routes (<code>app/(dashboard)/pharmacies/</code>), UI partagée dans <code>components/ui/</code>, logique abstraite dans <code>lib/services/</code>.</li>
-</ul>
-<h3>Process Patterns</h3>
-<p><strong>Error Handling Patterns:</strong></p>
-<ul>
-<li><strong>Universal Error Object:</strong> <code>{ &quot;error_code&quot;: &quot;STRING_CODE&quot;, &quot;message&quot;: &quot;Human readable message&quot; }</code>.</li>
-<li>Pas de crashs silencieux. Toutes les exceptions asynchrones doivent être interceptées via <code>try/catch</code> et tracées (Logger local ou Sentry en prod).</li>
-</ul>
-<p><strong>Date &amp; Time Formats:</strong></p>
-<ul>
-<li>Les dates sont stockées et échangées en <code>UTC</code> au format string <code>ISO 8601</code> (ex: <code>2026-03-18T16:00:00Z</code>).</li>
-<li>Les conversions de fuseaux horaires (ex: Heure d&#39;Abidjan) s&#39;effectuent purement à la couche de présentation (UI).</li>
-</ul>
-<h3>Enforcement Guidelines</h3>
-<p><strong>All AI Agents MUST:</strong></p>
-<ul>
-<li>Utiliser les conventions de nommage exactes définies ci-dessus (snake_case DB vs camel/PascalCase Code).</li>
-<li>Organiser le code Flutter en &quot;features&quot; (modules cloisonnés) et non en &quot;layers&quot; globaux.</li>
-<li>Sécuriser toute manipulation de base de données asynchrone par des blocs Try/Catch explicites signalant l&#39;erreur à la couche présentation.</li>
-</ul>
-<h2>Project Structure &amp; Boundaries</h2>
-<h3>Complete Project Directory Structure (Mono-Repo)</h3>
-<pre><code class="language-text">tiba-workspace/
-├── .github/ workflows/    # CI/CD (GitHub Actions)
-├── apps/
-│   ├── tiba-mobile/       # Flutter B2C Application
-│   │   ├── lib/
-│   │   │   ├── core/      # Local DB (Drift), Network Clients, Theming
-│   │   │   └── features/
-│   │   │       ├── auth/          # OTP &amp; Phone Login
-│   │   │       ├── scan_search/   # Core OCR &amp; Voice RAG interaction
-│   │   │       ├── pharmacy_map/  # Geolocation &amp; Offline Directory
-│   │   │       └── user_profile/  # Settings &amp; Family management
-│   └── tiba-admin/        # Next.js B2B Web Dashboard
-│       ├── src/
-│       │   ├── app/
-│       │   │   ├── (auth)/        # Admin Login
-│       │   │   └── (dashboard)/
-│       │   │       ├── inventory/ # Drug data entry &amp; Photo uploads
-│       │   │       └── pharmacies/# Partner management &amp; status
-│       │   └── components/ui/     # Shared Tailwind components
-├── supabase/
-│   ├── functions/         # Edge Functions (Deno)
-│   │   ├── rag-search/    # Handles OpenAI RAG internally
-│   │   └── process-image/ # Image compression before storage
-│   ├── migrations/        # SQL schema history
-│   └── seed.sql           # Initial test data
-└── package.json           # Mono-repo config (Turborepo ou basique)
-</code></pre>
-<h3>Architectural Boundaries</h3>
-<p><strong>API Boundaries:</strong></p>
-<ul>
-<li>L&#39;application mobile (<code>tiba-mobile</code>) et le tableau de bord web (<code>tiba-admin</code>) communiquent <em>exclusivement</em> via le Supabase Client SDK (PostgREST via HTTPS &amp; WebSockets).</li>
-<li><em>Strict:</em> Aucune des deux interfaces ne communique directement avec les APIs IA (OpenAI, Gemini). Ces requêtes sont obligatoirement proxyfiées par <code>supabase/functions/rag-search/</code> pour garantir la non-exposition des clés secrètes.</li>
-</ul>
-<p><strong>Component Boundaries:</strong></p>
-<ul>
-<li><strong>Flutter Feature Slicing:</strong> L&#39;isolement des fonctionnalités est total. Le dossier <code>scan_search</code> ne peut pas importer directement une logique métier de <code>pharmacy_map</code>. En cas de dépendance croisée, l&#39;état transite par un State Provider global (Riverpod) ou la DB locale.</li>
-</ul>
-<h3>Requirements to Structure Mapping</h3>
-<p><strong>Feature Mapping (d&#39;après le PRD):</strong></p>
-<ul>
-<li><strong>FR01, FR03 (OCR/Voice Scan):</strong> Localisé dans <code>apps/tiba-mobile/lib/features/scan_search/</code> et <code>supabase/functions/rag-search/</code>.</li>
-<li><strong>FR30 (Data Entry):</strong> Localisé dans <code>apps/tiba-admin/src/app/(dashboard)/inventory/</code>.</li>
-<li><strong>NFR03 (Temperature 0 RAG):</strong> Verrouillé dans <code>supabase/functions/rag-search/index.ts</code>.</li>
-<li><strong>NFR11 (Offline Sync Engine):</strong> Localisé dans <code>apps/tiba-mobile/lib/core/sync_engine/</code> relié à Drift DB.</li>
-</ul>
-<h2>Architecture Validation Results</h2>
-<h3>Coherence Validation ✅</h3>
-<p><strong>Decision Compatibility:</strong></p>
-<ul>
-<li>Haute de bout-en-bout. Le backend managé de Supabase s&#39;interface nativement avec Flutter via <code>supabase_flutter</code> et Next.js via <code>@supabase/ssr</code>. </li>
-<li>Le choix de Drift pour la synchronisation persistante locale (Offline-First) permet un typage fort aligné mécaniquement aux schémas PostgreSQL.</li>
-</ul>
-<p><strong>Pattern Consistency:</strong></p>
-<ul>
-<li>Fluidité totale. Échanger des JSON au format <code>snake_case</code> nativement entre Supabase, Dart et TypeScript évite des surcoûts et des erreurs de sérialisation.</li>
-</ul>
-<p><strong>Structure Alignment:</strong></p>
-<ul>
-<li>La structure Mono-repo isole hermétiquement le portail &quot;Admin Data Entry&quot; de l&#39;écosystème &quot;Mobile B2C léger&quot;, empêchant le couplage de logiques incompatibles.</li>
-</ul>
-<h3>Requirements Coverage Validation ✅</h3>
-<p><strong>Epic/Feature Coverage:</strong></p>
-<ul>
-<li>Tous les parcours clients centraux (Maman Aminata via la Voix/le Scan, l&#39;Équipe Opérationnelle via le Back-office) sont gérés par des outils et langages dédiés et performants.</li>
-</ul>
-<p><strong>Functional Requirements Coverage:</strong></p>
-<ul>
-<li>100% des FR mis à jour (via le pivot administratif) sont soutenus architecturalement par le Web Admin en Next.js.</li>
-</ul>
-<p><strong>Non-Functional Requirements Coverage:</strong></p>
-<ul>
-<li><strong>NFR03</strong> (RAG temp 0, latence garantie) s&#39;appuie sur le proxying sécurisé via Deno (Supabase Edge functions) qui maintient les clés d&#39;APIs tierces cachées aux clients.</li>
-<li><strong>NFR11</strong> (Opérations Hors-lignes) est assuré par l&#39;implémentation de Drift (SQLite local), ce qui maintient des temps de recherche &lt;200ms sur des téléphones bas de gamme sans réseau.</li>
-</ul>
-<h3>Implementation Readiness Validation ✅</h3>
-<p><strong>Decision Completeness:</strong></p>
-<ul>
-<li>Des Bases de Données relationnelles (PostgreSQL &amp; SQLite locales) aux États internes réactifs (Riverpod, Zustand), toute l&#39;ossature technique est verrouillée.</li>
-</ul>
-<p><strong>Structure Completeness:</strong></p>
-<ul>
-<li>Arbres de fichiers clairs, prêts à être &quot;bootstrappés&quot; via <code>flutter create</code> et <code>create-next-app</code>.</li>
-</ul>
-<h3>Gap Analysis Results</h3>
-<p>Aucun déficit critique. Le grand saut du &quot;SaaS Pharmacien&quot; vers un &quot;Tableau de Bord Administratif Opérateur Tiba&quot; a éliminé le risque architectural prépondérant de la Phase 1 (gérer le onboarding lourd de milliers de pharmacies en autonomie technique pour l&#39;inventaire complet).</p>
-<h3>Architecture Readiness Assessment</h3>
-<p><strong>Overall Status:</strong> READY FOR IMPLEMENTATION</p>
-<p><strong>Confidence Level:</strong> High, reposant sur de fortes validations et la simplification substantielle du cas d&#39;usage des pharmaciens partenaires.</p>
-<p><strong>Key Strengths:</strong></p>
-<ul>
-<li>La donnée centralisée (Source de vérité) : PostgreSQL de Supabase.</li>
-<li>L&#39;isolation applicative : Web Next.js (Admin/Donnée Mère) et App Flutter (B2C hors-ligne).</li>
-<li>Fonction hors-connexion asymétrique intégrée au design mobile via Drift.</li>
-</ul>
-<p><strong>Areas for Future Enhancement:</strong></p>
-<ul>
-<li>Phase 3 ou 4 : Désengorger les reportings épidémiologiques analytiques s&#39;ils requièrent plus de métriques BI via l&#39;intégration (ex: BigQuery ou Clickhouse) pour Sanofi / OMC.</li>
-</ul>
-<h3>Implementation Handoff</h3>
-<p><strong>AI Agent Guidelines:</strong></p>
-<ul>
-<li>Ne déviez sous aucun prétexte des normes fixées au niveau des nomenclatures <code>snake_case</code> VS <code>camelCase</code>.</li>
-<li>Utilisez cette Architecture comme socle indéniable de toute requête API.</li>
-<li>Implémentez un Try/Catch exhaustif.</li>
-</ul>
-<p><strong>First Implementation Priority:</strong><br>L&#39;initialisation du Workspace Mono-repo physique, du projet <code>tiba_app</code> dans <code>/apps/</code> et de l&#39;instance Backend Database associée (<code>supabase start</code> / Seed DB SQL de base).</p>
-<h2>Architectural Diagrams (Mermaid)</h2>
-<h3>1. App Startup Routing Flow (Story 1.3)</h3>
-<pre><code class="language-mermaid">flowchart TD
-    A[App Launch] --&gt; B{Disclaimer\nAccepted?}
-    B -- No --&gt; C[OnboardingPage\n&amp; Disclaimer]
-    B -- Yes --&gt; D{Active\nSession?}
-    D -- No --&gt; E[SocialLoginPage]
-    D -- Yes --&gt; F[AppShell\nHome]
-    C --&gt; E
-    E --&gt; F
-</code></pre>
-<h3>2. Authentication Sequence (Google + Supabase)</h3>
-<pre><code class="language-mermaid">sequenceDiagram
-    participant User
-    participant App as Tiba App
-    participant Google as Google Auth
-    participant Supabase as Supabase Auth
-
-    User-&gt;&gt;App: Clicks &quot;Continuer avec Google&quot;
-    App-&gt;&gt;Google: signIn()
-    Google--&gt;&gt;App: GoogleUser (idToken, accessToken)
-    App-&gt;&gt;Supabase: signInWithIdToken(provider: google, idToken)
-    Supabase--&gt;&gt;App: AuthResponse (Session)
-    App-&gt;&gt;User: Redirect to AppShell
-</code></pre>
-<h3>3. Auth Feature Internal Architecture</h3>
-<pre><code class="language-mermaid">classDiagram
-    class SocialLoginPage {
-        +Widget build()
-        -_signInWithGoogle()
-    }
-    class AuthProviders {
-        +Provider~AuthRepository~
-        +StreamProvider~AuthState~
-    }
-    class AuthRepository {
-        -SupabaseClient _client
-        +signInWithGoogle()
-        +getCurrentSession()
-        +onAuthStateChange()
-        +signOut()
-    }
-    class SupabaseConfig {
-        +String url
-        +String anonKey
-        +String googleWebClientId
-    }
-
-    SocialLoginPage --&gt; AuthProviders : watches
-    SocialLoginPage --&gt; AuthRepository : uses
-    AuthProviders --&gt; AuthRepository : provides
-    AuthRepository --&gt; SupabaseConfig : reads
-</code></pre>
 
         </div>
-        <div class="prev-next"><a href="ux.html" class="prev-next-btn prev" aria-label="Page precedente: Design System et UX"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Design System et UX</span></a><a href="database.html" class="prev-next-btn next" aria-label="Page suivante: Base de Donnees"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Base de Donnees</span></a></div>
+        <div class="prev-next"><a href="story-2-6.html" class="prev-next-btn prev" aria-label="Page precedente: Story 2.6: Mode Global IA"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 2.6: Mode Global IA</span></a><a href="sprint-status.html" class="prev-next-btn next" aria-label="Page suivante: Status du Sprint"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Status du Sprint</span></a></div>
       </article>
     </div>
   </div>
