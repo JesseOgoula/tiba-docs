@@ -50,7 +50,8 @@
         { "id": "story-2-7", "title": "Story 2.7: Audit & Signalement", "path": "content/implementation-artifacts/2-7-audit-logging-et-signalement-utilisateur.md" },
         { "id": "sprint-status", "title": "Status du Sprint", "path": "content/implementation-artifacts/sprint-status.yaml" },
         { "id": "story-3-1", "title": "Story 3.1: Pharmacies GPS", "path": "content/implementation-artifacts/3-1-recherche-des-pharmacies-de-garde-par-gps.md" },
-        { "id": "story-3-2", "title": "Story 3.2: Fiche & Itinéraire", "path": "content/implementation-artifacts/3-2-affichage-distance-et-itineraire.md" }
+        { "id": "story-3-2", "title": "Story 3.2: Fiche & Itinéraire", "path": "content/implementation-artifacts/3-2-affichage-distance-et-itineraire.md" },
+        { "id": "story-3-3", "title": "Story 3.3: Cache Hors-ligne", "path": "content/implementation-artifacts/3-3-cache-local-des-pharmacies-mode-hors-ligne.md" }
       ]
     }
   ]
