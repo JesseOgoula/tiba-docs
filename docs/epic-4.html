@@ -861,11 +861,30 @@
 <li>Middleware Next.js : redirect <code>/login</code> si non authentifié</li>
 <li>Supabase Auth email/mot de passe</li>
 <li>Layout admin avec sidebar (Dashboard, Pharmacies, Notices, Signalements)</li>
+<li>Dashboard home avec compteurs (pharmacies, notices, signalements)</li>
 </ul>
-<h3>Story 4.2 : Notices (CRUD) ✅</h3>
+<h3>Story 4.2 : Notices (CRUD complet) ✅</h3>
 <ul>
-<li>Table paginée des médicaments (nom, code-barres, notice)</li>
-<li>Bouton &quot;Nouvelle notice&quot; + &quot;Modifier&quot;</li>
+<li>Table interactive avec recherche par nom/code-barres</li>
+<li>Colonnes : nom, catégorie thérapeutique, code-barres, version, statut</li>
+<li>Modal ajout/modification complète :<ul>
+<li>Nom du médicament (obligatoire)</li>
+<li>Code-barres (optionnel)</li>
+<li>Catégorie thérapeutique</li>
+<li>Texte complet de la notice (textarea)</li>
+<li>Source officielle (obligatoire)</li>
+</ul>
+</li>
+<li>Soft delete (Retirer/Réactiver) sans suppression physique</li>
+<li>Versionnage : incrémentation automatique à chaque modification</li>
+</ul>
+<h3>Story 4.3 : Signalements avec workflow ✅</h3>
+<ul>
+<li>Table des signalements depuis <code>user_report</code> avec jointures <code>ai_audit_log</code> → <code>medication</code></li>
+<li>Filtre par statut (En attente / Examiné / Résolu)</li>
+<li>Labels colorés par raison (Incorrect / Dangereux / Autre)</li>
+<li>Workflow de traitement : En attente → Examiné → Résolu</li>
+<li>Boutons d&#39;action contextuels selon le statut</li>
 </ul>
 <h3>Story 4.4 : Pharmacies de Garde ✅</h3>
 <ul>
@@ -874,11 +893,6 @@
 <li>Toggle Active/Inactif</li>
 <li>Modal planning de garde : ajout/suppression de dates avec plages horaires</li>
 <li>Statut visuel (badge Actif vert / Inactif rouge)</li>
-</ul>
-<h3>Signalements ✅</h3>
-<ul>
-<li>Table des rapports utilisateurs depuis <code>ai_usage_logs</code></li>
-<li>Catégorie + détails + date</li>
 </ul>
 <h2>🗂️ Structure du projet</h2>
 <pre><code>src/
@@ -890,8 +904,8 @@
 │       ├── layout.tsx       # Vérifie auth + sidebar
 │       ├── page.tsx         # Dashboard (stats)
 │       ├── pharmacies/      # CRUD pharmacies + gardes
-│       ├── notices/         # Table notices
-│       └── signalements/    # Rapports utilisateurs
+│       ├── notices/         # CRUD notices complet
+│       └── signalements/    # Workflow signalements
 ├── components/sidebar.tsx
 ├── lib/supabase/
 │   ├── server.ts            # Client SSR
