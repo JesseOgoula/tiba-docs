@@ -46,6 +46,7 @@
         { "id": "story-2-3", "title": "Story 2.3: Voice Orb", "path": "content/implementation-artifacts/2-3-voice-assistant-orb-hold-to-talk.md" },
         { "id": "story-2-4", "title": "Story 2.4: Contexte Patient", "path": "content/implementation-artifacts/2-4-contexte-patient-adulte-enfant-poids.md" },
         { "id": "story-2-5", "title": "Story 2.5: Pare-feu Sécurité", "path": "content/implementation-artifacts/2-5-pare-feu-anti-diagnostic-et-messages-de-securite.md" },
+        { "id": "story-2-6", "title": "Story 2.6: Mode Global IA", "path": "content/implementation-artifacts/2-6-mode-global-ia-sans-scan.md" },
         { "id": "sprint-status", "title": "Status du Sprint", "path": "content/implementation-artifacts/sprint-status.yaml" }
       ]
     }

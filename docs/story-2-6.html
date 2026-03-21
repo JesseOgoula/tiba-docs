@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Story 2.1: RAG Pipeline IA – Tiba Docs</title>
+  <title>Story 2.6: Mode Global IA – Tiba Docs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -814,12 +814,12 @@
           <li><a href="story-1-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.5: Hero Scan AI</a></li>
           <li><a href="story-1-6.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 1.6: Resultat & Historique</a></li>
           <li><a href="epic-1-retro.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Rétrospective Epic 1</a></li>
-          <li><a href="story-2-1.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
+          <li><a href="story-2-1.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.1: RAG Pipeline IA</a></li>
           <li><a href="story-2-2.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.2: Chat Textuel</a></li>
           <li><a href="story-2-3.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.3: Voice Orb</a></li>
           <li><a href="story-2-4.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.4: Contexte Patient</a></li>
           <li><a href="story-2-5.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.5: Pare-feu Sécurité</a></li>
-          <li><a href="story-2-6.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.6: Mode Global IA</a></li>
+          <li><a href="story-2-6.html" class="nav-link active" aria-current="page"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Story 2.6: Mode Global IA</a></li>
           <li><a href="sprint-status.html" class="nav-link" aria-current="false"><span class="nav-dot"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="currentColor"/></svg></span>Status du Sprint</a></li>
         </ul>
       </div>
@@ -832,35 +832,47 @@
         <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu" aria-expanded="false" id="hamburger-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-title">Story 2.1: RAG Pipeline IA</div>
-        <div class="topbar-badge">20 / 26</div>
+        <div class="topbar-title">Story 2.6: Mode Global IA</div>
+        <div class="topbar-badge">25 / 26</div>
       </div>
 
       <article class="content-wrap" role="main" aria-label="Contenu du document">
         <div class="prose">
-          <h1>Story 2.1: Pipeline RAG Strict &amp; Edge Function IA</h1>
-<h2>Objectif</h2>
-<p>Mettre en place le pipeline backend RAG avec pgvector pour répondre exclusivement à partir des notices certifiées avec une température de 0.0 (aucune hallucination).</p>
-<h2>Spécifications</h2>
+          <h1>Story 2.6 : Mode Global IA (Sans Scan)</h1>
+<h2>🎯 Objectif</h2>
+<p>Permettre à l&#39;utilisateur d&#39;accéder à l&#39;assistant IA pharmaceutique <strong>sans avoir scanné de médicament</strong> au préalable. L&#39;IA demande quel médicament l&#39;utilisateur souhaite connaître, puis charge la notice automatiquement.</p>
+<h2>🛠️ Implémentation</h2>
+<h3>1. FAB Central (AppShell)</h3>
 <ul>
-<li><strong>Given</strong> une notice certifiée est dans la BDD Supabase</li>
-<li><strong>When</strong> une requête utilisateur est envoyée à l&#39;Edge Function <code>ai-query</code></li>
-<li><strong>Then</strong> le système effectue un embedding search (pgvector) sur les chunks de la notice</li>
-<li><strong>And</strong> seul le contenu de la notice est utilisé comme contexte du LLM (temperature 0.0)</li>
-<li><strong>And</strong> la réponse est journalisée dans <code>ai_audit_log</code></li>
+<li>La <code>BottomNavigationBar</code> classique a été remplacée par un <code>BottomAppBar</code> avec un <code>CircularNotchedRectangle</code>.</li>
+<li>Un <code>FloatingActionButton</code> vert (icône robot Tiba) est placé au centre.</li>
+<li>Au tap, il ouvre le <code>ChatSheet</code> en <strong>mode global</strong> (sans <code>medicationId</code>).</li>
 </ul>
-<h2>Implémentation</h2>
+<h3>2. ChatSheet (Mode Global)</h3>
 <ul>
-<li><strong>SQL</strong> : Fonction <code>match_notice_chunks</code> avec index HNSW pour la similarité cosinus.</li>
-<li><strong>Edge Function <code>embed-notice</code></strong> : Découpe la notice en chunks → génère les embeddings via OpenAI <code>text-embedding-3-small</code> → stocke dans <code>notice_chunk</code>.</li>
-<li><strong>Edge Function <code>ai-query</code></strong> : Embed la question → recherche vectorielle → appel LLM (<code>gpt-4o-mini</code>, temp 0.0) avec prompt système strict → log dans <code>ai_audit_log</code> → réponse structurée.</li>
-<li><strong>Flutter</strong> : <code>AiQueryService</code> avec support du contexte patient, <code>aiQueryServiceProvider</code> Riverpod.</li>
-<li><strong>Données seed</strong> : Doliprane 500mg et Amoxicilline 500mg avec notices complètes.</li>
+<li><code>medicationId</code> et <code>medicationName</code> sont désormais <strong>optionnels</strong>.</li>
+<li>Si non fournis, <code>initGlobalMode()</code> est appelé, affichant : <em>&quot;Bonjour ! 👋 Quel médicament souhaitez-vous connaître ?&quot;</em></li>
+<li>Le sous-titre du header affiche &quot;Mode Global&quot; au lieu du nom du médicament.</li>
+<li>Quand un médicament est résolu, le sous-titre se met à jour dynamiquement via <code>ref.watch</code>.</li>
 </ul>
-<p><strong>Status :</strong> Terminée ✅</p>
+<h3>3. Recherche de Médicament (AiQueryService)</h3>
+<ul>
+<li>Nouvelle méthode <code>searchMedication(String query)</code> qui interroge la table <code>medications</code> avec un <code>ilike</code> pour du matching flou par nom.</li>
+<li>Retourne <code>{ id, name }</code> du premier résultat ou <code>null</code>.</li>
+</ul>
+<h3>4. Flux dans ChatProvider</h3>
+<ul>
+<li>Quand <code>isGlobalMode == true</code> et <code>medicationId == null</code>, le premier message de l&#39;utilisateur est traité comme une <strong>recherche de médicament</strong>.</li>
+<li>Si trouvé → le contexte est chargé silencieusement et la question est envoyée au RAG.</li>
+<li>Si non trouvé → message d&#39;erreur friendly avec suggestion de scanner.</li>
+</ul>
+<h3>5. Edge Function (v11)</h3>
+<ul>
+<li>Accepte <code>medication_id: null</code>. Si absent, retourne un message d&#39;orientation plutôt qu&#39;une erreur 400.</li>
+</ul>
 
         </div>
-        <div class="prev-next"><a href="epic-1-retro.html" class="prev-next-btn prev" aria-label="Page precedente: Rétrospective Epic 1"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Rétrospective Epic 1</span></a><a href="story-2-2.html" class="prev-next-btn next" aria-label="Page suivante: Story 2.2: Chat Textuel"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Story 2.2: Chat Textuel</span></a></div>
+        <div class="prev-next"><a href="story-2-5.html" class="prev-next-btn prev" aria-label="Page precedente: Story 2.5: Pare-feu Sécurité"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Story 2.5: Pare-feu Sécurité</span></a><a href="sprint-status.html" class="prev-next-btn next" aria-label="Page suivante: Status du Sprint"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Status du Sprint</span></a></div>
       </article>
     </div>
   </div>
