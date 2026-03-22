@@ -903,6 +903,94 @@
 <li><code>source_type</code> (&quot;text&quot; ou &quot;voice&quot;)</li>
 </ul>
 <p><em>Les <code>user_id</code> ne sont pas stockés en clair, mais sous forme de hash anonymisé pour respecter la vie privée (Epic 6).</em></p>
+<hr>
+<h2>🎯 6. Assistant Vocal Immersif (Voice-First — Phase 2+)</h2>
+<p>L&#39;assistant vocal a évolué d&#39;un simple &quot;Hold-to-Talk&quot; vers un écran <strong>plein écran immersif</strong> inspiré de ChatGPT Voice et Siri :</p>
+<h3>Boucle Vocale Continue (Aucun tap nécessaire) :</h3>
+<pre><code>Ouverture → TTS greeting proactif → onComplete → STT auto-écoute
+→ User parle → silence détecté → &quot;Je réfléchis...&quot; → Edge Function RAG
+→ TTS réponse → onComplete → STT auto-écoute → ...
+</code></pre>
+<h3>Fonctionnalités :</h3>
+<ul>
+<li><strong>Greeting proactif</strong> : S&#39;adapte à l&#39;heure + nom de l&#39;utilisateur + mémoire vive des dernières interactions</li>
+<li><strong>SiriWave</strong> : Animation sinusoïdale <code>CustomPainter</code> réactive à l&#39;état (idle/listening/speaking)</li>
+<li><strong>Transcription type Messagerie</strong> : Historique en bulles de chat (Tiba à gauche, User à droite avec avatar)</li>
+<li><strong>Boutons Premium</strong> : Design minimaliste (blanc, bordure fine, ombres subtiles)</li>
+</ul>
+<hr>
+<h2>🤖 7. Agent IA Autonome Proactif (Phase 5)</h2>
+<p>L&#39;architecture a été mise à niveau pour permettre à Tiba d&#39;<strong>exécuter des actions natives sur le téléphone</strong> de manière autonome.</p>
+<h3>7.1. Architecture Command Pattern</h3>
+<pre><code>LLM Response (avec tool_call)
+    │
+    ▼
+┌──────────────┐     ┌─────────────────┐
+│ chat_provider │────▶│ AIActionHandler │
+│  (dispatch)   │     │ (orchestrateur) │
+└──────────────┘     └────────┬────────┘
+                              │ route par nom
+                    ┌─────────┼─────────┐
+                    ▼         ▼         ▼
+              CallTool   GPSTool  ReminderTool
+              (tel:)    (Maps)   (SharedPrefs)
+                    │         │         │
+                    └─────────┼─────────┘
+                              ▼
+                         ToolResult
+                     (success / fail)
+                              │
+                              ▼
+                   Fallback → LLM reçoit
+                   l&#39;erreur et adapte
+                   sa réponse vocale
+</code></pre>
+<h3>7.2. Outils Disponibles (TibaTools)</h3>
+<table>
+<thead>
+<tr>
+<th>Outil</th>
+<th>Classe</th>
+<th>Description</th>
+<th>Fallback</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>call_pharmacy</code></td>
+<td><code>CallPharmacyTool</code></td>
+<td>Appel natif via <code>url_launcher</code></td>
+<td>Si mode avion/pas SIM : numéro communiqué vocalement</td>
+</tr>
+<tr>
+<td><code>navigate_gps</code></td>
+<td><code>GPSNavigationTool</code></td>
+<td>Itinéraire Google Maps</td>
+<td>Si Maps absent : coordonnées communiquées</td>
+</tr>
+<tr>
+<td><code>set_reminder</code></td>
+<td><code>ReminderTool</code></td>
+<td>Rappel médicament via SharedPreferences</td>
+<td>Message d&#39;erreur injecté au LLM</td>
+</tr>
+</tbody></table>
+<h3>7.3. Mémoire Vive (RAG Local)</h3>
+<p>Le <code>TibaMemoryService</code> stocke un résumé de la dernière interaction (via SharedPreferences) :</p>
+<ul>
+<li><strong>Injection</strong> : Avant chaque requête, le <code>memory_context</code> est envoyé à l&#39;Edge Function et injecté dans le System Prompt</li>
+<li><strong>Proactivité</strong> : Tiba peut relancer : <em>&quot;Bonjour, vos migraines ont-elles diminué ?&quot;</em></li>
+<li><strong>Extraction</strong> : Un détecteur de symptômes-clés (<code>migraine</code>, <code>fièvre</code>, <code>toux</code>...) catégorise automatiquement l&#39;interaction</li>
+</ul>
+<h3>7.4. Flux de Sécurité</h3>
+<p>Toute action impliquant l&#39;OS (appel, GPS, caméra) nécessite <strong>l&#39;approbation vocale explicite</strong> de l&#39;utilisateur via une question fermée (Oui/Non). L&#39;IA ne déclenche jamais un outil sans confirmation préalable.</p>
+<h3>7.5. Edge Function (v17)</h3>
+<p>L&#39;Edge Function <code>ai-query</code> a été mise à jour pour :</p>
+<ol>
+<li>Recevoir et transmettre les <code>tools</code> definitions au LLM (OpenAI format)</li>
+<li>Parser les <code>tool_calls</code> dans la réponse du LLM</li>
+<li>Injecter le <code>memory_context</code> dans le System Prompt</li>
+<li>Retourner un champ <code>tool_call</code> structuré dans la réponse JSON</li>
+</ol>
 
         </div>
         <div class="prev-next"><a href="database.html" class="prev-next-btn prev" aria-label="Page precedente: Base de Donnees"><span class="prev-next-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Precedent</span><span class="prev-next-title">Base de Donnees</span></a><a href="database-sql.html" class="prev-next-btn next" aria-label="Page suivante: Code SQL Complet"><span class="prev-next-label">Suivant <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><span class="prev-next-title">Code SQL Complet</span></a></div>

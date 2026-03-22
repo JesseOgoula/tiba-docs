@@ -80,3 +80,82 @@ Chaque interaction avec l'Edge Function IA est loggée dans Supabase pour des ra
 - `source_type` ("text" ou "voice")
 
 *Les `user_id` ne sont pas stockés en clair, mais sous forme de hash anonymisé pour respecter la vie privée (Epic 6).*
+
+---
+
+## 🎯 6. Assistant Vocal Immersif (Voice-First — Phase 2+)
+
+L'assistant vocal a évolué d'un simple "Hold-to-Talk" vers un écran **plein écran immersif** inspiré de ChatGPT Voice et Siri :
+
+### Boucle Vocale Continue (Aucun tap nécessaire) :
+```
+Ouverture → TTS greeting proactif → onComplete → STT auto-écoute
+→ User parle → silence détecté → "Je réfléchis..." → Edge Function RAG
+→ TTS réponse → onComplete → STT auto-écoute → ...
+```
+
+### Fonctionnalités :
+- **Greeting proactif** : S'adapte à l'heure + nom de l'utilisateur + mémoire vive des dernières interactions
+- **SiriWave** : Animation sinusoïdale `CustomPainter` réactive à l'état (idle/listening/speaking)
+- **Transcription type Messagerie** : Historique en bulles de chat (Tiba à gauche, User à droite avec avatar)
+- **Boutons Premium** : Design minimaliste (blanc, bordure fine, ombres subtiles)
+
+---
+
+## 🤖 7. Agent IA Autonome Proactif (Phase 5)
+
+L'architecture a été mise à niveau pour permettre à Tiba d'**exécuter des actions natives sur le téléphone** de manière autonome.
+
+### 7.1. Architecture Command Pattern
+
+```
+LLM Response (avec tool_call)
+    │
+    ▼
+┌──────────────┐     ┌─────────────────┐
+│ chat_provider │────▶│ AIActionHandler │
+│  (dispatch)   │     │ (orchestrateur) │
+└──────────────┘     └────────┬────────┘
+                              │ route par nom
+                    ┌─────────┼─────────┐
+                    ▼         ▼         ▼
+              CallTool   GPSTool  ReminderTool
+              (tel:)    (Maps)   (SharedPrefs)
+                    │         │         │
+                    └─────────┼─────────┘
+                              ▼
+                         ToolResult
+                     (success / fail)
+                              │
+                              ▼
+                   Fallback → LLM reçoit
+                   l'erreur et adapte
+                   sa réponse vocale
+```
+
+### 7.2. Outils Disponibles (TibaTools)
+
+| Outil | Classe | Description | Fallback |
+|---|---|---|---|
+| `call_pharmacy` | `CallPharmacyTool` | Appel natif via `url_launcher` | Si mode avion/pas SIM : numéro communiqué vocalement |
+| `navigate_gps` | `GPSNavigationTool` | Itinéraire Google Maps | Si Maps absent : coordonnées communiquées |
+| `set_reminder` | `ReminderTool` | Rappel médicament via SharedPreferences | Message d'erreur injecté au LLM |
+
+### 7.3. Mémoire Vive (RAG Local)
+
+Le `TibaMemoryService` stocke un résumé de la dernière interaction (via SharedPreferences) :
+- **Injection** : Avant chaque requête, le `memory_context` est envoyé à l'Edge Function et injecté dans le System Prompt
+- **Proactivité** : Tiba peut relancer : _"Bonjour, vos migraines ont-elles diminué ?"_
+- **Extraction** : Un détecteur de symptômes-clés (`migraine`, `fièvre`, `toux`...) catégorise automatiquement l'interaction
+
+### 7.4. Flux de Sécurité
+
+Toute action impliquant l'OS (appel, GPS, caméra) nécessite **l'approbation vocale explicite** de l'utilisateur via une question fermée (Oui/Non). L'IA ne déclenche jamais un outil sans confirmation préalable.
+
+### 7.5. Edge Function (v17)
+
+L'Edge Function `ai-query` a été mise à jour pour :
+1. Recevoir et transmettre les `tools` definitions au LLM (OpenAI format)
+2. Parser les `tool_calls` dans la réponse du LLM
+3. Injecter le `memory_context` dans le System Prompt
+4. Retourner un champ `tool_call` structuré dans la réponse JSON
