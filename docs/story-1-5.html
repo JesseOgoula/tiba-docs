@@ -846,24 +846,102 @@
         <div class="prose">
           <h1>Story 1.5: Hero Scan Viewfinder (Caméra AR)</h1>
 <h2>Objectif</h2>
-<p>Scanner la boîte d&#39;un médicament avec la caméra pour identification automatique (Code-barres ou OCR d&#39;urgence).</p>
+<p>Scanner la boîte d&#39;un médicament avec la caméra pour identification automatique (Code-barres ou OCR du nom).</p>
 <h2>Spécifications</h2>
 <ul>
 <li><strong>Given</strong> l&#39;onglet Scanner est ouvert</li>
 <li><strong>When</strong> le composant s&#39;affiche</li>
 <li><strong>Then</strong> le cadre de visée est animé (pulse blanc)</li>
 <li><strong>And</strong> si un code-barres est détecté (focus), le cadre devient vert avec un retour haptique</li>
-<li><strong>And</strong> si aucun code-barres n&#39;est trouvé après 5 secondes, l&#39;OCR Google ML Kit prend le relais (lecture du nom).</li>
+<li><strong>And</strong> si aucun code-barres n&#39;est trouvé après 3 secondes, l&#39;OCR Google ML Kit analyse automatiquement en parallèle.</li>
 </ul>
 <h2>Implémentation</h2>
+<h3>Phase 1 — Scan Barcode (v1)</h3>
 <ul>
-<li>Utilisation de <code>mobile_scanner</code> pour la lecture ML (très rapide).</li>
-<li>Utilisation de <code>google_mlkit_text_recognition</code> pour l&#39;OCR en fallback.</li>
+<li>Utilisation de <code>mobile_scanner</code> pour la lecture de codes-barres.</li>
+<li>Création du <code>ScanViewfinder</code> avec animations custom <code>CustomPainter</code>.</li>
 <li>Ajout de <code>vibration</code> pour le retour haptique sur détection du focus.</li>
-<li>Ajout des permissions <code>CAMERA</code> (Android/iOS).</li>
-<li>Affichage du <code>ScanViewfinder</code> avec animations custom <code>CustomPainter</code>.</li>
-<li>Création du <code>MedicationLookupService</code> avec priorité Cache -&gt; Supabase.</li>
+<li>Création du <code>MedicationLookupService</code> avec priorité Cache → Supabase.</li>
 </ul>
+<h3>Phase 2 — Scan Automatique Barcode + OCR (v2)</h3>
+<p>Remplacement de <code>mobile_scanner</code> par le package <code>camera</code> avec <strong>double scanning ML Kit</strong> simultané :</p>
+<ul>
+<li><strong>Package <code>camera</code></strong> pour le preview et l&#39;accès au flux de frames bruts.</li>
+<li><strong><code>google_mlkit_barcode_scanning</code></strong> pour la détection de codes-barres sur chaque frame.</li>
+<li><strong><code>google_mlkit_text_recognition</code></strong> pour l&#39;OCR du nom du médicament (activé automatiquement après 3s).</li>
+<li><strong><code>OcrService</code></strong> avec heuristique intelligente :<ul>
+<li>Sélection du plus grand bloc de texte (= nom du médicament en gros sur la boîte)</li>
+<li>Filtrage automatique des dosages (500 mg, 1g...) et numéros de lot</li>
+<li>Confirmation via 2 frames consécutives identiques pour éviter les faux positifs</li>
+</ul>
+</li>
+<li>Throttling des analyses OCR à 1.5s pour optimiser les performances.</li>
+<li>Texte d&#39;instruction animé (<code>AnimatedSwitcher</code>) : &quot;Pointez vers la boîte du médicament&quot; → &quot;Recherche du code-barres ou du nom...&quot;</li>
+</ul>
+<h3>Architecture Technique</h3>
+<pre><code>Camera Frame Stream
+      │
+      ├── BarcodeScanner.processImage()  ← immédiat
+      │     └── Barcode trouvé → haptic + lookup
+      │
+      └── TextRecognizer.processImage()  ← après 3s
+            └── OcrService.extractBestCandidate()
+                  └── 2 confirmations → haptic + lookupByName()
+</code></pre>
+<h3>Fichiers clés</h3>
+<table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>scan_page.dart</code></td>
+<td>Page principale, frame processing, double scanning</td>
+</tr>
+<tr>
+<td><code>ocr_service.dart</code></td>
+<td>Service OCR avec heuristique d&#39;extraction du nom</td>
+</tr>
+<tr>
+<td><code>scan_viewfinder.dart</code></td>
+<td>Overlay animé (pulse/focus)</td>
+</tr>
+<tr>
+<td><code>medication_lookup_service.dart</code></td>
+<td>Lookup barcode + nom (Cache → Supabase)</td>
+</tr>
+<tr>
+<td><code>scan_result_screen.dart</code></td>
+<td>Fiche résultat avec assistant IA intégré</td>
+</tr>
+</tbody></table>
+<h3>Dépendances</h3>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>camera</code></td>
+<td>Preview caméra + flux de frames</td>
+</tr>
+<tr>
+<td><code>google_mlkit_barcode_scanning</code></td>
+<td>Détection barcode sur frames</td>
+</tr>
+<tr>
+<td><code>google_mlkit_text_recognition</code></td>
+<td>OCR texte sur frames</td>
+</tr>
+<tr>
+<td><code>vibration</code></td>
+<td>Retour haptique</td>
+</tr>
+</tbody></table>
 <p><strong>Status :</strong> Terminée ✅</p>
 
         </div>
